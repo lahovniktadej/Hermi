@@ -13,6 +13,8 @@ import "assets/scss/argon-dashboard-react.scss";
 
 import AdminLayout from "layouts/Admin.js";
 import AuthLayout from "layouts/Auth.js";
+import NewWorker from "components/Forms/NewWorker";
+import NewVehicle from "components/Forms/NewVehicle";
 
 ReactDOM.render(
   <ThemeProvider theme={theme}>
@@ -22,6 +24,8 @@ ReactDOM.render(
       <Switch>
         <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
         <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
+        <Route exact path="/new-worker" component={NewWorker} />
+        <Route exact path="/new-vehicle" component={NewVehicle} />
         <Redirect from="/" to="/admin/index" />
       </Switch>
     </BrowserRouter>
