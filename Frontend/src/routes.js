@@ -21,7 +21,7 @@ import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
-import Delacvi from "views/Delavci";
+import Delavci from "views/Delavci";
 
 var routes = [
   {
@@ -35,7 +35,7 @@ var routes = [
     path: "/delavci",
     name: "Delavci",
     icon: "fas fa-users text-red",
-    component: Delacvi,
+    component: Delavci,
     layout: "/admin",
   },
   {

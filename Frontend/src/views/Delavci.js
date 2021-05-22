@@ -59,7 +59,7 @@ const data = [
     }
 ];
 
-function Delacvi() {
+function Delavci() {
 
     const tableRow = (el) => {
         return (
@@ -182,4 +182,4 @@ function Delacvi() {
     );
 }
 
-export default Delacvi;
+export default Delavci;
