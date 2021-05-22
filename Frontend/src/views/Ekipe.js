@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 
 import {
     Badge,
@@ -27,9 +27,11 @@ import {
     InputGroupText,
     InputGroup,
     Button,
+    ListGroupItemText,
 } from "reactstrap";
 
 import Header from 'components/Headers/Header';
+import { Dropdown } from 'bootstrap';
 
 const data = [
     {
@@ -41,7 +43,8 @@ const data = [
         start: "6:25",
         pricetekDela: "8:10",
         konecDela: "13:55",
-        prihod: "16:20"
+        prihod: "16:20",
+        status: "aktiven"
 
     },
     {
@@ -53,7 +56,8 @@ const data = [
         start: "6:25",
         pricetekDela: "8:10",
         konecDela: "13:55",
-        prihod: "16:20"
+        prihod: "16:20",
+        status: "končan"
 
     },
     {
@@ -65,7 +69,8 @@ const data = [
         start: "6:25",
         pricetekDela: "8:10",
         konecDela: "13:55",
-        prihod: "16:20"
+        prihod: "16:20",
+        status: "aktiven"
     },
     {
         objekt: "objekt",
@@ -76,7 +81,8 @@ const data = [
         start: "6:25",
         pricetekDela: "8:10",
         konecDela: "13:55",
-        prihod: "16:20"
+        prihod: "16:20",
+        status: "končan"
 
     },
     {
@@ -88,12 +94,34 @@ const data = [
         start: "6:25",
         pricetekDela: "8:10",
         konecDela: "13:55",
-        prihod: "16:20"
+        prihod: "16:20",
+        status: "aktiven"
 
     },
 ];
 
 function Ekipe() {
+
+    const [delavci, setDelavci] = useState([""]);
+
+    const pridobiStatus = (status) => {
+        if(status == "aktiven")
+            return "text-red";
+        else
+            return "text-green";
+    }
+
+    const handleAddClick = () => {
+        let list = delavci;
+        list.push("");
+        setDelavci(delavci, "");
+    };
+
+    const handleRemoveClick = index => {
+        let list = delavci;
+        list.pop();
+        setDelavci(list);
+      };
 
     const tableRow = (el) => {
         return (
@@ -114,6 +142,7 @@ function Ekipe() {
                         </Media>
                     </Media>
                 </th>
+                <td><span className={pridobiStatus(el.status)}>{el.status}</span></td>      
                 <td>{el.datum}</td>
                 <td>{el.avto}</td>
                 <td>{el.sofer}</td>
@@ -122,6 +151,7 @@ function Ekipe() {
                 <td>{el.pricetekDela}</td>
                 <td>{el.konecDela}</td>
                 <td>{el.prihod}</td>
+                
             </tr>
         );
     };
@@ -140,6 +170,7 @@ function Ekipe() {
                                 <thead className="thead-light">
                                     <tr>
                                         <th scope="col">Objekt</th>
+                                        <th scope="col">Status</th>
                                         <th scope="col">Datum</th>
                                         <th scope="col">Avto</th>
                                         <th scope="col">Šofer</th>
@@ -155,6 +186,193 @@ function Ekipe() {
                                     {data.map((el) => tableRow(el))}
                                 </tbody>
                             </Table>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col>
+                        <Card className="shadow bg-secondary">
+                            <CardHeader>
+                                <h3 className="mb-0">Dodaj ekipo</h3>
+                            </CardHeader>
+                            <CardBody>
+                                <Form role="form">
+                                <Row>
+                                    <Col className="mb-4">
+                                    <FormGroup className="mb-3">
+                                        <label
+                                            className="form-control-label"
+                                            htmlFor="input-objekt">
+                                            Objekt
+                                        </label>
+                                        <Input  
+                                            id="input-date"
+                                            className="form-control-alternative"
+                                            type="select"
+                                        >
+                                            <option>objekt1</option>
+                                            <option>objekt2</option>
+                                            <option>objekt3</option>
+                                        </Input>
+                                    </FormGroup>
+                                    </Col>
+                                    <Col className="mb-4">
+                                    <FormGroup className="mb-3">
+                                        <label
+                                            className="form-control-label"
+                                            htmlFor="input-avto">
+                                            Avto</label>
+                                        <Input
+                                            id="input-avto"
+                                            className="form-control-alternative"
+                                            type="select"
+                                        >
+                                            <option>avto1</option>
+                                            <option>avto2</option>
+                                            <option>avtot3</option>
+                                        </Input>
+                                    </FormGroup>
+                                    </Col>
+                                    <Col className="mb-4">
+                                    <FormGroup className="mb-3">
+                                        <label
+                                            className="form-control-label"
+                                            htmlFor="input-sofer"
+                                        >
+                                            Šofer</label>
+                                        <Input
+                                            id="input-sofer"
+                                            className="form-control-alternative"
+                                            type="select"
+                                        >
+                                            <option>sofer1</option>
+                                            <option>sofer2</option>
+                                            <option>sofer3</option>
+                                        </Input>
+                                    </FormGroup>
+                                    </Col>
+                                    </Row>
+                                    <FormGroup>
+                                        <label
+                                            className="form-control-label"
+                                            htmlFor="input-delavci"
+                                        >
+                                            Delavci</label>
+                                        {delavci.map(() => {
+                                            return(
+                                                <Row>
+                                                <Col className="mb-4">
+                                                <Input
+                                                    id="input-delavci"
+                                                    className="form-control-alternative"
+                                                    type="select"
+                                                >
+                                                    <option>delavec1</option>
+                                                    <option>delavec2</option>
+                                                    <option>delavec3</option>
+                                                </Input>
+                                                </Col>
+                                                <Col className="mb-4">
+                                                <Button color="primary" type="button-sml"  onClick={handleRemoveClick}>-</Button>
+                                                </Col>
+                                                </Row>
+                                            );
+                                        })}
+                                       <Button color="primary" type="button-sml" onClick={handleAddClick}>+</Button>
+                                    </FormGroup>
+                                    <FormGroup className="mb-3">
+                                        <label
+                                            className="form-control-label"
+                                            htmlFor="input-date">
+                                            Datum</label>
+                                        <Input
+                                            id="input-date"
+                                            className="form-control-alternative"
+                                            type="date"
+                                        /> 
+                                    </FormGroup>
+                                    <Row>
+                                    <Col className="mb-3">
+                                    <FormGroup className="mb-3">
+                                        <label
+                                            className="form-control-label"
+                                            htmlFor="input-phone"
+                                        >
+                                            START</label>
+                                        <Input
+                                            id="input-phone"
+                                            className="form-control-alternative"
+                                            type="time"
+                                        />
+                                    </FormGroup>
+                                    </Col>
+                                    <Col className="mb-3">
+                                    <FormGroup className="mb-3">
+                                        <label
+                                            className="form-control-label"
+                                            htmlFor="input-phone"
+                                        >
+                                            Začetek dela</label>
+                                        <Input
+                                            id="input-phone"
+                                            className="form-control-alternative"
+                                            type="time"
+                                        />
+                                    </FormGroup>
+                                    </Col>
+                                    <Col className="mb-3">
+                                    <FormGroup className="mb-3">
+                                        <label
+                                            className="form-control-label"
+                                            htmlFor="input-phone"
+                                        >
+                                            Konec dela</label>
+                                        <Input
+                                            id="input-phone"
+                                            className="form-control-alternative"
+                                            type="time"
+                                        />
+                                    </FormGroup>
+                                    </Col>
+                                    <Col className="mb-3">
+                                    <FormGroup className="mb-3">
+                                        <label
+                                            className="form-control-label"
+                                            htmlFor="input-phone"
+                                        >
+                                            PRIHOD</label>
+                                        <Input
+                                            id="input-phone"
+                                            className="form-control-alternative"
+                                            type="time"
+                                        />
+                                    </FormGroup>
+                                    </Col>
+                                    </Row>
+                                    <FormGroup>
+                                        <label
+                                            className="form-control-label"
+                                            htmlFor="input-status"
+                                        >
+                                            Status</label>
+                                        <FormGroup check>
+                                        <label check>
+                                            <Input type="radio" name="status"/>
+                                               Aktiven
+                                         </label>
+                                        </FormGroup>
+                                        <FormGroup check>
+                                        <label check>
+                                            <Input type="radio" name="status"/>
+                                               Končan
+                                         </label>
+                                        </FormGroup>
+                                    </FormGroup>
+                                    <div className="text-center">
+                                        <Button color="primary" type="button">Dodaj</Button>
+                                    </div>
+                                </Form>
+                            </CardBody>
                         </Card>
                     </Col>
                 </Row>
