@@ -22,6 +22,7 @@ import Login from "views/examples/Login.js";
 import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import Delavci from "views/Delavci";
+import Skrbniki from "views/Skrbniki";
 
 var routes = [
   {
@@ -36,6 +37,13 @@ var routes = [
     name: "Delavci",
     icon: "fas fa-users text-red",
     component: Delavci,
+    layout: "/admin",
+  },
+  {
+    path: "/skrbniki",
+    name: "Skrbniki",
+    icon: "fas fa-users text-red",
+    component: Skrbniki,
     layout: "/admin",
   },
   {
