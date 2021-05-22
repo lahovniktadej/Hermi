@@ -9,6 +9,7 @@ import Skrbniki from "views/Skrbniki";
 import Vozila from "views/Vozila";
 import Nalogi from "views/Nalogi"
 import Analiza from "views/Analiza"
+import Ekipe from "views/Ekipe"
 
 var routes = [
   {
@@ -26,16 +27,23 @@ var routes = [
     layout: "/admin",
   },
   {
+    path: "/ekipe",
+    name: "Ekipe",
+    icon: "fas fa-users text-red",
+    component: Ekipe,
+    layout: "/admin",
+  },
+  {
     path: "/delavci",
     name: "Delavci",
-    icon: "fas fa-users text-red",
+    icon: "fas fa-user text-red",
     component: Delavci,
     layout: "/admin",
   },
   {
     path: "/skrbniki",
     name: "Skrbniki",
-    icon: "fas fa-users-cog text-red",
+    icon: "fas fa-user-cog text-red",
     component: Skrbniki,
     layout: "/admin",
   },
