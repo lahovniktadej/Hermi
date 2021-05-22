@@ -23,6 +23,7 @@ import Tables from "views/examples/Tables.js";
 import Icons from "views/examples/Icons.js";
 import Delavci from "views/Delavci";
 import Skrbniki from "views/Skrbniki";
+import Vozila from "views/Vozila";
 
 var routes = [
   {
@@ -42,8 +43,15 @@ var routes = [
   {
     path: "/skrbniki",
     name: "Skrbniki",
-    icon: "fas fa-users text-red",
+    icon: "fas fa-users-cog text-red",
     component: Skrbniki,
+    layout: "/admin",
+  },
+  {
+    path: "/vozila",
+    name: "Vozila",
+    icon: "fas fa-car text-red",
+    component: Vozila,
     layout: "/admin",
   },
   {
