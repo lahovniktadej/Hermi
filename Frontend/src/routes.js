@@ -1,20 +1,3 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import Index from "views/Index.js";
 import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
@@ -24,13 +7,22 @@ import Icons from "views/examples/Icons.js";
 import Delavci from "views/Delavci";
 import Skrbniki from "views/Skrbniki";
 import Vozila from "views/Vozila";
+import Nalogi from "views/Nalogi"
+import Analiza from "views/Analiza"
 
 var routes = [
   {
     path: "/index",
     name: "Dashboard",
-    icon: "ni ni-tv-2 text-primary",
+    icon: "ni ni-tv-2 text-red",
     component: Index,
+    layout: "/admin",
+  },
+  {
+    path: "/nalogi",
+    name: "Nalogi",
+    icon: "fas fa-file-export text-red",
+    component: Nalogi,
     layout: "/admin",
   },
   {
@@ -54,6 +46,15 @@ var routes = [
     component: Vozila,
     layout: "/admin",
   },
+  {
+    path: "/analiza",
+    name: "Analiza",
+    icon: "fas fa-chart-line text-red",
+    component: Analiza,
+    layout: "/admin",
+  },
+
+  /*
   {
     path: "/icons",
     name: "Icons",
@@ -89,5 +90,6 @@ var routes = [
     component: Register,
     layout: "/auth",
   },
+  */
 ];
 export default routes;
