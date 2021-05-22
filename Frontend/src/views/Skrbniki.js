@@ -122,7 +122,7 @@ function Skrbniki() {
                     <Col className="mb-5">
                         <Card className="shadow">
                             <CardHeader className="border-0">
-                                <h3 className="mb-0">Seznam skrbmikov</h3>
+                                <h3 className="mb-0">Seznam skrbnikov</h3>
                             </CardHeader>
                             <Table className="align-items-center table-flush" responsive>
                                 <thead className="thead-light">
