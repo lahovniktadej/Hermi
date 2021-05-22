@@ -71,7 +71,7 @@ const Admin = (props) => {
         routes={routes}
         logo={{
           innerLink: "/admin/index",
-          imgSrc: require("../assets/img/brand/argon-react.png").default,
+          imgSrc: require("../assets/img/brand/hermi-logo-dark.png").default,
           imgAlt: "...",
         }}
       />
@@ -84,9 +84,6 @@ const Admin = (props) => {
           {getRoutes(routes)}
           <Redirect from="*" to="/admin/index" />
         </Switch>
-        <Container fluid>
-          <AdminFooter />
-        </Container>
       </div>
     </>
   );
