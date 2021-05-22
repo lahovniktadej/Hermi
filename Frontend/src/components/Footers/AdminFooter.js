@@ -1,35 +1,35 @@
+/*!
+
+=========================================================
+* Argon Dashboard React - v1.2.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+/*eslint-disable*/
 import React from "react";
 
-// @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import Box from "@material-ui/core/Box";
-import Grid from "@material-ui/core/Grid";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-
-// core components
-import componentStyles from "assets/theme/components/admin-footer.js";
-
-const useStyles = makeStyles(componentStyles);
+// reactstrap components
+import { Container, Row, Col, Nav, NavItem, NavLink } from "reactstrap";
 
 const Footer = () => {
-  const classes = useStyles();
   return (
-    <Box component="footer" width="100%" padding="2.5rem 0">
-      <Grid container classes={{ root: classes.justifyContentCenter }}>
-        <Box
-          item
-          xs={12}
-          xl={6}
-          component={Grid}
-          display="flex"
-          alignItems="center"
-          className={classes.justifyContentCenter}
-        >
-          <div className={classes.copyrightWrapper}>
+    <footer className="footer">
+      <Row className="align-items-center justify-content-xl-between">
+        <Col xl="6">
+          <div className="copyright text-center text-xl-left text-muted">
             © {new Date().getFullYear()}{" "}
             <a
-              className={classes.copyrightLink}
+              className="font-weight-bold ml-1"
               href="https://www.creative-tim.com?ref=adr-admin-footer"
               rel="noopener noreferrer"
               target="_blank"
@@ -37,73 +37,53 @@ const Footer = () => {
               Creative Tim
             </a>
           </div>
-        </Box>
+        </Col>
 
-        <Grid
-          item
-          xl={6}
-          component={Box}
-          display="flex"
-          justifyContent="flex-end"
-        >
-          <Box
-            component={List}
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-            className={classes.flexDirectionColumn}
-          >
-            <ListItem
-              component="a"
-              href="https://www.creative-tim.com?ref=adr-admin-footer"
-              rel="noopener noreferrer"
-              target="_blank"
-              classes={{
-                root: classes.listItemRoot,
-              }}
-            >
-              Creative Tim
-            </ListItem>
+        <Col xl="6">
+          <Nav className="nav-footer justify-content-center justify-content-xl-end">
+            <NavItem>
+              <NavLink
+                href="https://www.creative-tim.com?ref=adr-admin-footer"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Creative Tim
+              </NavLink>
+            </NavItem>
 
-            <ListItem
-              component="a"
-              href="https://www.creative-tim.com/presentation?ref=adr-admin-footer"
-              rel="noopener noreferrer"
-              target="_blank"
-              classes={{
-                root: classes.listItemRoot,
-              }}
-            >
-              About Us
-            </ListItem>
+            <NavItem>
+              <NavLink
+                href="https://www.creative-tim.com/presentation?ref=adr-admin-footer"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                About Us
+              </NavLink>
+            </NavItem>
 
-            <ListItem
-              component="a"
-              href="http://blog.creative-tim.com?ref=adr-admin-footer"
-              rel="noopener noreferrer"
-              target="_blank"
-              classes={{
-                root: classes.listItemRoot,
-              }}
-            >
-              Blog
-            </ListItem>
+            <NavItem>
+              <NavLink
+                href="http://blog.creative-tim.com?ref=adr-admin-footer"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                Blog
+              </NavLink>
+            </NavItem>
 
-            <ListItem
-              component="a"
-              href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-admin-footer"
-              rel="noopener noreferrer"
-              target="_blank"
-              classes={{
-                root: classes.listItemRoot,
-              }}
-            >
-              MIT License
-            </ListItem>
-          </Box>
-        </Grid>
-      </Grid>
-    </Box>
+            <NavItem>
+              <NavLink
+                href="https://github.com/creativetimofficial/argon-dashboard/blob/master/LICENSE.md?ref=adr-admin-footer"
+                rel="noopener noreferrer"
+                target="_blank"
+              >
+                MIT License
+              </NavLink>
+            </NavItem>
+          </Nav>
+        </Col>
+      </Row>
+    </footer>
   );
 };
 

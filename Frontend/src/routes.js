@@ -1,109 +1,77 @@
-// core components
-import Dashboard from "views/admin/Dashboard.js";
-import Icons from "views/admin/Icons.js";
-import Login from "views/auth/Login.js";
-import Maps from "views/admin/Maps.js";
-import Profile from "views/admin/Profile.js";
-import Register from "views/auth/Register.js";
-import Tables from "views/admin/Tables.js";
-// @material-ui/icons components
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import Dns from "@material-ui/icons/Dns";
-import FlashOn from "@material-ui/icons/FlashOn";
-import FormatListBulleted from "@material-ui/icons/FormatListBulleted";
-import Grain from "@material-ui/icons/Grain";
-import LocationOn from "@material-ui/icons/LocationOn";
-import Palette from "@material-ui/icons/Palette";
-import Person from "@material-ui/icons/Person";
-import Tv from "@material-ui/icons/Tv";
-import VpnKey from "@material-ui/icons/VpnKey";
+/*!
+
+=========================================================
+* Argon Dashboard React - v1.2.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
+import Index from "views/Index.js";
+import Profile from "views/examples/Profile.js";
+import Maps from "views/examples/Maps.js";
+import Register from "views/examples/Register.js";
+import Login from "views/examples/Login.js";
+import Tables from "views/examples/Tables.js";
+import Icons from "views/examples/Icons.js";
 
 var routes = [
   {
-    href: "#pablo",
-    name: "Upgrade to pro",
-    icon: FlashOn,
-    upgradeToPro: true,
-  },
-  {
     path: "/index",
     name: "Dashboard",
-    icon: Tv,
-    iconColor: "Primary",
-    component: Dashboard,
+    icon: "ni ni-tv-2 text-primary",
+    component: Index,
     layout: "/admin",
   },
   {
     path: "/icons",
     name: "Icons",
-    icon: Grain,
-    iconColor: "Primary",
+    icon: "ni ni-planet text-blue",
     component: Icons,
     layout: "/admin",
   },
   {
     path: "/maps",
     name: "Maps",
-    icon: LocationOn,
-    iconColor: "Warning",
+    icon: "ni ni-pin-3 text-orange",
     component: Maps,
     layout: "/admin",
   },
   {
     path: "/user-profile",
     name: "User Profile",
-    icon: Person,
-    iconColor: "WarningLight",
+    icon: "ni ni-single-02 text-yellow",
     component: Profile,
     layout: "/admin",
   },
   {
     path: "/tables",
     name: "Tables",
-    icon: FormatListBulleted,
-    iconColor: "Error",
+    icon: "ni ni-bullet-list-67 text-red",
     component: Tables,
     layout: "/admin",
   },
   {
     path: "/login",
     name: "Login",
-    icon: VpnKey,
-    iconColor: "Info",
+    icon: "ni ni-key-25 text-info",
     component: Login,
     layout: "/auth",
   },
   {
     path: "/register",
     name: "Register",
-    icon: AccountCircle,
-    iconColor: "ErrorLight",
+    icon: "ni ni-circle-08 text-pink",
     component: Register,
     layout: "/auth",
-  },
-  {
-    divider: true,
-  },
-  {
-    title: "Documentation",
-  },
-  {
-    href:
-      "https://www.creative-tim.com/learning-lab/material-ui/overview/argon-dashboard?ref=admui-admin-sidebar",
-    name: "Getting started",
-    icon: FlashOn,
-  },
-  {
-    href:
-      "https://www.creative-tim.com/learning-lab/material-ui/colors/argon-dashboard?ref=admui-admin-sidebar",
-    name: "Foundation",
-    icon: Palette,
-  },
-  {
-    href:
-      "https://www.creative-tim.com/learning-lab/material-ui/alerts/argon-dashboard?ref=admui-admin-sidebar",
-    name: "Components",
-    icon: Dns,
   },
 ];
 export default routes;
