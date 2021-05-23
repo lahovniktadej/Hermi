@@ -102,7 +102,7 @@ const data = [
 
 function Ekipe() {
 
-    const [delavci, setDelavci] = useState([""]);
+    const [delavci, setDelavci] = useState(["", ""]);
 
     const pridobiStatus = (status) => {
         if(status == "aktiven")
@@ -111,17 +111,17 @@ function Ekipe() {
             return "text-green";
     }
 
-    const handleAddClick = () => {
+    const handleAddClick = () =>{
         let list = delavci;
         list.push("");
-        setDelavci(delavci, "");
+        setDelavci(list);
     };
 
-    const handleRemoveClick = index => {
+    const handleRemoveClick = () => {
         let list = delavci;
         list.pop();
         setDelavci(list);
-      };
+    };
 
     const tableRow = (el) => {
         return (
@@ -189,7 +189,7 @@ function Ekipe() {
                         </Card>
                     </Col>
                 </Row>
-                <Row>
+                <Row>               
                     <Col>
                         <Card className="shadow bg-secondary">
                             <CardHeader>
@@ -261,24 +261,26 @@ function Ekipe() {
                                         {delavci.map(() => {
                                             return(
                                                 <Row>
-                                                <Col className="mb-4">
-                                                <Input
-                                                    id="input-delavci"
-                                                    className="form-control-alternative"
-                                                    type="select"
-                                                >
-                                                    <option>delavec1</option>
-                                                    <option>delavec2</option>
-                                                    <option>delavec3</option>
-                                                </Input>
-                                                </Col>
-                                                <Col className="mb-4">
-                                                <Button color="primary" type="button-sml"  onClick={handleRemoveClick}>-</Button>
-                                                </Col>
+                                                    <InputGroup id = "input-delavci">
+                                                    <Col className="mb-4">
+                                                    <Input
+                                                        id="input-delavci"
+                                                        className="form-control-alternative"
+                                                        type="select"
+                                                    >
+                                                        <option>delavec1</option>
+                                                        <option>delavec2</option>
+                                                        <option>delavec3</option>
+                                                    </Input>
+                                                    </Col>
+                                                    <Col className="mb-4">
+                                                    <Button color="primary" onClick={handleRemoveClick}>-</Button>
+                                                    </Col>
+                                                    </InputGroup>
                                                 </Row>
                                             );
                                         })}
-                                       <Button color="primary" type="button-sml" onClick={handleAddClick}>+</Button>
+                                       <Button color="primary" onClick={handleAddClick}>+</Button>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label
@@ -296,11 +298,11 @@ function Ekipe() {
                                     <FormGroup className="mb-3">
                                         <label
                                             className="form-control-label"
-                                            htmlFor="input-phone"
+                                            htmlFor="input-start"
                                         >
                                             START</label>
                                         <Input
-                                            id="input-phone"
+                                            id="input-start"
                                             className="form-control-alternative"
                                             type="time"
                                         />
@@ -310,11 +312,11 @@ function Ekipe() {
                                     <FormGroup className="mb-3">
                                         <label
                                             className="form-control-label"
-                                            htmlFor="input-phone"
+                                            htmlFor="input-zacetek"
                                         >
                                             Začetek dela</label>
                                         <Input
-                                            id="input-phone"
+                                            id="input-zacetek"
                                             className="form-control-alternative"
                                             type="time"
                                         />
@@ -324,11 +326,11 @@ function Ekipe() {
                                     <FormGroup className="mb-3">
                                         <label
                                             className="form-control-label"
-                                            htmlFor="input-phone"
+                                            htmlFor="input-konec"
                                         >
                                             Konec dela</label>
                                         <Input
-                                            id="input-phone"
+                                            id="input-konec"
                                             className="form-control-alternative"
                                             type="time"
                                         />
@@ -338,11 +340,11 @@ function Ekipe() {
                                     <FormGroup className="mb-3">
                                         <label
                                             className="form-control-label"
-                                            htmlFor="input-phone"
+                                            htmlFor="input-prihod"
                                         >
                                             PRIHOD</label>
                                         <Input
-                                            id="input-phone"
+                                            id="input-prihod"
                                             className="form-control-alternative"
                                             type="time"
                                         />
@@ -356,13 +358,13 @@ function Ekipe() {
                                         >
                                             Status</label>
                                         <FormGroup check>
-                                        <label check>
+                                        <label>
                                             <Input type="radio" name="status"/>
                                                Aktiven
                                          </label>
                                         </FormGroup>
                                         <FormGroup check>
-                                        <label check>
+                                        <label>
                                             <Input type="radio" name="status"/>
                                                Končan
                                          </label>
