@@ -1,0 +1,57 @@
+version: "3.3"
+
+services:
+    traefik:
+        container_name: Traefik
+        image: traefik:latest
+        networks:
+            - traefik-net
+        command:
+            - --api.insecure=true
+            - --providers.docker=true
+            - --providers.docker.exposedbydefault=false
+            - --entrypoints.http.address=:80
+        ports:
+            - 80:80
+            - 8080:8080
+        volumes:
+            - /var/run/docker.sock:/var/run/docker.sock
+    
+    frontend:
+        container_name: React-dashboard
+        build: ./Frontend
+        networks:
+            - traefik-net
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.frontend.entrypoints=http
+            - traefik.http.routers.frontend.rule=PathPrefix(`/`)
+
+    db:
+        container_name: Database
+        image: mysql
+        networks:
+            - traefik-net
+        environment:
+            MYSQL_DATABASE: hermi
+            MYSQL_USER: admin
+            MYSQL_PASSWORD: admin
+            MYSQL_ALLOW_EMPTY_PASSWORD: 1
+
+    demo:
+        container_name: demo-microservice
+        build: ./Microservices/demo
+        networks:
+            - traefik-net
+        depends_on:
+            - "db"
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.demo.entrypoints=http
+            - traefik.http.routers.demo.rule=PathPrefix(`/api`)
+            - traefik.http.middlewares.demo-stripprefix.stripprefix.prefixes=/api
+            - traefik.http.routers.demo.middlewares=demo-stripprefix
+
+networks:
+    traefik-net:
+        driver: bridge
