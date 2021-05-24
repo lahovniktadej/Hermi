@@ -34,42 +34,104 @@ import Header from 'components/Headers/Header';
 const data = [
     {
         objekt: "objekt",
+        datum: "22.05.2021",
         avto: "avto",
         sofer: "priimekSoferja",
-        delovci: "priimek1, priimek2"
+        delavci: "priimek1, priimek2",
+        start: "6:25",
+        pricetekDela: "8:10",
+        konecDela: "13:55",
+        prihod: "16:20",
+        status: "aktiven",
+        netoCas: 7,
+        odsotnostSoferja: 9,
+        odsotnoDelavca: 8,
+        netoMontaza: 21,
+        brutoMontaza: 25
 
     },
     {
         objekt: "objekt",
+        datum: "22.05.2021",
         avto: "avto",
         sofer: "priimekSoferja",
-        delovci: "priimek1, priimek2"
+        delavci: "priimek1, priimek2",
+        start: "6:25",
+        pricetekDela: "8:10",
+        konecDela: "13:55",
+        prihod: "16:20",
+        status: "končan",
+        netoCas: 7,
+        odsotnostSoferja: 9,
+        odsotnoDelavca: 8,
+        netoMontaza: 21,
+        brutoMontaza: 25
 
     },
     {
         objekt: "objekt",
+        datum: "22.05.2021",
         avto: "avto",
         sofer: "priimekSoferja",
-        delovci: "priimek1, priimek2"
+        delavci: "priimek1, priimek2",
+        start: "6:25",
+        pricetekDela: "8:10",
+        konecDela: "13:55",
+        prihod: "16:20",
+        status: "aktiven",
+        netoCas: 7,
+        odsotnostSoferja: 9,
+        odsotnoDelavca: 8,
+        netoMontaza: 21,
+        brutoMontaza: 25
+    },
+    {
+        objekt: "objekt",
+        datum: "22.05.2021",
+        avto: "avto",
+        sofer: "priimekSoferja",
+        delavci: "priimek1, priimek2",
+        start: "6:25",
+        pricetekDela: "8:10",
+        konecDela: "13:55",
+        prihod: "16:20",
+        status: "končan",
+        netoCas: 7,
+        odsotnostSoferja: 9,
+        odsotnoDelavca: 8,
+        netoMontaza: 21,
+        brutoMontaza: 25
 
     },
     {
         objekt: "objekt",
+        datum: "22.05.2021",
         avto: "avto",
         sofer: "priimekSoferja",
-        delovci: "priimek1, priimek2"
-
-    },
-    {
-        objekt: "objekt",
-        avto: "avto",
-        sofer: "priimekSoferja",
-        delovci: "priimek1, priimek2"
+        delavci: "priimek1, priimek2",
+        start: "6:25",
+        pricetekDela: "8:10",
+        konecDela: "13:55",
+        prihod: "16:20",
+        status: "aktiven",
+        netoCas: 7,
+        odsotnostSoferja: 9,
+        odsotnoDelavca: 8,
+        netoMontaza: 21,
+        brutoMontaza: 25
 
     },
 ];
 
 function Analiza() {
+
+
+    const pridobiStatus = (status) => {
+        if(status == "aktiven")
+            return "text-red";
+        else
+            return "text-green";
+    }
 
     const tableRow = (el) => {
         return (
@@ -90,59 +152,147 @@ function Analiza() {
                         </Media>
                     </Media>
                 </th>
+                <td><span className={pridobiStatus(el.status)}>{el.status}</span></td>      
+                <td>{el.datum}</td>
                 <td>{el.avto}</td>
                 <td>{el.sofer}</td>
-                <td>{el.delovci}</td>
-                <td className="text-right">
-                    <UncontrolledDropdown>
-                        <DropdownToggle
-                            className="btn-icon-only text-light"
-                            href="#pablo"
-                            role="button"
-                            size="sm"
-                            color=""
-                            onClick={(e) => e.preventDefault()}
-                        >
-                            <i className="fas fa-ellipsis-v" />
-                        </DropdownToggle>
-                        <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem
-                                href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                            >
-                                Uredi
-                            </DropdownItem>
-                            <DropdownItem
-                                className="text-red"
-                                href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                            >
-                                Odstrani
-                            </DropdownItem>
-                        </DropdownMenu>
-                    </UncontrolledDropdown>
-                </td>
+                <td>{el.delavci}</td>
+                <td>{el.start}</td>
+                <td>{el.pricetekDela}</td>
+                <td>{el.konecDela}</td>
+                <td>{el.prihod}</td>
+                <td>{el.netoCas}</td>
+                <td>{el.odsotnoDelavca}</td>
+                <td>{el.odsotnostSoferja}</td>
+                <td>{el.netoMontaza}</td>
+                <td>{el.brutoMontaza}</td>
             </tr>
         );
     };
+
 
     return (
         <>
             <Header />
             <Container className="mt--7" fluid>
                 <Row>
-                    <Col className="mb-5">
+                    <Col className="md-4">
+                    <Form role="form">   
+                        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">                            
+                            FILTER <span class="ni ni-bold-down"></span>
+                        </a>
+                        <div class="collapse" id="collapseExample">
+                            <div class="card card-body">
+                            <FormGroup check>
+                                        <label className="h3">
+                                            <Input type="checkbox" name="filter"/>
+                                              Obdobje:
+                                        </label>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <label
+                                            htmlFor="input-od"
+                                        >
+                                        OD:</label>
+                                        <Input
+                                            id="input-od"
+                                            className="form-control-alternative"
+                                            type="date"
+                                        /> 
+                            </FormGroup>               
+                            <FormGroup>
+                                <label
+                                    htmlFor="input-do"
+                                >
+                                DO:</label>
+                                <Input
+                                    id="input-do"
+                                    className="form-control-alternative"
+                                    type="date"
+                                /> 
+                            </FormGroup>
+                            <FormGroup check>
+                                <label className="h3">
+                                    <Input type="checkbox" name="filter"/>
+                                        Objekt:
+                                </label>
+                            </FormGroup>
+                            <FormGroup>
+                                <Input  
+                                    id="input-date"
+                                    className="form-control-alternative"
+                                    type="select"
+                                >
+                                    <option>objekt1</option>
+                                    <option>objekt2</option>
+                                    <option>objekt3</option>
+                                </Input>
+                            </FormGroup>
+                            <FormGroup check>
+                                <label className="h3">
+                                    <Input type="checkbox" name="filter"/>
+                                        Delavec:
+                                </label>
+                            </FormGroup>
+                            <FormGroup>
+                                <Input  
+                                    className="h2"
+                                    id="input-date"
+                                    className="form-control-alternative"
+                                    type="select"
+                                >
+                                    <option>delavec1</option>
+                                    <option>delavec2</option>
+                                    <option>delavec3</option>
+                                </Input>
+                            </FormGroup>
+                            <FormGroup check>
+                                <label className="h3">
+                                    <Input type="checkbox" name="filter"/>
+                                        Status:
+                                </label>
+                            </FormGroup>
+                            <FormGroup check>
+                                <label>
+                                    <Input type="radio" name="status"/>
+                                        Aktiven
+                                    </label>
+                                </FormGroup>
+                                <FormGroup check>
+                                <label>
+                                    <Input type="radio" name="status" checked/>
+                                        Končan
+                                    </label>
+                            </FormGroup>
+                            <Button color="primary" type="button">Filtriraj</Button>
+                            </div>
+                        </div>
+                    </Form>
+                    </Col>
+                    <Col className="md-6"></Col>
+                    </Row><br/>
                         <Card className="shadow">
                             <CardHeader className="border-0">
-                                <h3 className="mb-0">Zaključeni nalogi</h3>
+                                <h3 className="mb-0">Zgodovina ekip</h3>
                             </CardHeader>
                             <Table className="align-items-center table-flush" responsive>
                                 <thead className="thead-light">
-                                    <tr>
+                                <tr>
                                         <th scope="col">Objekt</th>
+                                        <th scope="col">Status</th>
+                                        <th scope="col">Datum</th>
                                         <th scope="col">Avto</th>
-                                        <th scope="col">Sofer</th>
-                                        <th scope="col">Delovci</th>
+                                        <th scope="col">Šofer</th>
+                                        <th scope="col">Delavci</th>
+                                        <th scope="col">START</th>
+                                        <th scope="col">Pričetek dela</th>
+                                        <th scope="col">Konec dela</th>
+                                        <th scope="col">PRIHOD</th>
+                                        <th scope="col">NETO čas dela</th>
+                                        <th scope="col">Odsotnost šoferja</th>
+                                        <th scope="col">Odsotnost delavca</th>
+                                        <th scope="col">NETO montaža</th>
+                                        <th scope="col">BRUTO montaža</th>
                                         <th scope="col" />
                                     </tr>
                                 </thead>
@@ -150,9 +300,10 @@ function Analiza() {
                                     {data.map((el) => tableRow(el))}
                                 </tbody>
                             </Table>
-                        </Card>
-                    </Col>
-                </Row>
+                        </Card><br/>
+                        <Form role="form">
+                           <Button color="primary" type="button">Shrani</Button>
+                        </Form>
             </Container>
         </>
     );
