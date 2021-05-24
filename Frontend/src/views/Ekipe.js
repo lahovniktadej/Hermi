@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import {
     Badge,
@@ -103,6 +103,61 @@ const data = [
 function Ekipe() {
 
     const [delavci, setDelavci] = useState(["", ""]);
+    const [izpisDelavcev, setizpisDelavcev] = useState(["", ""]);
+
+    const handleIzpis = () =>{
+        return(
+                <Row>
+                    <InputGroup id = "input-delavci">
+                    <Col className="mb-4">
+                    <Input
+                        id="input-delavci"
+                        className="form-control-alternative"
+                        type="select"
+                    >
+                        <option>delavec1</option>
+                        <option>delavec2</option>
+                        <option>delavec3</option>
+                    </Input>
+                    </Col>
+                    <Col className="mb-4">
+                    <Button color="primary" onClick={handleRemoveClick}>-</Button>
+                    </Col>
+                    </InputGroup>
+                </Row>
+            );
+    }
+
+    const handleAddClick = () =>{
+        let list = delavci;
+        list.push("");
+        setDelavci(list);
+        setizpisDelavcev( 
+            delavci.map(() => {
+                return handleIzpis();
+            })
+        );
+    };
+
+    const handleRemoveClick = () => {
+        let list = delavci;
+        list.pop();
+        setDelavci(list);
+        setizpisDelavcev( 
+            delavci.map(() => {
+                return handleIzpis();
+            })
+        );
+    };
+
+    useEffect(() => {
+        setizpisDelavcev( 
+            delavci.map(() => {
+               return handleIzpis();
+            })
+        );
+
+      }, [delavci])
 
     const pridobiStatus = (status) => {
         if(status == "aktiven")
@@ -110,18 +165,6 @@ function Ekipe() {
         else
             return "text-green";
     }
-
-    const handleAddClick = () =>{
-        let list = delavci;
-        list.push("");
-        setDelavci(list);
-    };
-
-    const handleRemoveClick = () => {
-        let list = delavci;
-        list.pop();
-        setDelavci(list);
-    };
 
     const tableRow = (el) => {
         return (
@@ -258,28 +301,7 @@ function Ekipe() {
                                             htmlFor="input-delavci"
                                         >
                                             Delavci</label>
-                                        {delavci.map(() => {
-                                            return(
-                                                <Row>
-                                                    <InputGroup id = "input-delavci">
-                                                    <Col className="mb-4">
-                                                    <Input
-                                                        id="input-delavci"
-                                                        className="form-control-alternative"
-                                                        type="select"
-                                                    >
-                                                        <option>delavec1</option>
-                                                        <option>delavec2</option>
-                                                        <option>delavec3</option>
-                                                    </Input>
-                                                    </Col>
-                                                    <Col className="mb-4">
-                                                    <Button color="primary" onClick={handleRemoveClick}>-</Button>
-                                                    </Col>
-                                                    </InputGroup>
-                                                </Row>
-                                            );
-                                        })}
+                                        {izpisDelavcev}
                                        <Button color="primary" onClick={handleAddClick}>+</Button>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
