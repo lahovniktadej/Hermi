@@ -1,31 +1,21 @@
 import React from 'react';
 
 import {
-    Badge,
     Card,
     CardHeader,
-    CardFooter,
     DropdownMenu,
     DropdownItem,
     UncontrolledDropdown,
     DropdownToggle,
     Media,
-    Pagination,
-    PaginationItem,
-    PaginationLink,
-    Progress,
     Table,
     Container,
     Row,
     Col,
-    UncontrolledTooltip,
     CardBody,
     FormGroup,
     Form,
     Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
     Button,
 } from "reactstrap";
 
@@ -66,47 +56,20 @@ function Vozila() {
             <tr>
                 <th scope="row">
                     <Media className="align-items-center">
-                        <img
-                            className="avatar rounded-circle mr-3"
-                            alt="..."
-                            src={
-                                require("../assets/img/theme/bootstrap.jpg").default
-                            }
-                        />
-                        <Media>
-                            <span className="mb-0 text-sm">
-                                {el.naziv}
-                            </span>
-                        </Media>
+                        <span className="mb-0 text-sm">
+                            {el.naziv}
+                        </span>
                     </Media>
                 </th>
                 <td>{el.registerskaStevilka}</td>
                 <td className="text-right">
                     <UncontrolledDropdown>
-                        <DropdownToggle
-                            className="btn-icon-only text-light"
-                            href="#pablo"
-                            role="button"
-                            size="sm"
-                            color=""
-                            onClick={(e) => e.preventDefault()}
-                        >
+                        <DropdownToggle className="btn-icon-only text-light" href="#pablo" role="button" size="sm" color="" onClick={(e) => e.preventDefault()}>
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem
-                                href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                            >
-                                Uredi
-                            </DropdownItem>
-                            <DropdownItem
-                                className="text-red"
-                                href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                            >
-                                Odstrani
-                            </DropdownItem>
+                            <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}> Uredi </DropdownItem>
+                            <DropdownItem className="text-red" href="#pablo" onClick={(e) => e.preventDefault()}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -129,7 +92,7 @@ function Vozila() {
                                     <tr>
                                         <th scope="col">Naziv vozila</th>
                                         <th scope="col">Registerska stevilka</th>
-                                        <th scope="col" />
+                                        <th scope="col"/>
                                     </tr>
                                 </thead>
                                 <tbody>
@@ -146,31 +109,15 @@ function Vozila() {
                             <CardBody>
                                 <Form role="form">
                                     <FormGroup className="mb-3">
-                                        <label
-                                            className="form-control-label"
-                                            htmlFor="input-name"
-                                        >
-                                            Naziv vozila:</label>
-                                        <Input
-                                            id="input-name"
-                                            className="form-control-alternative"
-                                            type="text"
-                                        />
+                                        <label className="form-control-label" htmlFor="input-naziv">Naziv vozila:</label>
+                                        <Input id="input-naziv" className="form-control-alternative"  type="text"/>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
-                                        <label
-                                            className="form-control-label"
-                                            htmlFor="input-regNumber"
-                                        >
-                                            Registerska stevilka:</label>
-                                        <Input
-                                            id="input-regNumber"
-                                            className="form-control-alternative"
-                                            type="text"
-                                        />
+                                        <label className="form-control-label" htmlFor="input-regNumber"> Registerska stevilka:</label>
+                                        <Input id="input-regNumber"className="form-control-alternative" type="text"/>
                                     </FormGroup>
                                     <div className="text-center">
-                                        <Button color="primary" type="button">Dodaj</Button>
+                                        <Button color="danger" type="button"> Dodaj</Button>
                                     </div>
                                 </Form>
                             </CardBody>

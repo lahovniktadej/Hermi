@@ -1,31 +1,21 @@
 import React from 'react';
 
 import {
-    Badge,
     Card,
     CardHeader,
-    CardFooter,
     DropdownMenu,
     DropdownItem,
     UncontrolledDropdown,
     DropdownToggle,
     Media,
-    Pagination,
-    PaginationItem,
-    PaginationLink,
-    Progress,
     Table,
     Container,
     Row,
     Col,
-    UncontrolledTooltip,
     CardBody,
     FormGroup,
     Form,
     Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
     Button,
 } from "reactstrap";
 
@@ -66,47 +56,20 @@ function Delavci() {
             <tr>
                 <th scope="row">
                     <Media className="align-items-center">
-                        <img
-                            className="avatar rounded-circle mr-3"
-                            alt="..."
-                            src={
-                                require("../assets/img/theme/bootstrap.jpg").default
-                            }
-                        />
-                        <Media>
                             <span className="mb-0 text-sm">
                                 {el.ime + " " + el.priimek}
                             </span>
-                        </Media>
                     </Media>
                 </th>
                 <td>{el.telefon}</td>
                 <td className="text-right">
                     <UncontrolledDropdown>
-                        <DropdownToggle
-                            className="btn-icon-only text-light"
-                            href="#pablo"
-                            role="button"
-                            size="sm"
-                            color=""
-                            onClick={(e) => e.preventDefault()}
-                        >
+                        <DropdownToggle className="btn-icon-only text-light" href="#pablo"role="button" size="sm" color="" onClick={(e) => e.preventDefault()}>
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem
-                                href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                            >
-                                Uredi
-                            </DropdownItem>
-                            <DropdownItem
-                                className="text-red"
-                                href="#pablo"
-                                onClick={(e) => e.preventDefault()}
-                            >
-                                Odstrani
-                            </DropdownItem>
+                            <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}> Uredi </DropdownItem>
+                            <DropdownItem className="text-red" href="#pablo" onClick={(e) => e.preventDefault()}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -146,31 +109,15 @@ function Delavci() {
                             <CardBody>
                                 <Form role="form">
                                     <FormGroup className="mb-3">
-                                        <label
-                                            className="form-control-label"
-                                            htmlFor="input-name"
-                                        >
-                                            Ime in priimek</label>
-                                        <Input
-                                            id="input-name"
-                                            className="form-control-alternative"
-                                            type="text"
-                                        />
+                                        <label className="form-control-label" htmlFor="input-nameD"> Ime in priimek</label>
+                                        <Input id="input-nameD" className="form-control-alternative" type="text"/>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
-                                        <label
-                                            className="form-control-label"
-                                            htmlFor="input-phone"
-                                        >
-                                            Telefon</label>
-                                        <Input
-                                            id="input-phone"
-                                            className="form-control-alternative"
-                                            type="text"
-                                        />
+                                        <label className="form-control-label" htmlFor="input-phone"> Telefon</label>
+                                        <Input id="input-phone" className="form-control-alternative" type="text"/>
                                     </FormGroup>
                                     <div className="text-center">
-                                        <Button color="primary" type="button">Dodaj</Button>
+                                        <Button color="danger" type="button">Dodaj</Button>
                                     </div>
                                 </Form>
                             </CardBody>
@@ -181,5 +128,5 @@ function Delavci() {
         </>
     );
 }
-
+ 
 export default Delavci;

@@ -1,31 +1,17 @@
 import React, {useState} from 'react';
 
 import {
-    Badge,
     Card,
     CardHeader,
-    CardFooter,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown,
-    DropdownToggle,
     Media,
-    Pagination,
-    PaginationItem,
-    PaginationLink,
-    Progress,
     Table,
     Container,
     Row,
     Col,
-    UncontrolledTooltip,
     CardBody,
     FormGroup,
     Form,
     Input,
-    InputGroupAddon,
-    InputGroupText,
-    InputGroup,
     Button,
 } from "reactstrap";
 
@@ -200,18 +186,9 @@ function Analiza() {
             <tr>
                 <th scope="row">
                     <Media className="align-items-center">
-                        <img
-                            className="avatar rounded-circle mr-3"
-                            alt="..."
-                            src={
-                                require("../assets/img/theme/bootstrap.jpg").default
-                            }
-                        />
-                        <Media>
                             <span className="mb-0 text-sm">
                                 {el.objekt}
                             </span>
-                        </Media>
                     </Media>
                 </th>
                 <td><span className={pridobiStatus(el.status)}>{el.status}</span></td>      
