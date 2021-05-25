@@ -13,6 +13,14 @@ import {
     Form,
     Input,
     Button,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownItem,
+    DropdownMenu,
+    Modal,
+    ModalFooter,
+    ModalHeader,
+    ModalBody,
 } from "reactstrap";
 
 import Header from 'components/Headers/Header';
@@ -20,7 +28,7 @@ import Header from 'components/Headers/Header';
 const data = [
     {
         objekt: "objekt1",
-        datum: "2021-05-22",
+        datum: "2021-08-22",
         avto: "avto",
         sofer: "delavec1",
         delavci: ["delavec2", "delavec3"],
@@ -29,15 +37,16 @@ const data = [
         konecDela: "13:55",
         prihod: "16:20",
         status: "aktiven",
-        netoCas: 7,
+        netoCas: 8,
         odsotnostSoferja: 9,
         odsotnoDelavca: 8,
-        netoMontaza: 21,
+        netoMontaza: 23,
         brutoMontaza: 25
 
     },
     {
         objekt: "objekt3",
+        id: 1,
         datum: "2021-05-22",
         avto: "avto",
         sofer: "delavec1",
@@ -56,6 +65,7 @@ const data = [
     },
     {
         objekt: "objekt2",
+        id: 2,
         datum: "2020-05-22",
         avto: "avto",
         sofer: "delavec1",
@@ -73,6 +83,7 @@ const data = [
     },
     {
         objekt: "objekt1",
+        id: 3,
         datum: "2021-05-22",
         avto: "avto",
         sofer: "delavec1",
@@ -82,15 +93,16 @@ const data = [
         konecDela: "13:55",
         prihod: "16:20",
         status: "končan",
-        netoCas: 7,
+        netoCas: 8,
         odsotnostSoferja: 9,
         odsotnoDelavca: 8,
-        netoMontaza: 21,
+        netoMontaza: 23,
         brutoMontaza: 25
 
     },
-    {
+    {  
         objekt: "objekt2",
+        id: 4,
         datum: "2021-05-22",
         avto: "avto",
         sofer: "delavec1",
@@ -101,7 +113,7 @@ const data = [
         prihod: "16:20",
         status: "aktiven",
         netoCas: 7,
-        odsotnostSoferja: 9,
+        odsotnostSoferja: 10,
         odsotnoDelavca: 8,
         netoMontaza: 21,
         brutoMontaza: 25
@@ -114,6 +126,8 @@ function Izpis() {
     const [vsiPodatki] = useState(data);
     const [filtrirani, setFiltriran] = useState(data);
 
+    const [modal, setModal] = useState();
+    const [modalBody, setModalBody] = useState();
     
     const [delavci] = useState(["delavec1", "delavec2", "delavec3"]);
     const [objekti] = useState(["objekt1", "objekt2", "objekt3"]);
@@ -130,9 +144,15 @@ function Izpis() {
     const [delavecChecked, setDelavecChecked] = useState(false);
     const [statusChecked, setStatusChecked] = useState(false);
 
+    const handleBody = (el) => {
+        toggle();
+        setModalBody(izpisiCase(el));
+    }
+
+    const toggle = () => setModal(!modal);
+
     const handleSubmit=(e)=>{
         e.preventDefault();
-
         let iskaniPodatki = vsiPodatki;
 
         if(obdobjeChecked)
@@ -162,9 +182,9 @@ function Izpis() {
 
     const pridobiStatus = (status) => {
         if(status === "aktiven")
-            return "text-red";
+            return "fas fa-ban text-red";
         else
-            return "text-green";
+            return "ni ni-check-bold text-green";
     }
     const pridobiCas = (vrsta) => {
         let cas = [];
@@ -175,6 +195,33 @@ function Izpis() {
         let sestevek = cas.reduce((a, b) => a + b, 0);
         return sestevek;
     }
+    const izpisiCase = (el) => {
+        let izpis = vsiPodatki.map((podatek)=>{
+            if(podatek === el){
+                return(
+                    <Table className="align-items-center table-flush" responsive>
+                        <thead className="thead-light">
+                            <th scope="col">NETO čas delavca</th>
+                            <th scope="col">Odsotnost šoferja</th>
+                            <th scope="col">Odsotnost delavca</th>
+                            <th scope="col">NETO montaža</th>
+                            <th scope="col">BRUTO montaža</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{podatek.netoCas}</td>
+                                <td>{podatek.odsotnoDelavca}</td>
+                                <td>{podatek.odsotnostSoferja}</td>
+                                <td>{podatek.netoMontaza}</td>
+                                <td>{podatek.brutoMontaza}</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    )
+                }
+            })
+        return izpis;
+    }
 
     const tableRow = (el) => {
         return (
@@ -184,8 +231,8 @@ function Izpis() {
                         <span className="mb-0 text-sm">{el.objekt}</span>
                     </Media>
                 </th>
-                <td><span className={pridobiStatus(el.status)}>{el.status}</span></td>      
-                <td>{el.datum}</td>
+                <td><span className={pridobiStatus(el.status)}></span></td>      
+                <td>{new Date(el.datum).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>
                 <td>{el.avto}</td>
                 <td>{el.sofer}</td>
                 <td>{el.delavci.map((delavec) => { return (<div>{delavec}</div>) })}</td>
@@ -193,12 +240,20 @@ function Izpis() {
                 <td>{el.pricetekDela}</td>
                 <td>{el.konecDela}</td>
                 <td>{el.prihod}</td>
-                <td>{el.netoCas}</td>
-                <td>{el.odsotnoDelavca}</td>
-                <td>{el.odsotnostSoferja}</td>
-                <td>{el.netoMontaza}</td>
-                <td>{el.brutoMontaza}</td>
+                <td>
+                    <Button size="sm" color="secondary" onClick={function(){ handleBody(el);}}>Poglej</Button>
+                    <Modal isOpen={modal} toggle={toggle} size="lg">
+                        <ModalHeader toggle={toggle}><h2>Izpis vseh časov</h2></ModalHeader>
+                        <ModalBody>
+                            {modalBody}
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="danger" onClick={toggle}>Zapri</Button>
+                        </ModalFooter>
+                    </Modal>
+                </td>
             </tr>
+     
         );
     };
 
@@ -207,79 +262,91 @@ function Izpis() {
         <>
             <Header />
             <Container className="mt--7" fluid>
-                <Row>
-                    <Col className="md-4">
-                    <Form role="form" onSubmit={handleSubmit}>   
-                        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">                            
-                            FILTER <span class="ni ni-bold-down"></span>
-                        </a>
-                        <div class="collapse" id="collapseExample">
-                            <div class="card card-body">
-                            <FormGroup check>
-                                <label className="h3">
-                                    <Input type="checkbox" name="filter" defaultChecked={obdobjeChecked} onChange={e => setObdobjeChecked(e.target.checked)}/>
-                                        Obdobje:
-                                </label>
-                            </FormGroup>
-                            <FormGroup>
-                                <label htmlFor="input-od">OD:</label>
-                                <Input id="input-od" className="form-control-alternative" type="date" onChange={e => setObdobjeOD(e.target.valueAsDate)}/> 
-                            </FormGroup>               
-                            <FormGroup>
-                                <label htmlFor="input-do">DO:</label>
-                                <Input id="input-do" className="form-control-alternative" type="date" onChange={e => setObdobjeDO(e.target.valueAsDate)}/> 
-                            </FormGroup>
-                            <FormGroup check>
-                                <label className="h3">
-                                    <Input type="checkbox" name="filter" defaultChecked={objektChecked} onChange={e => setObjektChecked(e.target.checked)}/>
-                                        Objekt:
-                                </label>
-                            </FormGroup>
-                            <FormGroup>
-                                <Input id="input-date" className="form-control-alternative" type="select" onChange={e => setObjekt(e.target.value)}>
-                                    {objekti.map((objekt) => {return(<option>{objekt}</option>);})}
-                                </Input>
-                            </FormGroup>
-                            <FormGroup check>
-                                <label className="h3">
-                                    <Input type="checkbox" name="filter" defaultChecked={delavecChecked} onChange={e => setDelavecChecked(e.target.checked)}/>
-                                        Delavec:
-                                </label>
-                            </FormGroup>
-                            <FormGroup>
-                                <Input className="h2" id="input-date" type="select" onChange={e => setDelavec(e.target.value)}>
-                                    {delavci.map((delavec) => {return(<option>{delavec}</option>);})}
-                                </Input>
-                            </FormGroup>
-                            <FormGroup check>
-                                <label className="h3">
-                                    <Input type="checkbox" name="filter" defaultChecked={statusChecked} onClick={e => setStatusChecked(e.target.checked)}/>
-                                        Status:
-                                </label>
-                            </FormGroup>
-                            <FormGroup check>
-                                <label>
-                                    <Input type="radio" name="status" checked={aktiven}  onChange={e => setAktiven(e.target.checked)}/>
-                                        Aktiven
-                                </label>
-                                </FormGroup>
-                                <FormGroup check>
-                                <label>
-                                    <Input type="radio" name="status" checked={koncan} onChange={e => setKoncan(e.target.checked)}/>
-                                        Končan
-                                </label>
-                            </FormGroup>
-                            <Button color="primary" type="submit">Filtriraj</Button>
-                            </div>
-                        </div>
-                    </Form>
-                    </Col>
-                    <Col className="md-6"></Col>
-                </Row><br/>
                 <Card className="shadow">
                     <CardHeader className="border-0">
-                        <h3 className="mb-0">Zgodovina ekip</h3>
-                    </CardHeader>
+                        <Row>
+                            <Col>
+                                <h3 className="mb-0">Zgodovina ekip</h3>
+                            </Col>
+                            <UncontrolledDropdown>
+                                <DropdownToggle nav caret>
+                                    Filter
+                                </DropdownToggle>
+                                <DropdownMenu right>
+                                <Form role="form" onSubmit={handleSubmit}> 
+                                    <div class="alert alert-white">
+                                        <FormGroup check>
+                                            <label className="h4">
+                                                <Input type="checkbox" name="filter" defaultChecked={obdobjeChecked} onChange={e => setObdobjeChecked(e.target.checked)}/>
+                                                Obdobje:
+                                            </label>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <label htmlFor="input-od">OD:</label>
+                                            <Input id="input-od" className="form-control-alternative" type="date" onChange={e => setObdobjeOD(e.target.valueAsDate)}/> 
+                                        </FormGroup>               
+                                        <FormGroup>
+                                            <label htmlFor="input-do">DO:</label>
+                                            <Input id="input-do" className="form-control-alternative" type="date" onChange={e => setObdobjeDO(e.target.valueAsDate)}/> 
+                                        </FormGroup>
+                                    </div>
+                                    <DropdownItem divider />
+                                    <div class="alert alert-white">
+                                        <FormGroup check>
+                                            <label className="h4">
+                                                <Input type="checkbox" name="filter" defaultChecked={objektChecked} onChange={e => setObjektChecked(e.target.checked)}/>
+                                                    Objekt:
+                                            </label>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Input id="input-date" className="form-control-alternative" type="select" onChange={e => setObjekt(e.target.value)}>
+                                                {objekti.map((objekt) => {return(<option>{objekt}</option>);})}
+                                            </Input>
+                                        </FormGroup>
+                                    </div>
+                                    <DropdownItem divider />
+                                    <div class="alert alert-white">
+                                        <FormGroup check>
+                                            <label className="h4">
+                                                <Input type="checkbox" name="filter" defaultChecked={delavecChecked} onChange={e => setDelavecChecked(e.target.checked)}/>
+                                                    Delavec:
+                                            </label>
+                                        </FormGroup>
+                                        <FormGroup>
+                                            <Input className="h4" id="input-date" type="select" onChange={e => setDelavec(e.target.value)}>
+                                                {delavci.map((delavec) => {return(<option>{delavec}</option>);})}
+                                            </Input>
+                                        </FormGroup>
+                                    </div>
+                                    <DropdownItem divider />
+                                    <div class="alert alert-white">
+                                        <FormGroup check>
+                                            <label className="h4">
+                                                <Input type="checkbox" name="filter" defaultChecked={statusChecked} onClick={e => setStatusChecked(e.target.checked)}/>
+                                                    Status:
+                                            </label>
+                                        </FormGroup>
+                                        <FormGroup check>
+                                            <label>
+                                                <Input type="radio" name="status" checked={aktiven}  onChange={e => setAktiven(e.target.checked)}/>
+                                                    Aktiven
+                                            </label>
+                                        </FormGroup>
+                                        <FormGroup check>
+                                            <label>
+                                                <Input type="radio" name="status" checked={koncan} onChange={e => setKoncan(e.target.checked)}/>
+                                                    Končan
+                                            </label>
+                                        </FormGroup>
+                                    </div>
+                                    <DropdownItem divider />
+                                    <br/><div className="text-center"><Button color="danger" type="submit">Filtriraj</Button></div><br/>
+                                </Form>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
+                        </Row>
+                    </CardHeader>        
+                    <CardBody>
                     <Table className="align-items-center table-flush" responsive>
                         <thead className="thead-light">
                         <tr>
@@ -290,34 +357,30 @@ function Izpis() {
                                 <th scope="col">Šofer</th>
                                 <th scope="col">Delavci</th>
                                 <th scope="col">START</th>
-                                <th scope="col">Pričetek dela</th>
-                                <th scope="col">Konec dela</th>
+                                <th scope="col">Pričetek<br/> dela</th>
+                                <th scope="col">Konec<br/> dela</th>
                                 <th scope="col">PRIHOD</th>
-                                <th scope="col">NETO čas dela</th>
-                                <th scope="col">Odsotnost šoferja</th>
-                                <th scope="col">Odsotnost delavca</th>
-                                <th scope="col">NETO montaža</th>
-                                <th scope="col">BRUTO montaža</th>
-                                <th scope="col" />
+                                <th scope="col">ČASI</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filtrirani.map((el) => tableRow(el))}
                         </tbody>
-                    </Table>
+                    </Table><br/>
+                    <Form role="form">
+                        <div className="text-right"><Button color="danger" type="button">Shrani</Button></div>
+                    </Form>
+                    </CardBody>
                 </Card><br/>
                 <Card className="shadow">
                     <CardHeader>
                         <h3>Skupni časi</h3>
                     </CardHeader>
                     <CardBody>
-                    Neto čas montaže: <b> {pridobiCas("netoMontaza")}</b><br/>
-                    Bruto čas montaže: <b>{pridobiCas("brutoMontaza")}</b>
+                        Neto čas montaže: <b> {pridobiCas("netoMontaza")}</b><br/>
+                        Bruto čas montaže: <b>{pridobiCas("brutoMontaza")}</b><br/>
                     </CardBody>
                 </Card><br/>
-                <Form role="form">
-                    <Button color="primary" type="button">Shrani</Button>
-                </Form>                      
             </Container>
         </>
     );
