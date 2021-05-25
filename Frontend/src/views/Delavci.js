@@ -50,6 +50,44 @@ const data = [
 ];
 
 function Delavci() {
+    const [ime, setIme] = React.useState("");
+    const [priimek, setPriimek] = React.useState("");
+    const [telefon, setTelefon] = React.useState("");
+    const [seznamDelavcev, setSeznamDelavcev] = React.useState(data);
+
+    const handleAddDelavec = event => {
+        if (ime && priimek && telefon) {
+            let novDelavec = {
+                ime: ime,
+                priimek: priimek,
+                telefon: telefon,
+            }
+    
+            let seznam = [ ...seznamDelavcev ];
+            seznam.push(novDelavec);
+            setSeznamDelavcev(seznam);
+    
+            //  Reset input fields
+            setIme("");
+            setPriimek("");
+            setTelefon("");
+        } else {
+            //  TO-DO 
+            //  Error notification
+        }
+    }
+
+    const handleChangeIme = event => {
+        setIme(event.target.value);
+    }
+
+    const handleChangePriimek = event => {
+        setPriimek(event.target.value);
+    }
+
+    const handleChangeTelefon = event => {
+        setTelefon(event.target.value);
+    }
 
     const tableRow = (el) => {
         return (
@@ -96,7 +134,7 @@ function Delavci() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {data.map((el) => tableRow(el))}
+                                    {seznamDelavcev.map((el) => tableRow(el))}
                                 </tbody>
                             </Table>
                         </Card>
@@ -109,15 +147,37 @@ function Delavci() {
                             <CardBody>
                                 <Form role="form">
                                     <FormGroup className="mb-3">
-                                        <label className="form-control-label" htmlFor="input-nameD"> Ime in priimek</label>
-                                        <Input id="input-nameD" className="form-control-alternative" type="text"/>
+                                        <label className="form-control-label" htmlFor="input-nameD"> Ime </label>
+                                        <Input 
+                                            id="input-nameD" 
+                                            className="form-control-alternative" 
+                                            type="text" 
+                                            onChange={handleChangeIme} 
+                                            value={ime} 
+                                        />
+                                    </FormGroup>
+                                    <FormGroup className="mb-3">
+                                        <label className="form-control-label" htmlFor="input-nameD"> Priimek </label>
+                                        <Input 
+                                            id="input-surnameD" 
+                                            className="form-control-alternative" 
+                                            type="text" 
+                                            onChange={handleChangePriimek} 
+                                            value={priimek} 
+                                        />
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-phone"> Telefon</label>
-                                        <Input id="input-phone" className="form-control-alternative" type="text"/>
+                                        <Input 
+                                            id="input-phone" 
+                                            className="form-control-alternative" 
+                                            type="text" 
+                                            onChange={handleChangeTelefon} 
+                                            value={telefon} 
+                                        />
                                     </FormGroup>
                                     <div className="text-center">
-                                        <Button color="danger" type="button">Dodaj</Button>
+                                        <Button color="danger" type="button" onClick={handleAddDelavec}>Dodaj</Button>
                                     </div>
                                 </Form>
                             </CardBody>
