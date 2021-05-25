@@ -111,12 +111,12 @@ const data = [
 
 function Analiza() {
 
-    const [vsiPodatki, setVsiPodatki] = useState(data);
+    const [vsiPodatki] = useState(data);
     const [filtrirani, setFiltriran] = useState(data);
 
     
-    const [delavci, setDelavci] = useState(["delavec1", "delavec2", "delavec3"]);
-    const [objekti, setObjekti] = useState(["objekt1", "objekt2", "objekt3"]);
+    const [delavci] = useState(["delavec1", "delavec2", "delavec3"]);
+    const [objekti] = useState(["objekt1", "objekt2", "objekt3"]);
 
     const [obdobjeOD, setObdobjeOD] = useState();
     const [obdobjeDO, setObdobjeDO] = useState();
@@ -136,27 +136,27 @@ function Analiza() {
         let iskaniPodatki = vsiPodatki;
 
         if(obdobjeChecked)
-            iskaniPodatki = iskaniPodatki.filter((podatek) => ( new Date(obdobjeOD) <= new Date(podatek.datum) && new Date(obdobjeDO) >= new Date(podatek.datum)) == true); 
+            iskaniPodatki = iskaniPodatki.filter((podatek) => ( new Date(obdobjeOD) <= new Date(podatek.datum) && new Date(obdobjeDO) >= new Date(podatek.datum)) === true); 
         
         console.log(iskaniPodatki);         
         if(delavecChecked){
-            iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer == delavec);
+            iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer === delavec);
             let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{ 
-                return (iskanDelavec==delavec);
+                return (iskanDelavec===delavec);
             })
-            ) == false);
+            ) === false);
             let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
 
             iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
         }
         if(objektChecked)
-            iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.objekt == iskanObjekt));
+            iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.objekt === iskanObjekt));
 
         if(statusChecked){
             if(aktiven)
-                iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.status == "aktiven");
+                iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.status === "aktiven");
             else if(koncan)
-                iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.status == "končan");
+                iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.status === "končan");
         }
         
         setFiltriran(iskaniPodatki);
@@ -165,17 +165,16 @@ function Analiza() {
     }
 
     const pridobiStatus = (status) => {
-        if(status == "aktiven")
+        if(status === "aktiven")
             return "text-red";
         else
             return "text-green";
     }
     const pridobiCas = (vrsta) => {
         let cas = [];
-        let delavec;
-        if(vrsta=="netoMontaza")
+        if(vrsta==="netoMontaza")
             cas = filtrirani.map((data) => data.netoMontaza);
-        else if(vrsta=="brutoMontaza")
+        else if(vrsta==="brutoMontaza")
             cas = filtrirani.map((data) => data.brutoMontaza);
         let sestevek = cas.reduce((a, b) => a + b, 0);
         return sestevek;
@@ -284,7 +283,6 @@ function Analiza() {
                                 <Input  
                                     className="h2"
                                     id="input-date"
-                                    className="form-control-alternative"
                                     type="select"
                                     onChange={e => setDelavec(e.target.value)}
                                 >
