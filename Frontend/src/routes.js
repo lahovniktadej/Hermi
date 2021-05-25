@@ -15,7 +15,7 @@ var routes = [
   {
     path: "/pregled",
     name: "Pregled",
-    icon: "ni ni-tv-2 text-red",
+    icon: "fas fa-desktop text-red",
     component: Pregled,
     layout: "/admin",
   },
