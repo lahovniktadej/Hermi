@@ -109,8 +109,12 @@ function Skrbniki() {
                             <CardBody>
                                 <Form role="form">
                                     <FormGroup className="mb-3">
-                                        <label className="form-control-label"htmlFor="input-nameS"> Ime in priimek </label>
+                                        <label className="form-control-label"htmlFor="input-nameS"> Ime </label>
                                         <Input id="input-nameS" className="form-control-alternative" type="text"/>
+                                    </FormGroup>
+                                    <FormGroup className="mb-3">
+                                        <label className="form-control-label"htmlFor="input-surnameS"> Priimek </label>
+                                        <Input id="input-surnameS" className="form-control-alternative" type="text"/>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-uporabniskoIme"> Uporabnisko ime </label>

@@ -210,7 +210,7 @@ function Izpis() {
                 <Row>
                     <Col className="md-4">
                     <Form role="form" onSubmit={handleSubmit}>   
-                        <a class="btn btn-primary" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">                            
+                        <a class="btn btn-danger" data-toggle="collapse" href="#collapseExample" aria-expanded="false" aria-controls="collapseExample">                            
                             FILTER <span class="ni ni-bold-down"></span>
                         </a>
                         <div class="collapse" id="collapseExample">
@@ -269,7 +269,7 @@ function Izpis() {
                                         Končan
                                 </label>
                             </FormGroup>
-                            <Button color="primary" type="submit">Filtriraj</Button>
+                            <Button color="danger" type="submit">Filtriraj</Button>
                             </div>
                         </div>
                     </Form>
@@ -316,7 +316,7 @@ function Izpis() {
                     </CardBody>
                 </Card><br/>
                 <Form role="form">
-                    <Button color="primary" type="button">Shrani</Button>
+                    <Button color="danger" type="button">Shrani</Button>
                 </Form>                      
             </Container>
         </>
