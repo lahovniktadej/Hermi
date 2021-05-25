@@ -257,7 +257,6 @@ function Izpis() {
         );
     };
 
-
     return (
         <>
             <Header />

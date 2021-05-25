@@ -13,6 +13,10 @@ import {
     Form,
     Input,
     Button,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownItem,
+    DropdownMenu,
 } from "reactstrap";
 
 import Header from 'components/Headers/Header';
@@ -23,7 +27,7 @@ const data = [
         datum: "22.05.2021",
         avto: "avto",
         sofer: "priimekSoferja",
-        delavci: "priimek1, priimek2",
+        delavci: ["priimek1", "priimek2"],
         start: "6:25",
         pricetekDela: "8:10",
         konecDela: "13:55",
@@ -36,12 +40,12 @@ const data = [
         datum: "22.05.2021",
         avto: "avto",
         sofer: "priimekSoferja",
-        delavci: "priimek1, priimek2",
+        delavci: ["priimek1", "priimek2"],
         start: "6:25",
         pricetekDela: "8:10",
         konecDela: "13:55",
         prihod: "16:20",
-        status: "končan"
+        status: "aktiven"
 
     },
     {
@@ -49,7 +53,7 @@ const data = [
         datum: "22.05.2021",
         avto: "avto",
         sofer: "priimekSoferja",
-        delavci: "priimek1, priimek2",
+        delavci: ["priimek1", "priimek2"],
         start: "6:25",
         pricetekDela: "8:10",
         konecDela: "13:55",
@@ -61,12 +65,12 @@ const data = [
         datum: "22.05.2021",
         avto: "avto",
         sofer: "priimekSoferja",
-        delavci: "priimek1, priimek2",
+        delavci: ["priimek1", "priimek2"],
         start: "6:25",
         pricetekDela: "8:10",
         konecDela: "13:55",
         prihod: "16:20",
-        status: "končan"
+        status: "aktiven"
 
     },
     {
@@ -74,7 +78,7 @@ const data = [
         datum: "22.05.2021",
         avto: "avto",
         sofer: "priimekSoferja",
-        delavci: "priimek1, priimek2",
+        delavci: ["priimek1", "priimek2"],
         start: "6:25",
         pricetekDela: "8:10",
         konecDela: "13:55",
@@ -101,8 +105,6 @@ function Ekipe() {
     const [pricetek, setPricetek] = useState();
     const [konec, setKonec] = useState();
     const [prihod, setPrihod] = useState();
-    const [aktiven,setAktiven] = useState(false);
-    const [koncan, setKoncan] = useState(false);
 
     const [netoDelavec, setNetoDelavec] = useState();
     const [odsotnostDelavca, setOdsotnostDelavca] = useState();
@@ -149,6 +151,9 @@ function Ekipe() {
         let skupneMinute = (parseInt(ure)*60) + parseInt(minute);
         return skupneMinute;
     }
+    const handleChangeStatus = (el)=>{
+        /* koda ;) */
+    }
 
     const handleTimes = () => {
         let konecMinute = handleConvert(konec);
@@ -175,13 +180,6 @@ function Ekipe() {
         }));
       }, [delavci])
 
-    const pridobiStatus = (status) => {
-        if(status === "aktiven")
-            return "text-red";
-        else
-            return "text-green";
-    }
-
     const tableRow = (el) => {
         return (
             <tr>
@@ -189,18 +187,28 @@ function Ekipe() {
                     <Media className="align-items-center">
                         <span className="mb-0 text-sm">
                              {el.objekt}
-                            </span>
+                        </span>
                     </Media>
                 </th>
-                <td><span className={pridobiStatus(el.status)}>{el.status}</span></td>      
+                <td><i className="fas fa-ban text-red"></i></td>      
                 <td>{el.datum}</td>
                 <td>{el.avto}</td>
                 <td>{el.sofer}</td>
-                <td>{el.delavci}</td>
+                <td>{el.delavci.map((delavec) => { return (<div>{delavec}</div>) })}</td>
                 <td>{el.start}</td>
                 <td>{el.pricetekDela}</td>
                 <td>{el.konecDela}</td>
                 <td>{el.prihod}</td>
+                <td className="text-right">
+                    <UncontrolledDropdown>
+                        <DropdownToggle className="btn-icon-only text-light" role="button" size="sm" color="" onClick={(e) => e.preventDefault()}>
+                            <i className="fas fa-ellipsis-v" />
+                        </DropdownToggle>
+                        <DropdownMenu className="dropdown-menu-arrow" right>
+                            <DropdownItem  onClick={handleChangeStatus(el)}> Spremeni status</DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+                </td>
             </tr>
         );
     };
@@ -225,8 +233,8 @@ function Ekipe() {
                                         <th scope="col">Šofer</th>
                                         <th scope="col">Delavci</th>
                                         <th scope="col">START</th>
-                                        <th scope="col">Pričetek dela</th>
-                                        <th scope="col">Konec dela</th>
+                                        <th scope="col">Pričetek <br/>dela</th>
+                                        <th scope="col">Konec <br/> dela</th>
                                         <th scope="col">PRIHOD</th>
                                         <th scope="col" />
                                     </tr>
@@ -290,23 +298,6 @@ function Ekipe() {
                                             Datum
                                         </label>
                                         <Input id="input-date" className="form-control-alternative" type="date" onChange={e => setDatum(e.target.checked)}/> 
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <label className="form-control-label" htmlFor="input-status">
-                                            Status
-                                        </label>
-                                        <FormGroup check>
-                                        <label>
-                                            <Input type="radio" name="status" checked={aktiven}  onChange={e => setAktiven(e.target.checked)}/>
-                                               Aktiven
-                                         </label>
-                                        </FormGroup>
-                                        <FormGroup check>
-                                        <label>
-                                            <Input type="radio" name="status" checked={koncan}  onChange={e => setKoncan(e.target.checked)}/>
-                                               Končan
-                                         </label>
-                                        </FormGroup>
                                     </FormGroup>
                                     <Row>
                                     <Col className="mb-3">
