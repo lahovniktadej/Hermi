@@ -27,8 +27,24 @@ services:
             - traefik.http.routers.frontend.entrypoints=http
             - traefik.http.routers.frontend.rule=PathPrefix(`/`)
 
+    nalogi:
+        container_name: Nalogi-microservice
+        build: ./Microservices/nalogi
+        networks:
+            - traefik-net
+        depends_on:
+            - "db"
+        labels:
+            - traefik.enable=true
+            - traefik.http.routers.nalogi.entrypoints=http
+            - traefik.http.routers.nalogi.rule=PathPrefix(`/api`)
+            - traefik.http.middlewares.api-stripprefix.stripprefix.prefixes=/api
+            - traefik.http.routers.nalogi.middlewares=api-stripprefix
+        volumes:
+            - maven:/root/.m2
+
     db:
-        container_name: Database
+        container_name: Nalogi-data
         image: mysql
         networks:
             - traefik-net
@@ -38,20 +54,9 @@ services:
             MYSQL_PASSWORD: admin
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
 
-    demo:
-        container_name: demo-microservice
-        build: ./Microservices/demo
-        networks:
-            - traefik-net
-        depends_on:
-            - "db"
-        labels:
-            - traefik.enable=true
-            - traefik.http.routers.demo.entrypoints=http
-            - traefik.http.routers.demo.rule=PathPrefix(`/api`)
-            - traefik.http.middlewares.demo-stripprefix.stripprefix.prefixes=/api
-            - traefik.http.routers.demo.middlewares=demo-stripprefix
-
 networks:
     traefik-net:
         driver: bridge
+
+volumes:
+    maven:
