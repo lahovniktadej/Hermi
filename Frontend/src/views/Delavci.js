@@ -21,42 +21,24 @@ import {
 
 import Header from 'components/Headers/Header';
 
-const data = [
-    {
-        ime: "ime",
-        priimek: "priimek",
-        telefon: "123456789"
-    },
-    {
-        ime: "ime",
-        priimek: "priimek",
-        telefon: "123456789"
-    },
-    {
-        ime: "ime",
-        priimek: "priimek",
-        telefon: "123456789"
-    },
-    {
-        ime: "ime",
-        priimek: "priimek",
-        telefon: "123456789"
-    },
-    {
-        ime: "ime",
-        priimek: "priimek",
-        telefon: "123456789"
-    }
-];
+import axios from 'axios';
 
 function Delavci() {
     const [ime, setIme] = React.useState("");
     const [priimek, setPriimek] = React.useState("");
     const [telefon, setTelefon] = React.useState("");
-    const [seznamDelavcev, setSeznamDelavcev] = React.useState(data);
+    const [seznamDelavcev, setSeznamDelavcev] = React.useState([]);
 
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
+
+    React.useEffect(() => {
+        axios.get(`/api/delavec`)
+            .then((res) => {
+                const delavci = res.data;
+                setSeznamDelavcev(delavci);
+            });
+    }, []);
 
     const handleChangeIme = event => {
         setIme(event.target.value);
@@ -73,13 +55,15 @@ function Delavci() {
     const handleAddDelavec = event => {
         if (editing) {
             if (ime && priimek && telefon) {
-                let seznam = [ ...seznamDelavcev ];
-                
+                let seznam = [...seznamDelavcev];
+
                 let delavec = {
                     ime: ime,
                     priimek: priimek,
-                    telefon: telefon,
+                    telefonskaStevilka: telefon,
                 }
+
+                axios.put(`/api/delavec/${seznam[editIndex].id}`, delavec).then();
 
                 seznam[editIndex] = delavec;
                 setSeznamDelavcev(seznam);
@@ -98,13 +82,15 @@ function Delavci() {
                 let novDelavec = {
                     ime: ime,
                     priimek: priimek,
-                    telefon: telefon,
+                    telefonskaStevilka: telefon,
                 }
-        
-                let seznam = [ ...seznamDelavcev ];
+
+                axios.post(`/api/delavec`, novDelavec).then();
+
+                let seznam = [...seznamDelavcev];
                 seznam.push(novDelavec);
                 setSeznamDelavcev(seznam);
-        
+
                 //  Reset input fields
                 setIme("");
                 setPriimek("");
@@ -117,20 +103,22 @@ function Delavci() {
     }
 
     const handleEditDelavec = (el) => {
-        let seznam = [ ...seznamDelavcev ];
+        let seznam = [...seznamDelavcev];
         let index = seznam.indexOf(el);
 
         setIme(el.ime);
         setPriimek(el.priimek);
-        setTelefon(el.telefon);
+        setTelefon(el.telefonskaStevilka);
 
         setEditIndex(index);
         setEditing(true);
     }
 
     const handleRemoveDelavec = (el) => {
-        let seznam = [ ...seznamDelavcev ];
+        let seznam = [...seznamDelavcev];
         let index = seznam.indexOf(el);
+
+        axios.delete(`/api/delavec/${seznam[index].id}`).then();
 
         seznam.splice(index, 1);
         setSeznamDelavcev(seznam);
@@ -141,20 +129,20 @@ function Delavci() {
             <tr>
                 <th scope="row">
                     <Media className="align-items-center">
-                            <span className="mb-0 text-sm">
-                                {el.ime + " " + el.priimek}
-                            </span>
+                        <span className="mb-0 text-sm">
+                            {el.ime + " " + el.priimek}
+                        </span>
                     </Media>
                 </th>
-                <td>{el.telefon}</td>
+                <td>{el.telefonskaStevilka}</td>
                 <td className="text-right">
                     <UncontrolledDropdown>
-                        <DropdownToggle className="btn-icon-only text-light" href="#pablo"role="button" size="sm" color="" onClick={(e) => e.preventDefault()}>
+                        <DropdownToggle className="btn-icon-only text-light" role="button" size="sm" color="" onClick={(e) => e.preventDefault()}>
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem href="#pablo" onClick={(e) => handleEditDelavec(el)}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" href="#pablo" onClick={() => handleRemoveDelavec(el)}> Odstrani </DropdownItem>
+                            <DropdownItem onClick={(e) => handleEditDelavec(el)}> Uredi </DropdownItem>
+                            <DropdownItem className="text-red" onClick={() => handleRemoveDelavec(el)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -199,7 +187,7 @@ function Delavci() {
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-nameD"> Priimek </label>
-                                        <Input 
+                                        <Input
                                             id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} />
                                     </FormGroup>
                                     <FormGroup className="mb-3">
@@ -218,5 +206,5 @@ function Delavci() {
         </>
     );
 }
- 
+
 export default Delavci;
