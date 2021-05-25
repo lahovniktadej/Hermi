@@ -55,6 +55,9 @@ function Delavci() {
     const [telefon, setTelefon] = React.useState("");
     const [seznamDelavcev, setSeznamDelavcev] = React.useState(data);
 
+    const [editing, setEditing] = React.useState(false);
+    const [editIndex, setEditIndex] = React.useState(null);
+
     const handleChangeIme = event => {
         setIme(event.target.value);
     }
@@ -68,25 +71,61 @@ function Delavci() {
     }
 
     const handleAddDelavec = event => {
-        if (ime && priimek && telefon) {
-            let novDelavec = {
-                ime: ime,
-                priimek: priimek,
-                telefon: telefon,
+        if (editing) {
+            if (ime && priimek && telefon) {
+                let seznam = [ ...seznamDelavcev ];
+                
+                let delavec = {
+                    ime: ime,
+                    priimek: priimek,
+                    telefon: telefon,
+                }
+
+                seznam[editIndex] = delavec;
+                setSeznamDelavcev(seznam);
+
+                //  Reset input fields
+                setIme("");
+                setPriimek("");
+                setTelefon("");
+
+                //  Reset editing status
+                setEditIndex(null);
+                setEditing(false);
             }
-    
-            let seznam = [ ...seznamDelavcev ];
-            seznam.push(novDelavec);
-            setSeznamDelavcev(seznam);
-    
-            //  Reset input fields
-            setIme("");
-            setPriimek("");
-            setTelefon("");
         } else {
-            //  TO-DO 
-            //  Error notification
+            if (ime && priimek && telefon) {
+                let novDelavec = {
+                    ime: ime,
+                    priimek: priimek,
+                    telefon: telefon,
+                }
+        
+                let seznam = [ ...seznamDelavcev ];
+                seznam.push(novDelavec);
+                setSeznamDelavcev(seznam);
+        
+                //  Reset input fields
+                setIme("");
+                setPriimek("");
+                setTelefon("");
+            } else {
+                //  TO-DO 
+                //  Error notification
+            }
         }
+    }
+
+    const handleEditDelavec = (el) => {
+        let seznam = [ ...seznamDelavcev ];
+        let index = seznam.indexOf(el);
+
+        setIme(el.ime);
+        setPriimek(el.priimek);
+        setTelefon(el.telefon);
+
+        setEditIndex(index);
+        setEditing(true);
     }
 
     const handleRemoveDelavec = (el) => {
@@ -114,7 +153,7 @@ function Delavci() {
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}> Uredi </DropdownItem>
+                            <DropdownItem href="#pablo" onClick={(e) => handleEditDelavec(el)}> Uredi </DropdownItem>
                             <DropdownItem className="text-red" href="#pablo" onClick={() => handleRemoveDelavec(el)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
@@ -168,7 +207,7 @@ function Delavci() {
                                         <Input id="input-phone" className="form-control-alternative" type="text" onChange={handleChangeTelefon} value={telefon} />
                                     </FormGroup>
                                     <div className="text-center">
-                                        <Button color="danger" type="button" onClick={handleAddDelavec}>Dodaj</Button>
+                                        <Button color="danger" type="button" onClick={handleAddDelavec}>{editing ? "Uredi" : "Dodaj"}</Button>
                                     </div>
                                 </Form>
                             </CardBody>
