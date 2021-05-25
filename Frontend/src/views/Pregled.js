@@ -25,9 +25,11 @@ import {
   Card,
   CardHeader,
   CardBody,
+  FormGroup,
   NavItem,
   NavLink,
   Nav,
+  Input,
   Progress,
   Table,
   Container,
@@ -72,7 +74,12 @@ const Index = (props) => {
                     <h6 className="text-uppercase text-light ls-1 mb-1">
                       Pregled dela delavca
                     </h6>
-                    <h2 className="text-black mb-0">Delavec 1</h2>
+                    <FormGroup className="mb-3">
+                      <Input id="input-delovec" className="form-control-alternative" type="select"> 
+                        <option>Delavec1</option>
+                        <option>Delavec2</option>
+                      </Input>
+                    </FormGroup>
                   </div>
                   <div className="col">
                     <Nav className="justify-content-end" pills>
