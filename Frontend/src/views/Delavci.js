@@ -55,6 +55,18 @@ function Delavci() {
     const [telefon, setTelefon] = React.useState("");
     const [seznamDelavcev, setSeznamDelavcev] = React.useState(data);
 
+    const handleChangeIme = event => {
+        setIme(event.target.value);
+    }
+
+    const handleChangePriimek = event => {
+        setPriimek(event.target.value);
+    }
+
+    const handleChangeTelefon = event => {
+        setTelefon(event.target.value);
+    }
+
     const handleAddDelavec = event => {
         if (ime && priimek && telefon) {
             let novDelavec = {
@@ -77,16 +89,12 @@ function Delavci() {
         }
     }
 
-    const handleChangeIme = event => {
-        setIme(event.target.value);
-    }
+    const handleRemoveDelavec = (el) => {
+        let seznam = [ ...seznamDelavcev ];
+        let index = seznam.indexOf(el);
 
-    const handleChangePriimek = event => {
-        setPriimek(event.target.value);
-    }
-
-    const handleChangeTelefon = event => {
-        setTelefon(event.target.value);
+        seznam.splice(index, 1);
+        setSeznamDelavcev(seznam);
     }
 
     const tableRow = (el) => {
@@ -107,7 +115,7 @@ function Delavci() {
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
                             <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" href="#pablo" onClick={(e) => e.preventDefault()}> Odstrani </DropdownItem>
+                            <DropdownItem className="text-red" href="#pablo" onClick={() => handleRemoveDelavec(el)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
