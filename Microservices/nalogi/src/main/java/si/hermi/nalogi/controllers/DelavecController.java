@@ -8,8 +8,7 @@ import si.hermi.nalogi.dto.DelavecDto;
 import si.hermi.nalogi.repositories.DelavecRepository;
 import si.hermi.nalogi.vao.Delavec;
 
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Optional;
 
 @RestController
 @RequestMapping("/delavec")
@@ -21,33 +20,43 @@ public class DelavecController {
     private ModelMapper modelMapper;
 
     @GetMapping()
-    public @ResponseBody Iterable<DelavecDto> all() {
-        Iterable<Delavec> delavci = delavecRepository.findAll();
-        List<DelavecDto> delaveciDto = new ArrayList<>();
-        for (Delavec delavec: delavci) {
-            delaveciDto.add(modelMapper.map(delavec, DelavecDto.class));
+    public @ResponseBody Iterable<Delavec> all() {
+        return delavecRepository.findAll();
+    }
+    @GetMapping("/{id}")
+    public @ResponseBody ResponseEntity getDelavec(@PathVariable int id) {
+        Optional<Delavec> delavc = delavecRepository.findById(id);
+        if (delavc.isPresent()) {
+            DelavecDto delavecDto = modelMapper.map(delavc.get(), DelavecDto.class);
+            return ResponseEntity.ok(delavecDto);
         }
-        return delaveciDto;
+        return ResponseEntity.badRequest().build();
     }
 
     @PostMapping()
     public @ResponseBody ResponseEntity addDelavec(@RequestBody DelavecDto delavecDto) {
         Delavec delavec = modelMapper.map(delavecDto, Delavec.class);
         delavecRepository.save(delavec);
+        delavecRepository.save(delavec);
         return ResponseEntity.ok().build();
     }
 
-    /*
     @PutMapping("/{id}")
     public @ResponseBody ResponseEntity updateDelavec(@PathVariable int id, @RequestBody DelavecDto delavecDto) {
-        Optional<Delavec> delavec = delavecRepository.findById(id);
-        if (delavec.isPresent()) {
-            Delavec updated = modelMapper.map(delavecDto, Delavec.class);
-            updated.setId(id);
-            delavecRepository.save(updated);
+        Optional<Delavec> delavecOpt = delavecRepository.findById(id);
+        if (delavecOpt.isPresent()) {
+            Delavec delavec = delavecOpt.get();
+            modelMapper.map(delavecDto, delavec);
+            delavecRepository.save(delavec);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
     }
-    */
+
+    @DeleteMapping("/{id}")
+    public @ResponseBody ResponseEntity deleteDelavec(@PathVariable int id) {
+        delavecRepository.deleteById(id);
+        return ResponseEntity.ok().build();
+    }
+
 }
