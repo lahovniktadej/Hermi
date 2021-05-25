@@ -73,9 +73,21 @@ function Vozila() {
             seznam.push(novoVozilo);
             setSeznamVozil(seznam);
 
+            //  Reset input fields
             setNaziv("");
             setRegistrska("");
+        } else {
+            //  TO-DO 
+            //  Error notification
         }
+    }
+
+    const handleRemoveVehicle = (el) => {
+        let seznam = [ ...seznamVozil ];
+        let index = seznam.indexOf(el);
+
+        seznam.splice(index, 1);
+        setSeznamVozil(seznam);
     }
 
     const tableRow = (el) => {
@@ -96,7 +108,7 @@ function Vozila() {
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
                             <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" href="#pablo" onClick={(e) => e.preventDefault()}> Odstrani </DropdownItem>
+                            <DropdownItem className="text-red" href="#pablo" onClick={() => handleRemoveVehicle(el)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -141,16 +153,18 @@ function Vozila() {
                                             id="input-naziv" 
                                             className="form-control-alternative" 
                                             type="text"
-                                            onChange={handleChangeNaziv}    
+                                            onChange={handleChangeNaziv}   
+                                            value={naziv} 
                                         />
                                     </FormGroup>
                                     <FormGroup className="mb-3">
-                                        <label className="form-control-label" htmlFor="input-regNumber"> Registerska stevilka:</label>
+                                        <label className="form-control-label" htmlFor="input-regNumber"> Registrska stevilka:</label>
                                         <Input 
                                             id="input-regNumber" 
                                             className="form-control-alternative" 
                                             type="text"
-                                            onChange={handleChangeRegistrska}    
+                                            onChange={handleChangeRegistrska}
+                                            value={registrska}
                                         />
                                     </FormGroup>
                                     <div className="text-center">
