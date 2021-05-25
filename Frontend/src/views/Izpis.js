@@ -109,7 +109,7 @@ const data = [
     },
 ];
 
-function Analiza() {
+function Izpis() {
 
     const [vsiPodatki] = useState(data);
     const [filtrirani, setFiltriran] = useState(data);
@@ -141,12 +141,8 @@ function Analiza() {
         console.log(iskaniPodatki);         
         if(delavecChecked){
             iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer === delavec);
-            let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{ 
-                return (iskanDelavec===delavec);
-            })
-            ) === false);
+            let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{ return (iskanDelavec===delavec);})) === false);
             let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
-
             iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
         }
         if(objektChecked)
@@ -185,9 +181,7 @@ function Analiza() {
             <tr>
                 <th scope="row">
                     <Media className="align-items-center">
-                            <span className="mb-0 text-sm">
-                                {el.objekt}
-                            </span>
+                        <span className="mb-0 text-sm">{el.objekt}</span>
                     </Media>
                 </th>
                 <td><span className={pridobiStatus(el.status)}>{el.status}</span></td>      
@@ -222,34 +216,18 @@ function Analiza() {
                         <div class="collapse" id="collapseExample">
                             <div class="card card-body">
                             <FormGroup check>
-                                        <label className="h3">
-                                            <Input type="checkbox" name="filter" defaultChecked={obdobjeChecked} onChange={e => setObdobjeChecked(e.target.checked)}/>
-                                              Obdobje:
-                                        </label>
-                                    </FormGroup>
-                                    <FormGroup>
-                                        <label
-                                            htmlFor="input-od"
-                                        >
-                                        OD:</label>
-                                        <Input
-                                            id="input-od"
-                                            className="form-control-alternative"
-                                            type="date"
-                                            onChange={e => setObdobjeOD(e.target.valueAsDate)}
-                                        /> 
+                                <label className="h3">
+                                    <Input type="checkbox" name="filter" defaultChecked={obdobjeChecked} onChange={e => setObdobjeChecked(e.target.checked)}/>
+                                        Obdobje:
+                                </label>
+                            </FormGroup>
+                            <FormGroup>
+                                <label htmlFor="input-od">OD:</label>
+                                <Input id="input-od" className="form-control-alternative" type="date" onChange={e => setObdobjeOD(e.target.valueAsDate)}/> 
                             </FormGroup>               
                             <FormGroup>
-                                <label
-                                    htmlFor="input-do"
-                                >
-                                DO:</label>
-                                <Input
-                                    id="input-do"
-                                    className="form-control-alternative"
-                                    type="date"
-                                    onChange={e => setObdobjeDO(e.target.valueAsDate)}
-                                /> 
+                                <label htmlFor="input-do">DO:</label>
+                                <Input id="input-do" className="form-control-alternative" type="date" onChange={e => setObdobjeDO(e.target.valueAsDate)}/> 
                             </FormGroup>
                             <FormGroup check>
                                 <label className="h3">
@@ -258,19 +236,8 @@ function Analiza() {
                                 </label>
                             </FormGroup>
                             <FormGroup>
-                                <Input  
-                                    id="input-date"
-                                    className="form-control-alternative"
-                                    type="select" 
-                                    onChange={e => setObjekt(e.target.value)}
-
-                                >
-                                    {objekti.map((objekt) => {
-                                            return(
-                                                <option>{objekt}</option>
-                                            );
-                                        }
-                                    )}
+                                <Input id="input-date" className="form-control-alternative" type="select" onChange={e => setObjekt(e.target.value)}>
+                                    {objekti.map((objekt) => {return(<option>{objekt}</option>);})}
                                 </Input>
                             </FormGroup>
                             <FormGroup check>
@@ -280,18 +247,8 @@ function Analiza() {
                                 </label>
                             </FormGroup>
                             <FormGroup>
-                                <Input  
-                                    className="h2"
-                                    id="input-date"
-                                    type="select"
-                                    onChange={e => setDelavec(e.target.value)}
-                                >
-                                    {delavci.map((delavec) => {
-                                            return(
-                                                <option>{delavec}</option>
-                                            );
-                                        }
-                                    )}
+                                <Input className="h2" id="input-date" type="select" onChange={e => setDelavec(e.target.value)}>
+                                    {delavci.map((delavec) => {return(<option>{delavec}</option>);})}
                                 </Input>
                             </FormGroup>
                             <FormGroup check>
@@ -300,12 +257,11 @@ function Analiza() {
                                         Status:
                                 </label>
                             </FormGroup>
-
                             <FormGroup check>
                                 <label>
                                     <Input type="radio" name="status" checked={aktiven}  onChange={e => setAktiven(e.target.checked)}/>
                                         Aktiven
-                                    </label>
+                                </label>
                                 </FormGroup>
                                 <FormGroup check>
                                 <label>
@@ -319,54 +275,52 @@ function Analiza() {
                     </Form>
                     </Col>
                     <Col className="md-6"></Col>
-                    </Row><br/>
-                        <Card className="shadow">
-                            <CardHeader className="border-0">
-                                <h3 className="mb-0">Zgodovina ekip</h3>
-                            </CardHeader>
-                            <Table className="align-items-center table-flush" responsive>
-                                <thead className="thead-light">
-                                <tr>
-                                        <th scope="col">Objekt</th>
-                                        <th scope="col">Status</th>
-                                        <th scope="col">Datum</th>
-                                        <th scope="col">Avto</th>
-                                        <th scope="col">Šofer</th>
-                                        <th scope="col">Delavci</th>
-                                        <th scope="col">START</th>
-                                        <th scope="col">Pričetek dela</th>
-                                        <th scope="col">Konec dela</th>
-                                        <th scope="col">PRIHOD</th>
-                                        <th scope="col">NETO čas dela</th>
-                                        <th scope="col">Odsotnost šoferja</th>
-                                        <th scope="col">Odsotnost delavca</th>
-                                        <th scope="col">NETO montaža</th>
-                                        <th scope="col">BRUTO montaža</th>
-                                        <th scope="col" />
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {filtrirani.map((el) => tableRow(el))}
-                                </tbody>
-                            </Table>
-                        </Card><br/>
-                        <Card className="shadow">
-                            <CardHeader>
-                                <h3>Skupni časi</h3>
-                            </CardHeader>
-                            <CardBody>
-                            Neto čas montaže: <b> {pridobiCas("netoMontaza")}</b><br/>
-                            Bruto čas montaže: <b>{pridobiCas("brutoMontaza")}</b>
-                            </CardBody>
-                        </Card><br/>
-                        <Form role="form">
-                           <Button color="primary" type="button">Shrani</Button>
-                        </Form>
-
-                       
+                </Row><br/>
+                <Card className="shadow">
+                    <CardHeader className="border-0">
+                        <h3 className="mb-0">Zgodovina ekip</h3>
+                    </CardHeader>
+                    <Table className="align-items-center table-flush" responsive>
+                        <thead className="thead-light">
+                        <tr>
+                                <th scope="col">Objekt</th>
+                                <th scope="col">Status</th>
+                                <th scope="col">Datum</th>
+                                <th scope="col">Avto</th>
+                                <th scope="col">Šofer</th>
+                                <th scope="col">Delavci</th>
+                                <th scope="col">START</th>
+                                <th scope="col">Pričetek dela</th>
+                                <th scope="col">Konec dela</th>
+                                <th scope="col">PRIHOD</th>
+                                <th scope="col">NETO čas dela</th>
+                                <th scope="col">Odsotnost šoferja</th>
+                                <th scope="col">Odsotnost delavca</th>
+                                <th scope="col">NETO montaža</th>
+                                <th scope="col">BRUTO montaža</th>
+                                <th scope="col" />
+                            </tr>
+                        </thead>
+                        <tbody>
+                            {filtrirani.map((el) => tableRow(el))}
+                        </tbody>
+                    </Table>
+                </Card><br/>
+                <Card className="shadow">
+                    <CardHeader>
+                        <h3>Skupni časi</h3>
+                    </CardHeader>
+                    <CardBody>
+                    Neto čas montaže: <b> {pridobiCas("netoMontaza")}</b><br/>
+                    Bruto čas montaže: <b>{pridobiCas("brutoMontaza")}</b>
+                    </CardBody>
+                </Card><br/>
+                <Form role="form">
+                    <Button color="primary" type="button">Shrani</Button>
+                </Form>                      
             </Container>
         </>
     );
 }
 
-export default Analiza;
+export default Izpis;

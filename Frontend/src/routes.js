@@ -8,7 +8,7 @@ import Delavci from "views/Delavci";
 import Skrbniki from "views/Skrbniki";
 import Vozila from "views/Vozila";
 import Nalogi from "views/Nalogi"
-import Analiza from "views/Analiza"
+import Izpis from "views/Izpis"
 import Ekipe from "views/Ekipe"
 
 var routes = [
@@ -55,10 +55,10 @@ var routes = [
     layout: "/admin",
   },
   {
-    path: "/analiza",
-    name: "Analiza",
+    path: "/izpis",
+    name: "Izpis",
     icon: "fas fa-chart-line text-red",
-    component: Analiza,
+    component: Izpis,
     layout: "/admin",
   },
 
