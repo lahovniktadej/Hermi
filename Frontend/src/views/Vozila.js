@@ -54,6 +54,9 @@ function Vozila() {
     const [registrska, setRegistrska] = React.useState("");
     const [seznamVozil, setSeznamVozil] = React.useState(data);
 
+    const [editing, setEditing] = React.useState(false);
+    const [editIndex, setEditIndex] = React.useState(null);
+
     const handleChangeNaziv = event => {
         setNaziv(event.target.value);
     }
@@ -63,23 +66,56 @@ function Vozila() {
     }
 
     const handleAddVozilo = () => {
-        if (naziv && registrska) {
-            let novoVozilo = {
-                naziv: naziv,
-                registrskaStevilka: registrska
-            };
+        if (editing) {
+            if (naziv && registrska) {
+                let seznam = [ ...seznamVozil ];
 
-            let seznam = [ ...seznamVozil ];
-            seznam.push(novoVozilo);
-            setSeznamVozil(seznam);
+                let vozilo = {
+                    naziv: naziv,
+                    registrskaStevilka: registrska
+                };
 
-            //  Reset input fields
-            setNaziv("");
-            setRegistrska("");
+                seznam[editIndex] = vozilo;
+                setSeznamVozil(seznam);
+
+                //  Reset input fields
+                setNaziv("");
+                setRegistrska("");
+
+                //  Reset editing status
+                setEditIndex(null);
+                setEditing(false);
+            }
         } else {
-            //  TO-DO 
-            //  Error notification
+            if (naziv && registrska) {
+                let novoVozilo = {
+                    naziv: naziv,
+                    registrskaStevilka: registrska
+                };
+    
+                let seznam = [ ...seznamVozil ];
+                seznam.push(novoVozilo);
+                setSeznamVozil(seznam);
+    
+                //  Reset input fields
+                setNaziv("");
+                setRegistrska("");
+            } else {
+                //  TO-DO 
+                //  Error notification
+            }
         }
+    }
+
+    const handleEditVehicle = (el) => {
+        let seznam = [ ...seznamVozil ];
+        let index = seznam.indexOf(el);
+
+        setNaziv(el.naziv);
+        setRegistrska(el.registrskaStevilka);
+
+        setEditIndex(index);
+        setEditing(true);
     }
 
     const handleRemoveVehicle = (el) => {
@@ -107,7 +143,7 @@ function Vozila() {
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}> Uredi </DropdownItem>
+                            <DropdownItem href="#pablo" onClick={() => handleEditVehicle(el)}> Uredi </DropdownItem>
                             <DropdownItem className="text-red" href="#pablo" onClick={() => handleRemoveVehicle(el)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
@@ -156,7 +192,7 @@ function Vozila() {
                                         <Input id="input-regNumber" className="form-control-alternative" type="text" onChange={handleChangeRegistrska} value={registrska} />
                                     </FormGroup>
                                     <div className="text-center">
-                                        <Button color="danger" type="button" onClick={handleAddVozilo}> Dodaj</Button>
+                                        <Button color="danger" type="button" onClick={handleAddVozilo}>{editing ? "Uredi" : "Dodaj"}</Button>
                                     </div>
                                 </Form>
                             </CardBody>
