@@ -24,32 +24,59 @@ import Header from 'components/Headers/Header';
 const data = [
     {
         naziv: "avto",
-        registerskaStevilka: "MB 56 528"
+        registrskaStevilka: "MB 56 528"
         
     },
     {
         naziv: "avto",
-        registerskaStevilka: "MB 56 528"
+        registrskaStevilka: "MB 56 528"
         
     },
     {
         naziv: "avto",
-        registerskaStevilka: "MB 56 528"
+        registrskaStevilka: "MB 56 528"
         
     },
     {
         naziv: "avto",
-        registerskaStevilka: "MB 56 528"
+        registrskaStevilka: "MB 56 528"
         
     },
     {
         naziv: "avto",
-        registerskaStevilka: "MB 56 528"
+        registrskaStevilka: "MB 56 528"
         
     },
 ];
 
 function Vozila() {
+    const [naziv, setNaziv] = React.useState("");
+    const [registrska, setRegistrska] = React.useState("");
+    const [seznamVozil, setSeznamVozil] = React.useState(data);
+
+    const handleChangeNaziv = event => {
+        setNaziv(event.target.value);
+    }
+
+    const handleChangeRegistrska = event => {
+        setRegistrska(event.target.value);
+    }
+
+    const handleAddVozilo = () => {
+        if (naziv && registrska) {
+            let novoVozilo = {
+                naziv: naziv,
+                registrskaStevilka: registrska
+            };
+
+            let seznam = [ ...seznamVozil ];
+            seznam.push(novoVozilo);
+            setSeznamVozil(seznam);
+
+            setNaziv("");
+            setRegistrska("");
+        }
+    }
 
     const tableRow = (el) => {
         return (
@@ -61,7 +88,7 @@ function Vozila() {
                         </span>
                     </Media>
                 </th>
-                <td>{el.registerskaStevilka}</td>
+                <td>{el.registrskaStevilka}</td>
                 <td className="text-right">
                     <UncontrolledDropdown>
                         <DropdownToggle className="btn-icon-only text-light" href="#pablo" role="button" size="sm" color="" onClick={(e) => e.preventDefault()}>
@@ -91,12 +118,12 @@ function Vozila() {
                                 <thead className="thead-light">
                                     <tr>
                                         <th scope="col">Naziv vozila</th>
-                                        <th scope="col">Registerska stevilka</th>
+                                        <th scope="col">Registrska stevilka</th>
                                         <th scope="col"/>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {data.map((el) => tableRow(el))}
+                                    {seznamVozil.map((el) => tableRow(el))}
                                 </tbody>
                             </Table>
                         </Card>
@@ -110,14 +137,24 @@ function Vozila() {
                                 <Form role="form">
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-naziv">Naziv vozila:</label>
-                                        <Input id="input-naziv" className="form-control-alternative"  type="text"/>
+                                        <Input 
+                                            id="input-naziv" 
+                                            className="form-control-alternative" 
+                                            type="text"
+                                            onChange={handleChangeNaziv}    
+                                        />
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-regNumber"> Registerska stevilka:</label>
-                                        <Input id="input-regNumber"className="form-control-alternative" type="text"/>
+                                        <Input 
+                                            id="input-regNumber" 
+                                            className="form-control-alternative" 
+                                            type="text"
+                                            onChange={handleChangeRegistrska}    
+                                        />
                                     </FormGroup>
                                     <div className="text-center">
-                                        <Button color="danger" type="button"> Dodaj</Button>
+                                        <Button color="danger" type="button" onClick={handleAddVozilo}> Dodaj</Button>
                                     </div>
                                 </Form>
                             </CardBody>
