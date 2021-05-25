@@ -50,6 +50,91 @@ const data = [
 ];
 
 function Skrbniki() {
+    const [ime, setIme] = React.useState("");
+    const [priimek, setPriimek] = React.useState("");
+    const [uporabniskoIme, setUporabniskoIme] = React.useState("");
+    const [seznamSkrbnikov, setSeznamSkrbnikov] = React.useState(data);
+
+    const [editing, setEditing] = React.useState(false);
+    const [editIndex, setEditIndex] = React.useState(null);
+
+    const handleChangeIme = event => {
+        setIme(event.target.value);
+    }
+
+    const handleChangePriimek = event => {
+        setPriimek(event.target.value);
+    }
+
+    const handleChangeUporabniskoIme = event => {
+        setUporabniskoIme(event.target.value);
+    }
+
+    const handleAddSkrbnik = event => {
+        if (editing) {
+            if (ime && priimek && uporabniskoIme) {
+                let seznam = [ ...seznamSkrbnikov ];
+                
+                let skrbnik = {
+                    ime: ime,
+                    priimek: priimek,
+                    uporabniskoIme: uporabniskoIme,
+                }
+
+                seznam[editIndex] = skrbnik;
+                setSeznamSkrbnikov(seznam);
+
+                //  Reset input fields
+                setIme("");
+                setPriimek("");
+                setUporabniskoIme("");
+
+                //  Reset editing status
+                setEditIndex(null);
+                setEditing(false);
+            }
+        } else {
+            if (ime && priimek && uporabniskoIme) {
+                let novSkrbnik = {
+                    ime: ime,
+                    priimek: priimek,
+                    uporabniskoIme: uporabniskoIme,
+                }
+        
+                let seznam = [ ...seznamSkrbnikov ];
+                seznam.push(novSkrbnik);
+                setSeznamSkrbnikov(seznam);
+        
+                //  Reset input fields
+                setIme("");
+                setPriimek("");
+                setUporabniskoIme("");
+            } else {
+                //  TO-DO 
+                //  Error notification
+            }
+        }
+    }
+
+    const handleEditSkrbnik = (el) => {
+        let seznam = [ ...seznamSkrbnikov ];
+        let index = seznam.indexOf(el);
+
+        setIme(el.ime);
+        setPriimek(el.priimek);
+        setUporabniskoIme(el.uporabniskoIme);
+
+        setEditIndex(index);
+        setEditing(true);
+    }
+
+    const handleRemoveSkrbnik = (el) => {
+        let seznam = [ ...seznamSkrbnikov ];
+        let index = seznam.indexOf(el);
+
+        seznam.splice(index, 1);
+        setSeznamSkrbnikov(seznam);
+    }
 
     const tableRow = (el) => {
         return (
@@ -68,8 +153,8 @@ function Skrbniki() {
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" href="#pablo" onClick={(e) => e.preventDefault()}> Odstrani </DropdownItem>
+                            <DropdownItem href="#pablo" onClick={(e) => handleEditSkrbnik(el)}> Uredi </DropdownItem>
+                            <DropdownItem className="text-red" href="#pablo" onClick={() => handleRemoveSkrbnik(el)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -96,7 +181,7 @@ function Skrbniki() {
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {data.map((el) => tableRow(el))}
+                                    {seznamSkrbnikov.map((el) => tableRow(el))}
                                 </tbody>
                             </Table>
                         </Card>
@@ -110,18 +195,18 @@ function Skrbniki() {
                                 <Form role="form">
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label"htmlFor="input-nameS"> Ime </label>
-                                        <Input id="input-nameS" className="form-control-alternative" type="text"/>
+                                        <Input id="input-nameS" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime}/>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label"htmlFor="input-surnameS"> Priimek </label>
-                                        <Input id="input-surnameS" className="form-control-alternative" type="text"/>
+                                        <Input id="input-surnameS" className="form-control-alternative" type="text"onChange={handleChangePriimek} value={priimek}/>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-uporabniskoIme"> Uporabnisko ime </label>
-                                        <Input id="input-uporabniskoIme"className="form-control-alternative" type="text"/>
+                                        <Input id="input-uporabniskoIme"className="form-control-alternative" type="text"onChange={handleChangeUporabniskoIme} value={uporabniskoIme}/>
                                     </FormGroup>
                                     <div className="text-center">
-                                        <Button color="danger" type="button"> Dodaj </Button>
+                                        <Button color="danger" type="button" onClick={handleAddSkrbnik}>{editing ? "Uredi" : "Dodaj"}</Button>
                                     </div>
                                 </Form>
                             </CardBody>
