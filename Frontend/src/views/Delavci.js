@@ -156,33 +156,16 @@ function Delavci() {
                                 <Form role="form">
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-nameD"> Ime </label>
-                                        <Input 
-                                            id="input-nameD" 
-                                            className="form-control-alternative" 
-                                            type="text" 
-                                            onChange={handleChangeIme} 
-                                            value={ime} 
-                                        />
+                                        <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} />
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-nameD"> Priimek </label>
                                         <Input 
-                                            id="input-surnameD" 
-                                            className="form-control-alternative" 
-                                            type="text" 
-                                            onChange={handleChangePriimek} 
-                                            value={priimek} 
-                                        />
+                                            id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} />
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-phone"> Telefon</label>
-                                        <Input 
-                                            id="input-phone" 
-                                            className="form-control-alternative" 
-                                            type="text" 
-                                            onChange={handleChangeTelefon} 
-                                            value={telefon} 
-                                        />
+                                        <Input id="input-phone" className="form-control-alternative" type="text" onChange={handleChangeTelefon} value={telefon} />
                                     </FormGroup>
                                     <div className="text-center">
                                         <Button color="danger" type="button" onClick={handleAddDelavec}>Dodaj</Button>

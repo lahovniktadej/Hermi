@@ -149,23 +149,11 @@ function Vozila() {
                                 <Form role="form">
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-naziv">Naziv vozila:</label>
-                                        <Input 
-                                            id="input-naziv" 
-                                            className="form-control-alternative" 
-                                            type="text"
-                                            onChange={handleChangeNaziv}   
-                                            value={naziv} 
-                                        />
+                                        <Input id="input-naziv" className="form-control-alternative" type="text" onChange={handleChangeNaziv} value={naziv} />
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-regNumber"> Registrska stevilka:</label>
-                                        <Input 
-                                            id="input-regNumber" 
-                                            className="form-control-alternative" 
-                                            type="text"
-                                            onChange={handleChangeRegistrska}
-                                            value={registrska}
-                                        />
+                                        <Input id="input-regNumber" className="form-control-alternative" type="text" onChange={handleChangeRegistrska} value={registrska} />
                                     </FormGroup>
                                     <div className="text-center">
                                         <Button color="danger" type="button" onClick={handleAddVozilo}> Dodaj</Button>
