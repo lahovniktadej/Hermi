@@ -2,10 +2,9 @@ version: "3.3"
 
 services:
     traefik:
-        container_name: Traefik
         image: traefik:latest
         networks:
-            - traefik-net
+            - traefik-net-dev
         command:
             - --api.insecure=true
             - --providers.docker=true
@@ -18,20 +17,25 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock
     
     frontend:
-        container_name: React-dashboard
-        build: ./Frontend
+        build:
+            context: ./Frontend
+            dockerfile: Dockerfile.dev
         networks:
-            - traefik-net
+            - traefik-net-dev
         labels:
             - traefik.enable=true
             - traefik.http.routers.frontend.entrypoints=http
             - traefik.http.routers.frontend.rule=PathPrefix(`/`)
+        volumes:
+            - ./Frontend/src:/app/src
+            - ./Frontend/public:/app/public
 
     nalogi:
-        container_name: Nalogi-microservice
-        build: ./Microservices/nalogi
+        build:
+            context: ./Microservices/nalogi
+            dockerfile: Dockerfile.dev
         networks:
-            - traefik-net
+            - traefik-net-dev
         depends_on:
             - "db"
         labels:
@@ -41,13 +45,13 @@ services:
             - traefik.http.middlewares.api-stripprefix.stripprefix.prefixes=/api
             - traefik.http.routers.nalogi.middlewares=api-stripprefix
         volumes:
+            - ./Microservices/nalogi:/app
             - maven:/root/.m2
 
     db:
-        container_name: Nalogi-data
         image: mysql
         networks:
-            - traefik-net
+            - traefik-net-dev
         environment:
             MYSQL_DATABASE: hermi
             MYSQL_USER: admin
@@ -55,7 +59,7 @@ services:
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
 
 networks:
-    traefik-net:
+    traefik-net-dev:
         driver: bridge
 
 volumes:

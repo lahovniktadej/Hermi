@@ -187,12 +187,9 @@ function Ekipe() {
             <tr>
                 <th scope="row">
                     <Media className="align-items-center">
-                        <img className="avatar rounded-circle mr-3" alt="..." src={require("../assets/img/theme/bootstrap.jpg").default}/>
-                        <Media>
-                            <span className="mb-0 text-sm">
-                                {el.objekt}
+                        <span className="mb-0 text-sm">
+                             {el.objekt}
                             </span>
-                        </Media>
                     </Media>
                 </th>
                 <td><span className={pridobiStatus(el.status)}>{el.status}</span></td>      
@@ -216,7 +213,7 @@ function Ekipe() {
                     <Col className="mb-5">
                         <Card className="shadow">
                             <CardHeader className="border-0">
-                                <h3 className="mb-0">Ekipe, ki so bile vnešene včeraj</h3>
+                                <h3 className="mb-0">Aktivne ekipe</h3>
                             </CardHeader>
                             <Table className="align-items-center table-flush" responsive>
                                 <thead className="thead-light">
@@ -286,7 +283,7 @@ function Ekipe() {
                                             Delavci
                                         </label>
                                         {izpisDelavcev}
-                                       <Button color="primary" onClick={handleAddClick}>+</Button>
+                                       <Button color="danger" onClick={handleAddClick}>+</Button>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-date">
@@ -345,7 +342,7 @@ function Ekipe() {
                                     </FormGroup>
                                     </Col>
                                     </Row>                                   
-                                    <Button color="primary" onClick={handleTimes}>Izračunaj čase</Button><br/><br/>
+                                    <Button color="danger" onClick={handleTimes}>Izračunaj čase</Button><br/><br/>
 
                                     <Row>
                                     <Col className="mb-2">
@@ -380,7 +377,7 @@ function Ekipe() {
                                     </Col>
                                     </Row><br/>
                                     <div className="text-center">
-                                        <Button color="primary" type="button">Dodaj</Button>
+                                        <Button color="danger" type="button">Dodaj</Button>
                                     </div>
                                 </Form>
                             </CardBody>

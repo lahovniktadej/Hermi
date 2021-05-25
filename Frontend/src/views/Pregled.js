@@ -16,13 +16,10 @@
 
 */
 import React, { useState } from "react";
-// node.js library that concatenates classes (strings)
+
 import classnames from "classnames";
-// javascipt plugin for creating charts
 import Chart from "chart.js";
-// react plugin used to create charts
 import { Line, Bar } from "react-chartjs-2";
-// reactstrap components
 import {
   Button,
   Card,
@@ -68,14 +65,14 @@ const Index = (props) => {
       <Container className="mt--7" fluid>
         <Row>
           <Col className="mb-5 mb-xl-0" xl="8">
-            <Card className="bg-gradient-default shadow">
+            <Card className="g-gradient-danger shadow">
               <CardHeader className="bg-transparent">
                 <Row className="align-items-center">
                   <div className="col">
                     <h6 className="text-uppercase text-light ls-1 mb-1">
-                      Overview
+                      Pregled dela delavca
                     </h6>
-                    <h2 className="text-white mb-0">Sales value</h2>
+                    <h2 className="text-black mb-0">Delavec 1</h2>
                   </div>
                   <div className="col">
                     <Nav className="justify-content-end" pills>
@@ -87,7 +84,7 @@ const Index = (props) => {
                           href="#pablo"
                           onClick={(e) => toggleNavs(e, 1)}
                         >
-                          <span className="d-none d-md-block">Month</span>
+                          <span className="d-none d-md-block">Mesec</span>
                           <span className="d-md-none">M</span>
                         </NavLink>
                       </NavItem>
@@ -100,8 +97,8 @@ const Index = (props) => {
                           href="#pablo"
                           onClick={(e) => toggleNavs(e, 2)}
                         >
-                          <span className="d-none d-md-block">Week</span>
-                          <span className="d-md-none">W</span>
+                          <span className="d-none d-md-block">Teden</span>
+                          <span className="d-md-none">T</span>
                         </NavLink>
                       </NavItem>
                     </Nav>
@@ -126,9 +123,9 @@ const Index = (props) => {
                 <Row className="align-items-center">
                   <div className="col">
                     <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Performance
+                      Analiza po mesecih
                     </h6>
-                    <h2 className="mb-0">Total orders</h2>
+                    <h2 className="mb-0">Število nalogov</h2>
                   </div>
                 </Row>
               </CardHeader>
@@ -145,21 +142,21 @@ const Index = (props) => {
           </Col>
         </Row>
         <Row className="mt-5">
-          <Col className="mb-5 mb-xl-0" xl="8">
+        <Col xl="4">
             <Card className="shadow">
               <CardHeader className="border-0">
                 <Row className="align-items-center">
                   <div className="col">
-                    <h3 className="mb-0">Page visits</h3>
+                    <h3 className="mb-0">Napredek ekip</h3>
                   </div>
                   <div className="col text-right">
                     <Button
-                      color="primary"
+                      color="danger"
                       href="#pablo"
                       onClick={(e) => e.preventDefault()}
                       size="sm"
                     >
-                      See all
+                      Več
                     </Button>
                   </div>
                 </Row>
@@ -167,91 +164,15 @@ const Index = (props) => {
               <Table className="align-items-center table-flush" responsive>
                 <thead className="thead-light">
                   <tr>
-                    <th scope="col">Page name</th>
-                    <th scope="col">Visitors</th>
-                    <th scope="col">Unique users</th>
-                    <th scope="col">Bounce rate</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <th scope="row">/argon/</th>
-                    <td>4,569</td>
-                    <td>340</td>
-                    <td>
-                      <i className="fas fa-arrow-up text-success mr-3" /> 46,53%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/index.html</th>
-                    <td>3,985</td>
-                    <td>319</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                      46,53%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/charts.html</th>
-                    <td>3,513</td>
-                    <td>294</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-warning mr-3" />{" "}
-                      36,49%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/tables.html</th>
-                    <td>2,050</td>
-                    <td>147</td>
-                    <td>
-                      <i className="fas fa-arrow-up text-success mr-3" /> 50,87%
-                    </td>
-                  </tr>
-                  <tr>
-                    <th scope="row">/argon/profile.html</th>
-                    <td>1,795</td>
-                    <td>190</td>
-                    <td>
-                      <i className="fas fa-arrow-down text-danger mr-3" />{" "}
-                      46,53%
-                    </td>
-                  </tr>
-                </tbody>
-              </Table>
-            </Card>
-          </Col>
-          <Col xl="4">
-            <Card className="shadow">
-              <CardHeader className="border-0">
-                <Row className="align-items-center">
-                  <div className="col">
-                    <h3 className="mb-0">Social traffic</h3>
-                  </div>
-                  <div className="col text-right">
-                    <Button
-                      color="primary"
-                      href="#pablo"
-                      onClick={(e) => e.preventDefault()}
-                      size="sm"
-                    >
-                      See all
-                    </Button>
-                  </div>
-                </Row>
-              </CardHeader>
-              <Table className="align-items-center table-flush" responsive>
-                <thead className="thead-light">
-                  <tr>
-                    <th scope="col">Referral</th>
-                    <th scope="col">Visitors</th>
+                    <th scope="col">Ime ekipe</th>
+                    <th scope="col">Št. delavcev</th>
                     <th scope="col" />
                   </tr>
                 </thead>
                 <tbody>
                   <tr>
-                    <th scope="row">Facebook</th>
-                    <td>1,480</td>
+                    <th scope="row">Ekipa 1</th>
+                    <td>4</td>
                     <td>
                       <div className="d-flex align-items-center">
                         <span className="mr-2">60%</span>
@@ -266,8 +187,8 @@ const Index = (props) => {
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Facebook</th>
-                    <td>5,480</td>
+                    <th scope="row">Ekipa 2</th>
+                    <td>2</td>
                     <td>
                       <div className="d-flex align-items-center">
                         <span className="mr-2">70%</span>
@@ -275,27 +196,27 @@ const Index = (props) => {
                           <Progress
                             max="100"
                             value="70"
-                            barClassName="bg-gradient-success"
+                            barClassName="bg-gradient-danger"
                           />
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Google</th>
-                    <td>4,807</td>
+                    <th scope="row">Ekipa 3</th>
+                    <td>2</td>
                     <td>
                       <div className="d-flex align-items-center">
                         <span className="mr-2">80%</span>
                         <div>
-                          <Progress max="100" value="80" />
+                          <Progress max="100" value="80" barClassName="bg-gradient-danger" />
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">Instagram</th>
-                    <td>3,678</td>
+                    <th scope="row">Ekipa 4</th>
+                    <td>2</td>
                     <td>
                       <div className="d-flex align-items-center">
                         <span className="mr-2">75%</span>
@@ -303,15 +224,15 @@ const Index = (props) => {
                           <Progress
                             max="100"
                             value="75"
-                            barClassName="bg-gradient-info"
+                            barClassName="bg-gradient-danger"
                           />
                         </div>
                       </div>
                     </td>
                   </tr>
                   <tr>
-                    <th scope="row">twitter</th>
-                    <td>2,645</td>
+                    <th scope="row">Ekipa 5</th>
+                    <td>4</td>
                     <td>
                       <div className="d-flex align-items-center">
                         <span className="mr-2">30%</span>
@@ -319,7 +240,7 @@ const Index = (props) => {
                           <Progress
                             max="100"
                             value="30"
-                            barClassName="bg-gradient-warning"
+                            barClassName="bg-gradient-danger"
                           />
                         </div>
                       </div>
@@ -329,6 +250,83 @@ const Index = (props) => {
               </Table>
             </Card>
           </Col>
+          <Col className="mb-5 mb-xl-0" xl="8">
+            <Card className="shadow">
+              <CardHeader className="border-0">
+                <Row className="align-items-center">
+                  <div className="col">
+                    <h3 className="mb-0">Pregled zaposlenih</h3>
+                  </div>
+                  <div className="col text-right">
+                    <Button
+                      color="danger"
+                      href="#pablo"
+                      onClick={(e) => e.preventDefault()}
+                      size="sm"
+                    >
+                      Več
+                    </Button>
+                  </div>
+                </Row>
+              </CardHeader>
+              <Table className="align-items-center table-flush" responsive>
+                <thead className="thead-light">
+                  <tr>
+                    <th scope="col">Zaposleni</th>
+                    <th scope="col">Oddelane ure v mesecu</th>
+                    <th scope="col">Oddelani objekti</th>
+                    <th scope="col">Odstopanje od povprečja</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <th scope="row">Delavec 1</th>
+                    <td>150</td>
+                    <td>7</td>
+                    <td>
+                      <i className="fas fa-arrow-down text-success mr-3" /> 46,53%
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Delavec 2</th>
+                    <td>180</td>
+                    <td>9</td>
+                    <td>
+                      <i className="fas fa-arrow-up text-warning mr-3" />{" "}
+                      46,53%
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Delavec 3</th>
+                    <td>160</td>
+                    <td>4</td>
+                    <td>
+                      <i className="fas fa-arrow-down text-warning mr-3" />{" "}
+                      36,49%
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Delavec 4</th>
+                    <td>180</td>
+                    <td>6</td>
+                    <td>
+                      <i className="fas fa-arrow-up text-success mr-3" /> 50,87%
+                    </td>
+                  </tr>
+                  <tr>
+                    <th scope="row">Delavec 5</th>
+                    <td>160</td>
+                    <td>8</td>
+                    <td>
+                      <i className="fas fa-arrow-up text-danger mr-3" />{" "}
+                      46,53%
+                    </td>
+                  </tr>
+                </tbody>
+              </Table>
+            </Card>
+          </Col>
+          
         </Row>
       </Container>
     </>

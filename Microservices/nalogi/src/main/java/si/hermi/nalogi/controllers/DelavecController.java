@@ -25,9 +25,9 @@ public class DelavecController {
     }
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity getDelavec(@PathVariable int id) {
-        Optional<Delavec> delavc = delavecRepository.findById(id);
-        if (delavc.isPresent()) {
-            DelavecDto delavecDto = modelMapper.map(delavc.get(), DelavecDto.class);
+        Optional<Delavec> delavecOpt = delavecRepository.findById(id);
+        if (delavecOpt.isPresent()) {
+            DelavecDto delavecDto = modelMapper.map(delavecOpt.get(), DelavecDto.class);
             return ResponseEntity.ok(delavecDto);
         }
         return ResponseEntity.badRequest().build();
@@ -36,7 +36,6 @@ public class DelavecController {
     @PostMapping()
     public @ResponseBody ResponseEntity addDelavec(@RequestBody DelavecDto delavecDto) {
         Delavec delavec = modelMapper.map(delavecDto, Delavec.class);
-        delavecRepository.save(delavec);
         delavecRepository.save(delavec);
         return ResponseEntity.ok().build();
     }

@@ -1,4 +1,4 @@
-import Index from "views/Index.js";
+import Pregled from "views/Pregled.js";
 /*
 import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
@@ -13,10 +13,10 @@ import Ekipe from "views/Ekipe"
 
 var routes = [
   {
-    path: "/index",
-    name: "Dashboard",
-    icon: "ni ni-tv-2 text-red",
-    component: Index,
+    path: "/pregled",
+    name: "Pregled",
+    icon: "fas fa-desktop text-red",
+    component: Pregled,
     layout: "/admin",
   },
   {
