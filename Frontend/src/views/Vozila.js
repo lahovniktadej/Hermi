@@ -107,7 +107,9 @@ function Vozila() {
         }
     }
 
-    const handleEditVehicle = (el) => {
+    const handleEditVehicle = (el, e) => {
+        e.preventDefault();
+
         let seznam = [ ...seznamVozil ];
         let index = seznam.indexOf(el);
 
@@ -118,7 +120,9 @@ function Vozila() {
         setEditing(true);
     }
 
-    const handleRemoveVehicle = (el) => {
+    const handleRemoveVehicle = (el, e) => {
+        e.preventDefault();
+
         let seznam = [ ...seznamVozil ];
         let index = seznam.indexOf(el);
 
@@ -143,8 +147,8 @@ function Vozila() {
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem href="#pablo" onClick={() => handleEditVehicle(el)}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" href="#pablo" onClick={() => handleRemoveVehicle(el)}> Odstrani </DropdownItem>
+                            <DropdownItem onClick={(e) => handleEditVehicle(el, e)}> Uredi </DropdownItem>
+                            <DropdownItem className="text-red" onClick={(e) => handleRemoveVehicle(el, e)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>

@@ -116,7 +116,9 @@ function Skrbniki() {
         }
     }
 
-    const handleEditSkrbnik = (el) => {
+    const handleEditSkrbnik = (el, e) => {
+        e.preventDefault();
+        
         let seznam = [ ...seznamSkrbnikov ];
         let index = seznam.indexOf(el);
 
@@ -128,7 +130,9 @@ function Skrbniki() {
         setEditing(true);
     }
 
-    const handleRemoveSkrbnik = (el) => {
+    const handleRemoveSkrbnik = (el, e) => {
+        e.preventDefault();
+
         let seznam = [ ...seznamSkrbnikov ];
         let index = seznam.indexOf(el);
 
@@ -153,8 +157,8 @@ function Skrbniki() {
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem href="#pablo" onClick={(e) => handleEditSkrbnik(el)}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" href="#pablo" onClick={() => handleRemoveSkrbnik(el)}> Odstrani </DropdownItem>
+                            <DropdownItem onClick={(e) => handleEditSkrbnik(el, e)}> Uredi </DropdownItem>
+                            <DropdownItem className="text-red" onClick={(e) => handleRemoveSkrbnik(el, e)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>

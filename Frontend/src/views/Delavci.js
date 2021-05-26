@@ -104,7 +104,9 @@ function Delavci() {
         }
     }
 
-    const handleEditDelavec = (el) => {
+    const handleEditDelavec = (el, e) => {
+        e.preventDefault();
+
         let seznam = [...seznamDelavcev];
         let index = seznam.indexOf(el);
 
@@ -116,7 +118,9 @@ function Delavci() {
         setEditing(true);
     }
 
-    const handleRemoveDelavec = (el) => {
+    const handleRemoveDelavec = (el, e) => {
+        e.preventDefault();
+
         let seznam = [...seznamDelavcev];
         let index = seznam.indexOf(el);
 
@@ -143,8 +147,8 @@ function Delavci() {
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem onClick={(e) => handleEditDelavec(el)}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" onClick={() => handleRemoveDelavec(el)}> Odstrani </DropdownItem>
+                            <DropdownItem onClick={(e) => handleEditDelavec(el, e)}> Uredi </DropdownItem>
+                            <DropdownItem className="text-red" onClick={(e) => handleRemoveDelavec(el, e)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
