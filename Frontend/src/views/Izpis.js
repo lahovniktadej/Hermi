@@ -46,7 +46,6 @@ const data = [
     },
     {
         objekt: "objekt3",
-        id: 1,
         datum: "2021-05-22",
         avto: "avto",
         sofer: "delavec1",
@@ -65,7 +64,6 @@ const data = [
     },
     {
         objekt: "objekt2",
-        id: 2,
         datum: "2020-05-22",
         avto: "avto",
         sofer: "delavec1",
@@ -83,11 +81,10 @@ const data = [
     },
     {
         objekt: "objekt1",
-        id: 3,
         datum: "2021-05-22",
         avto: "avto",
-        sofer: "delavec1",
-        delavci:  ["delavec2"],
+        sofer: "delavec2",
+        delavci:  ["delavec1"],
         start: "6:25",
         pricetekDela: "8:10",
         konecDela: "13:55",
@@ -102,7 +99,6 @@ const data = [
     },
     {  
         objekt: "objekt2",
-        id: 4,
         datum: "2021-05-22",
         avto: "avto",
         sofer: "delavec1",
@@ -157,13 +153,13 @@ function Izpis() {
 
         if(obdobjeChecked)
             iskaniPodatki = iskaniPodatki.filter((podatek) => ( new Date(obdobjeOD) <= new Date(podatek.datum) && new Date(obdobjeDO) >= new Date(podatek.datum)) === true); 
-        
-        console.log(iskaniPodatki);         
+               
         if(delavecChecked){
             iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer === delavec);
-            let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{ return (iskanDelavec===delavec);})) === false);
-            let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
-            iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
+             let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{return(iskanDelavec===delavec);})) == false); //vem da je tag annoying ampak zaenkrat s tremi ne dela, ne dodajat, hvala <3
+             let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
+
+             iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
         }
         if(objektChecked)
             iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.objekt === iskanObjekt));
@@ -217,9 +213,10 @@ function Izpis() {
                             </tr>
                         </tbody>
                     </Table>
-                    )
-                }
-            })
+                    );
+            }
+            else return null;
+        })
         return izpis;
     }
 
@@ -376,7 +373,7 @@ function Izpis() {
                         <h3>Skupni časi</h3>
                     </CardHeader>
                     <CardBody>
-                        Neto čas montaže: <b> {pridobiCas("netoMontaza")}</b><br/>
+                         Neto čas montaže: <b> {pridobiCas("netoMontaza")}</b><br/>
                         Bruto čas montaže: <b>{pridobiCas("brutoMontaza")}</b><br/>
                     </CardBody>
                 </Card><br/>
