@@ -4,56 +4,33 @@ import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 */
-import Delavci from "views/Delavci";
-import Skrbniki from "views/Skrbniki";
-import Vozila from "views/Vozila";
+
 import Nalogi from "views/Nalogi";
 import Izpis from "views/Izpis";
-import Ekipe from "views/Ekipe";
+//  import Ekipe from "views/Ekipe";
 import Upravljanje from "views/Upravljanje";
 
 var routes = [
   {
     path: "/pregled",
-    name: "Pregled",
+    name: "Pregledna plošča",
     icon: "fas fa-desktop text-red",
     component: Pregled,
     layout: "/admin",
   },
   {
     path: "/nalogi",
-    name: "Nalogi",
+    name: "Delovni nalogi",
     icon: "fas fa-file-export text-red",
     component: Nalogi,
     layout: "/admin",
   },
+  /*
   {
     path: "/ekipe",
     name: "Ekipe",
     icon: "fas fa-users text-red",
     component: Ekipe,
-    layout: "/admin",
-  },
-  /*
-  {
-    path: "/delavci",
-    name: "Delavci",
-    icon: "fas fa-user text-red",
-    component: Delavci,
-    layout: "/admin",
-  },
-  {
-    path: "/skrbniki",
-    name: "Skrbniki",
-    icon: "fas fa-user-cog text-red",
-    component: Skrbniki,
-    layout: "/admin",
-  },
-  {
-    path: "/vozila",
-    name: "Vozila",
-    icon: "fas fa-car text-red",
-    component: Vozila,
     layout: "/admin",
   },
   */
