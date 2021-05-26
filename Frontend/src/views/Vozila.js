@@ -67,12 +67,12 @@ function Vozila() {
 
     const handleAddVozilo = () => {
         if (editing) {
-            if (naziv && registrska) {
+            if (naziv) {
                 let seznam = [ ...seznamVozil ];
 
                 let vozilo = {
                     naziv: naziv,
-                    registrskaStevilka: registrska
+                    registrskaStevilka: registrska ? registrska : null,
                 };
 
                 seznam[editIndex] = vozilo;
@@ -87,10 +87,10 @@ function Vozila() {
                 setEditing(false);
             }
         } else {
-            if (naziv && registrska) {
+            if (naziv) {
                 let novoVozilo = {
                     naziv: naziv,
-                    registrskaStevilka: registrska
+                    registrskaStevilka: registrska ? registrska : null,
                 };
     
                 let seznam = [ ...seznamVozil ];
