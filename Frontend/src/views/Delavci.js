@@ -32,6 +32,8 @@ function Delavci() {
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
 
+    let key = 0;
+
     React.useEffect(() => {
         axios.get(`/api/delavec`)
             .then((res) => {
@@ -126,7 +128,7 @@ function Delavci() {
 
     const tableRow = (el) => {
         return (
-            <tr>
+            <tr key={key++}>
                 <th scope="row">
                     <Media className="align-items-center">
                         <span className="mb-0 text-sm">
