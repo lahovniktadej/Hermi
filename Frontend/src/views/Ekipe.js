@@ -160,18 +160,22 @@ function Ekipe() {
         let pricetekMinute = handleConvert(pricetek)
         let prihodMinute = handleConvert(prihod);
         let startMinute = handleConvert(start);
-
-        setNetoDelavec((konecMinute - pricetekMinute)/60);
-        setOdsotnostSoferja((prihodMinute - startMinute) / 60);
-
-        setNetoMontaza((delavci.length*netoDelavec) + odsotnostSoferja);
-        
-        if(netoDelavec <= 8)
-            setOdsotnostDelavca(8);
+        let netoD = (konecMinute - pricetekMinute)/60;
+        let odsotnostS = (prihodMinute - startMinute)/60; 
+        let netoM = (delavci.length*netoD) + odsotnostS;
+        let odsotnoD
+        if(netoD <= 8)
+            odsotnoD=8;
         else
-            setOdsotnostDelavca(netoDelavec);
-           
-        setBrutoMontaza((delavci.length*odsotnostDelavca) + odsotnostSoferja);
+            odsotnoD=netoD;
+
+        let brutoM = (delavci.length*odsotnoD) + odsotnostS;
+        
+        setNetoDelavec(netoD);
+        setOdsotnostSoferja(odsotnostS);
+        setOdsotnostDelavca(odsotnoD);
+        setNetoMontaza(netoM);
+        setBrutoMontaza(brutoM);
     }
 
     useEffect(() => {
