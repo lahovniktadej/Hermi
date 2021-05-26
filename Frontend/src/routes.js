@@ -7,9 +7,10 @@ import Login from "views/examples/Login.js";
 import Delavci from "views/Delavci";
 import Skrbniki from "views/Skrbniki";
 import Vozila from "views/Vozila";
-import Nalogi from "views/Nalogi"
-import Izpis from "views/Izpis"
-import Ekipe from "views/Ekipe"
+import Nalogi from "views/Nalogi";
+import Izpis from "views/Izpis";
+import Ekipe from "views/Ekipe";
+import Upravljanje from "views/Upravljanje";
 
 var routes = [
   {
@@ -33,6 +34,7 @@ var routes = [
     component: Ekipe,
     layout: "/admin",
   },
+  /*
   {
     path: "/delavci",
     name: "Delavci",
@@ -54,6 +56,14 @@ var routes = [
     component: Vozila,
     layout: "/admin",
   },
+  */
+  {
+    path: "/upravljanje",
+    name: "Upravljanje",
+    icon: "fas fa-user-cog text-red",
+    component: Upravljanje,
+    layout: "/admin",
+  },
   {
     path: "/izpis",
     name: "Izpis",
@@ -61,7 +71,6 @@ var routes = [
     component: Izpis,
     layout: "/admin",
   },
-
   /* Currently unused, potential set-up of login and profile stuff for later
     {
       path: "/user-profile",
