@@ -156,6 +156,7 @@ function Delavci() {
         <>
             <Header />
             <Container className="mt--7" fluid>
+                <h1>Delavci</h1>
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">

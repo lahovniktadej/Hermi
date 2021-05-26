@@ -8,7 +8,11 @@ function Upravljanje() {
     return (
         <> 
             <Delavci />
+            <hr className="my-3" />
+
             <Vozila />
+            <hr className="my-3"  />
+
             <Skrbniki />
         </>
     );

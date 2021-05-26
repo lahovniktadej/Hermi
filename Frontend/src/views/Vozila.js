@@ -154,8 +154,8 @@ function Vozila() {
 
     return (
         <>
-            <Header />
-            <Container className="mt--7" fluid>
+            <Container fluid className={"management-container"}>
+                <h1>Vozila</h1>
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">

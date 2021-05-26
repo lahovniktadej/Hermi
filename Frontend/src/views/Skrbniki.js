@@ -164,8 +164,8 @@ function Skrbniki() {
 
     return (
         <>
-            <Header />
-            <Container className="mt--7" fluid>
+            <Container className={"management-container"} fluid>
+                <h1>Skrbniki</h1>
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">
