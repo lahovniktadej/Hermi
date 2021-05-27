@@ -1,39 +1,26 @@
 import React, { useState, useEffect } from 'react';
 
 import {
-    Card,
-    CardHeader,
-    Media,
-    Table,
     Container,
     Row,
     Col,
-    CardBody,
     FormGroup,
     Form,
     Input,
     Button,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownItem,
-    DropdownMenu,
 } from "reactstrap";
-
-import Header from 'components/Headers/Header';
 
 function Ekipe(props) {
 
-    const [objekti] = useState(["objekt1", "objek2", "objekt3"]);
-    const [avti] = useState(["avto1", "avto2", "avto3"]);
+    const [avti, SetAvti] = useState(["avto1", "avto2", "avto3"]);
     const [delavci, setDelavci] = useState(["delavec1"]);
 
-    const [izbraniDelavci] = useState(["delavec1", "delavec2", "delavec3"]);
+    const [izbraniDelavci,setIzbrisaniDelavci] = useState(["delavec1", "delavec2", "delavec3"]);
     const [izpisDelavcev, setizpisDelavcev] = useState();
 
-    const [setObjekt] = useState(objekti[0]);
-    const [setDatum] = useState();
-    const [setAvto] = useState(avti[0]);
-    const [setSofer] = useState(delavci[0]);
+    const [datum, setDatum] = useState();
+    const [avto, setAvto] = useState(avti[0]);
+    const [sofer, setSofer] = useState(delavci[0]);
     const [start, setStart] = useState();
     const [pricetek, setPricetek] = useState();
     const [konec, setKonec] = useState();
@@ -91,15 +78,21 @@ function Ekipe(props) {
         let prihodMinute = handleConvert(prihod);
         let startMinute = handleConvert(start);
         let netoD = (konecMinute - pricetekMinute)/60;
-        let odsotnostS = (prihodMinute - startMinute)/60; 
-        let netoM = (delavci.length*netoD) + odsotnostS;
-        let odsotnoD
+        netoD = netoD.toFixed(2);
+        let odsotnostS = (prihodMinute - startMinute)/60;
+        odsotnostS = odsotnostS.toFixed(2);
+        let netoM = (delavci.length*netoD) + parseFloat(odsotnostS); 
+        netoM = parseFloat(netoM).toFixed(2);
+        let odsotnoD;
         if(netoD <= 8)
             odsotnoD=8;
         else
             odsotnoD=netoD;
 
-        let brutoM = (delavci.length*odsotnoD) + odsotnostS;
+        console.log(parseFloat(odsotnostS));
+        odsotnoD = odsotnoD.toFixed(2);
+        let brutoM = (delavci.length*odsotnoD) + parseFloat(odsotnostS); 
+        brutoM = parseFloat(brutoM).toFixed(2);
         
         setNetoDelavec(netoD);
         setOdsotnostSoferja(odsotnostS);
