@@ -10,7 +10,7 @@ import {
     Button,
 } from "reactstrap";
 
-function Ekipe(props) {
+function Ekipe() {
 
     const [avti, SetAvti] = useState(["avto1", "avto2", "avto3"]);
     const [delavci, setDelavci] = useState(["delavec1"]);
@@ -109,10 +109,9 @@ function Ekipe(props) {
 
     return (
         <>
-            <Container>
                 <Form role="form">
-                <Row>
-                    <Col className="mb-4">
+                 <Row>
+                   <Col className="mb-4">
                     <FormGroup className="mb-3">
                         <label className="form-control-label" htmlFor="input-avto">
                             Avto
@@ -194,38 +193,37 @@ function Ekipe(props) {
                         <label className="form-control-label" htmlFor="input-neto-delavec">
                             Neto <br/>delavca:
                         </label>
-                        <Input id="input-neto-delavec" className="form-control-alternative" type="text" value={netoDelavec} onChange={e => setNetoDelavec(e.target.value)}/>
+                        <Input id="input-neto-delavec" className="form-control-alternative" type="number" step="0.01" value={netoDelavec} onChange={e => setNetoDelavec(e.target.value)}/>
                     </Col>
                     <Col className="mb-2">
                         <label className="form-control-label" htmlFor="input-cas-sofer">
-                            Odsotnost šoferja:
+                            Odsotnost <br/>šoferja:
                         </label>
-                        <Input id="input-cas-sofer" className="form-control-alternative" type="text" value={odsotnostSoferja} onChange={e => setOdsotnostSoferja(e.target.value)}/>
+                        <Input id="input-cas-sofer" className="form-control-alternative" type="number" step="0.01" value={odsotnostSoferja} onChange={e => setOdsotnostSoferja(e.target.value)}/>
                     </Col>
                     <Col className="mb-2">
                         <label className="form-control-label" htmlFor="input-cas-delavec">
-                            Odsotnost delavca:
+                            Odsotnost <br/>delavca:
                         </label>
-                        <Input id="input-cas-delavec" className="form-control-alternative" type="text" value={odsotnostDelavca} onChange={e => setOdsotnostDelavca(e.target.value)}/>
+                        <Input id="input-cas-delavec" className="form-control-alternative" type="number" step="0.01" value={odsotnostDelavca} onChange={e => setOdsotnostDelavca(e.target.value)}/>
                     </Col>
                     <Col className="mb-2">
                         <label className="form-control-label" htmlFor="input-neto-montaza">
-                            Neto čas montaže:                                           
+                            Neto čas<br/> montaže:                                           
                         </label>
-                        <Input id="input-neto-montaza" className="form-control-alternative" type="text" value={netoMontaza} onChange={e => setNetoMontaza(e.target.value)}/>
+                        <Input id="input-neto-montaza" className="form-control-alternative" type="number" step="0.01" value={netoMontaza} onChange={e => setNetoMontaza(e.target.value)}/>
                     </Col>
                     <Col className="mb-2">
                         <label className="form-control-label" htmlFor="input-bruto-montaza">
-                            Bruto čas montaže:
+                            Bruto čas<br/> montaže:
                         </label>
-                        <Input id="input-bruto-montaza" className="form-control-alternative" type="text" value={brutoMontaza} onChange={e => setBrutoMontaza(e.target.value)}/>
+                        <Input id="input-bruto-montaza" className="form-control-alternative" type="number" step="0.01" value={brutoMontaza} onChange={e => setBrutoMontaza(e.target.value)}/>
                     </Col>
                     </Row><br/>
                     <div className="text-center">
                         <Button color="danger" type="button">Dodaj</Button>
                     </div>
                 </Form>
-            </Container>
         </>
     );
 }

@@ -97,7 +97,7 @@ function Nalogi() {
                 <td>{(el.status==="nekoncano")? <i className="fas fa-ban text-red"></i> : <i className="ni ni-check-bold text-green"></i>}</td>
                 <td>
                     {(el.status==="nekoncano") ? <Button size="sm" color="secondary" onClick={function(){ handleBody(el);}}>Dodaj ekipo</Button> : <></>}
-                    <Modal isOpen={modal} toggle={toggle} size="lg">
+                    <Modal isOpen={modal} toggle={toggle} size="lg" backdrop={'static'} scrollable={true}>
                         <ModalHeader toggle={toggle}><h2>Dodaj ekipo</h2></ModalHeader>
                         <ModalBody> 
                             Šifra delovnega naloga:<b> {sifra}</b> <br/>
