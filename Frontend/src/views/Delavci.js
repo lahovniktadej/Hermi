@@ -195,7 +195,7 @@ function Delavci() {
                     <Col className="mb-5">
                         <Card className="shadow bg-secondary">
                             <CardHeader>
-                                <h3 className="mb-0">Dodaj delavca</h3>
+                                <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj delavca"}</h3>
                             </CardHeader>
                             <CardBody>
                                 <Form role="form">

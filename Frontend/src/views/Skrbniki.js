@@ -19,8 +19,6 @@ import {
     Button,
 } from "reactstrap";
 
-import Header from 'components/Headers/Header';
-
 const data = [
     {
         ime: "ime",
@@ -204,7 +202,7 @@ function Skrbniki() {
                     <Col className="mb-5">
                         <Card className="shadow bg-secondary">
                             <CardHeader>
-                                <h3 className="mb-0"> Dodaj skrbnika </h3>
+                                <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj skrbnika"} </h3>
                             </CardHeader>
                             <CardBody>
                                 <Form role="form">
