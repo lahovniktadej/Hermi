@@ -70,7 +70,7 @@ const data = [
 ];
 
 function Nalogi() {
-    
+
     const [objekt, setObjekt] = useState();
     const [sifra, setSifra] = useState();
 
@@ -98,7 +98,7 @@ function Nalogi() {
                 <td>{el.objekt}</td>
                 <td>{el.zacetek}</td>
                 <td>{el.konec}</td>
-                <td>{el.status}</td>
+                <td>{(el.status==="nekoncano")? <i className="fas fa-ban text-red"></i> : <i className="ni ni-check-bold text-green"></i>}</td>
                 <td>
                     {(el.status==="nekoncano") ? <Button size="sm" color="secondary" onClick={function(){ handleBody(el);}}>Dodaj ekipo</Button> : <></>}
                     <Modal isOpen={modal} toggle={toggle} size="lg">

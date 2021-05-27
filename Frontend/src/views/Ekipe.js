@@ -121,16 +121,6 @@ function Ekipe(props) {
                 <Row>
                     <Col className="mb-4">
                     <FormGroup className="mb-3">
-                        <label className="form-control-label" htmlFor="input-objekt">
-                            Objekt
-                        </label>
-                        <Input id="input-date" className="form-control-alternative" type="select" onChange={e => setObjekt(e.target.value)}>
-                            {objekti.map((objekt) => {return(<option>{objekt}</option>);})}
-                        </Input>
-                    </FormGroup>
-                    </Col>
-                    <Col className="mb-4">
-                    <FormGroup className="mb-3">
                         <label className="form-control-label" htmlFor="input-avto">
                             Avto
                         </label>
@@ -203,7 +193,7 @@ function Ekipe(props) {
                     </Row> 
                     <Row>    
                         <Col className="mb-3 text-center">                          
-                            <Button color="danger" onClick={handleTimes}>Izračunaj čase</Button><br/><br/>
+                            <Button color="secondary" onClick={handleTimes}>Izračunaj čase</Button><br/><br/>
                         </Col>
                     </Row>     
                     <Row>
