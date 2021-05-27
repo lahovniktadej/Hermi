@@ -130,6 +130,17 @@ function Skrbniki() {
         setEditing(true);
     }
 
+    const handleCancel = () => {
+        //  Reset input fields
+        setIme("");
+        setPriimek("");
+        setUporabniskoIme("");
+
+        //  Reset editing status
+        setEditIndex(null);
+        setEditing(false);
+    }
+
     const handleRemoveSkrbnik = (el, e) => {
         e.preventDefault();
 
@@ -211,6 +222,7 @@ function Skrbniki() {
                                     </FormGroup>
                                     <div className="text-center">
                                         <Button color="danger" type="button" onClick={handleAddSkrbnik}>{editing ? "Uredi" : "Dodaj"}</Button>
+                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
                                     </div>
                                 </Form>
                             </CardBody>

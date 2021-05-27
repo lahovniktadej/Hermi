@@ -120,6 +120,16 @@ function Vozila() {
         setEditing(true);
     }
 
+    const handleCancel = () => {
+        //  Reset input fields
+        setNaziv("");
+        setRegistrska("");
+
+        //  Reset editing status
+        setEditIndex(null);
+        setEditing(false);
+    }
+
     const handleRemoveVehicle = (el, e) => {
         e.preventDefault();
 
@@ -197,6 +207,7 @@ function Vozila() {
                                     </FormGroup>
                                     <div className="text-center">
                                         <Button color="danger" type="button" onClick={handleAddVozilo}>{editing ? "Uredi" : "Dodaj"}</Button>
+                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
                                     </div>
                                 </Form>
                             </CardBody>

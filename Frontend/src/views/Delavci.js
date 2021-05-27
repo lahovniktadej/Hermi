@@ -118,6 +118,17 @@ function Delavci() {
         setEditing(true);
     }
 
+    const handleCancel = () => {
+        //  Reset input fields
+        setIme("");
+        setPriimek("");
+        setTelefon("");
+
+        //  Reset editing status
+        setEditIndex(null);
+        setEditing(false);
+    }
+
     const handleRemoveDelavec = (el, e) => {
         e.preventDefault();
 
@@ -203,6 +214,7 @@ function Delavci() {
                                     </FormGroup>
                                     <div className="text-center">
                                         <Button color="danger" type="button" onClick={handleAddDelavec}>{editing ? "Uredi" : "Dodaj"}</Button>
+                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
                                     </div>
                                 </Form>
                             </CardBody>
