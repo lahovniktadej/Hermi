@@ -1,25 +1,36 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import {
     Card,
     CardHeader,
-    DropdownMenu,
-    DropdownItem,
-    UncontrolledDropdown,
-    DropdownToggle,
     Media,
     Table,
     Container,
     Row,
-    Col
+    Col,
+    CardBody,
+    FormGroup,
+    Form,
+    Input,
+    Button,
+    UncontrolledDropdown,
+    DropdownToggle,
+    DropdownItem,
+    DropdownMenu,
+    Modal,
+    ModalFooter,
+    ModalHeader,
+    ModalBody,
 } from "reactstrap";
 
 import Header from 'components/Headers/Header';
+import Ekipe from 'views/Ekipe';
 
 const data = [
     {
         sifra: "sifra",
         naziv: "naziv",
+        objekt: "objekt1",
         zacetek: "zacetniDatum",
         konec: "koncniDatum",
         status: "koncano"
@@ -27,6 +38,7 @@ const data = [
     {
         sifra: "sifra",
         naziv: "naziv",
+        objekt: "objekt2",
         zacetek: "zacetniDatum",
         konec: "koncniDatum",
         status: "nekoncano"
@@ -34,6 +46,7 @@ const data = [
     {
         sifra: "sifra",
         naziv: "naziv",
+        objekt: "objekt3",
         zacetek: "zacetniDatum",
         konec: "koncniDatum",
         status: "koncano"
@@ -41,6 +54,7 @@ const data = [
     {
         sifra: "sifra",
         naziv: "naziv",
+        objekt: "objekt4",
         zacetek: "zacetniDatum",
         konec: "koncniDatum",
         status: "nekoncano"
@@ -48,6 +62,7 @@ const data = [
     {
         sifra: "sifra",
         naziv: "naziv",
+        objekt: "objekt5",
         zacetek: "zacetniDatum",
         konec: "koncniDatum",
         status: "koncano"
@@ -55,6 +70,19 @@ const data = [
 ];
 
 function Nalogi() {
+    
+    const [objekt, setObjekt] = useState();
+    const [sifra, setSifra] = useState();
+
+    const [modal, setModal] = useState();
+
+    const toggle = () => setModal(!modal);
+
+    const handleBody = (el) => {
+        toggle();
+        setObjekt(data.map((podatek)=>{ if(podatek === el){return(el.objekt);} else return null;}));
+        setSifra(data.map((podatek)=>{ if(podatek === el){return(el.sifra);} else return null;}));
+    }
 
     const tableRow = (el) => {
         return (
@@ -67,9 +95,26 @@ function Nalogi() {
                     </Media>
                 </th>
                 <td>{el.naziv}</td>
+                <td>{el.objekt}</td>
                 <td>{el.zacetek}</td>
                 <td>{el.konec}</td>
                 <td>{el.status}</td>
+                <td>
+                    {(el.status==="nekoncano") ? <Button size="sm" color="secondary" onClick={function(){ handleBody(el);}}>Dodaj ekipo</Button> : <></>}
+                    <Modal isOpen={modal} toggle={toggle} size="lg">
+                        <ModalHeader toggle={toggle}><h2>Dodaj ekipo</h2></ModalHeader>
+                        <ModalBody> 
+                            Šifra delovnega naloga:<b> {sifra}</b> <br/>
+                            Objekt delovnega naloga:<b> {objekt}</b> <br/>
+                            <hr/>    
+                            <Ekipe></Ekipe>
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="danger" onClick={toggle}>Zapri</Button>
+                        </ModalFooter>
+                    </Modal>
+                </td>
+
                 <td className="text-right">
                     <UncontrolledDropdown>
                         <DropdownToggle className="btn-icon-only text-light" href="#pablo" role="button" size="sm" color="" onClick={(e) => e.preventDefault()}>
@@ -100,9 +145,11 @@ function Nalogi() {
                                     <tr>
                                         <th scope="col">Sifra</th>
                                         <th scope="col">Naziv</th>
+                                        <th scope="col">Objekt</th>
                                         <th scope="col">Zacetek</th>
                                         <th scope="col">Konec</th>
                                         <th scope="col">Status</th>
+                                        <th scope="col">Dodaj ekipo</th>
                                         <th scope="col" />
                                     </tr>
                                 </thead>
