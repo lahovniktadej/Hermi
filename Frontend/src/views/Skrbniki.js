@@ -21,34 +21,6 @@ import {
     Modal,
 } from "reactstrap";
 
-const data = [
-    {
-        ime: "ime",
-        priimek: "priimek",
-        uporabniskoIme: "primer"
-    },
-    {
-        ime: "ime",
-        priimek: "priimek",
-        uporabniskoIme: "primer"
-    },
-    {
-        ime: "ime",
-        priimek: "priimek",
-        uporabniskoIme: "primer"
-    },
-    {
-        ime: "ime",
-        priimek: "priimek",
-        uporabniskoIme: "primer"
-    },
-    {
-        ime: "ime",
-        priimek: "priimek",
-        uporabniskoIme: "primer"
-    },
-];
-
 function Skrbniki() {
     const [ime, setIme] = React.useState("");
     const [priimek, setPriimek] = React.useState("");
