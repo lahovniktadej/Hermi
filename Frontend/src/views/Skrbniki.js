@@ -18,6 +18,7 @@ import {
     Form,
     Input,
     Button,
+    Modal,
 } from "reactstrap";
 
 const data = [
@@ -56,6 +57,9 @@ function Skrbniki() {
 
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
+
+    const [modal, setModal] = React.useState(false);
+    const [izbranSkrbnik, setIzbranSkrbnik] = React.useState(null);
 
     React.useEffect(() => {
         axios.get(`/api/skrbnik`)
@@ -152,16 +156,20 @@ function Skrbniki() {
         setEditing(false);
     }
 
-    const handleRemoveSkrbnik = (el, e) => {
-        e.preventDefault();
+    const handleRemoveModal = (el, e) => {
+        setModal(true);
+        setIzbranSkrbnik(el);
+    }
 
+    const handleRemoveSkrbnik = () => {
         let seznam = [ ...seznamSkrbnikov ];
-        let index = seznam.indexOf(el);
+        let index = seznam.indexOf(izbranSkrbnik);
 
         axios.delete(`/api/skrbnik/${seznam[index].id}`).then();
 
         seznam.splice(index, 1);
         setSeznamSkrbnikov(seznam);
+        setModal(false);
     }
 
     const tableRow = (el) => {
@@ -182,7 +190,31 @@ function Skrbniki() {
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
                             <DropdownItem onClick={(e) => handleEditSkrbnik(el, e)}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" onClick={(e) => handleRemoveSkrbnik(el, e)}> Odstrani </DropdownItem>
+                            <DropdownItem className="text-red" onClick={(e) => handleRemoveModal(el, e)}> Odstrani </DropdownItem>
+                            <Modal className="modal-dialog-centered modal-danger" contentClassName="bg-gradient-danger" isOpen={modal} toggle={() => { return null; }}>
+                                <div className="modal-header">
+                                    <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => { setModal(false); }}>
+                                        <span aria-hidden={true}>×</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="py-3 text-center">
+                                        <i className="ni ni-bell-55 ni-3x" />
+                                        <h4 className="heading mt-4">Pozor!</h4>
+                                        <p>
+                                            Ali res želite odstraniti izbranega skrbnika ({izbranSkrbnik ? izbranSkrbnik.ime + " " + izbranSkrbnik.priimek : null})?
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <Button className="btn-white" color="default" type="button" onClick={handleRemoveSkrbnik}>
+                                        Da
+                                    </Button>
+                                    <Button className="text-white ml-auto" color="link" data-dismiss="modal" type="button" onClick={() => { setModal(false); }}>
+                                        Ne
+                                    </Button>
+                                </div>
+                            </Modal>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -204,7 +236,7 @@ function Skrbniki() {
                                 <thead className="thead-light">
                                     <tr>
                                         <th scope="col"> Ime in priimek </th>
-                                        <th scope="col"> Uporabnisko ime </th>
+                                        <th scope="col"> Uporabniško ime </th>
                                         <th scope="col" />
                                     </tr>
                                 </thead>
@@ -230,7 +262,7 @@ function Skrbniki() {
                                         <Input id="input-surnameS" className="form-control-alternative" type="text"onChange={handleChangePriimek} value={priimek}/>
                                     </FormGroup>
                                     <FormGroup className="mb-3">
-                                        <label className="form-control-label" htmlFor="input-uporabniskoIme"> Uporabnisko ime </label>
+                                        <label className="form-control-label" htmlFor="input-uporabniskoIme"> Uporabniško ime </label>
                                         <Input id="input-uporabniskoIme"className="form-control-alternative" type="text"onChange={handleChangeUporabniskoIme} value={uporabniskoIme}/>
                                     </FormGroup>
                                     <div className="text-center">
