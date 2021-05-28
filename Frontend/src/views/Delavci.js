@@ -32,6 +32,8 @@ function Delavci() {
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
 
+    let key = 0;
+
     React.useEffect(() => {
         axios.get(`/api/delavec`)
             .then((res) => {
@@ -102,7 +104,9 @@ function Delavci() {
         }
     }
 
-    const handleEditDelavec = (el) => {
+    const handleEditDelavec = (el, e) => {
+        e.preventDefault();
+
         let seznam = [...seznamDelavcev];
         let index = seznam.indexOf(el);
 
@@ -114,7 +118,20 @@ function Delavci() {
         setEditing(true);
     }
 
-    const handleRemoveDelavec = (el) => {
+    const handleCancel = () => {
+        //  Reset input fields
+        setIme("");
+        setPriimek("");
+        setTelefon("");
+
+        //  Reset editing status
+        setEditIndex(null);
+        setEditing(false);
+    }
+
+    const handleRemoveDelavec = (el, e) => {
+        e.preventDefault();
+
         let seznam = [...seznamDelavcev];
         let index = seznam.indexOf(el);
 
@@ -126,7 +143,7 @@ function Delavci() {
 
     const tableRow = (el) => {
         return (
-            <tr>
+            <tr key={key++}>
                 <th scope="row">
                     <Media className="align-items-center">
                         <span className="mb-0 text-sm">
@@ -141,8 +158,8 @@ function Delavci() {
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem onClick={(e) => handleEditDelavec(el)}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" onClick={() => handleRemoveDelavec(el)}> Odstrani </DropdownItem>
+                            <DropdownItem onClick={(e) => handleEditDelavec(el, e)}> Uredi </DropdownItem>
+                            <DropdownItem className="text-red" onClick={(e) => handleRemoveDelavec(el, e)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -154,6 +171,7 @@ function Delavci() {
         <>
             <Header />
             <Container className="mt--7" fluid>
+                <h1>Delavci</h1>
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">
@@ -177,7 +195,7 @@ function Delavci() {
                     <Col className="mb-5">
                         <Card className="shadow bg-secondary">
                             <CardHeader>
-                                <h3 className="mb-0">Dodaj delavca</h3>
+                                <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj delavca"}</h3>
                             </CardHeader>
                             <CardBody>
                                 <Form role="form">
@@ -196,6 +214,7 @@ function Delavci() {
                                     </FormGroup>
                                     <div className="text-center">
                                         <Button color="danger" type="button" onClick={handleAddDelavec}>{editing ? "Uredi" : "Dodaj"}</Button>
+                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
                                     </div>
                                 </Form>
                             </CardBody>

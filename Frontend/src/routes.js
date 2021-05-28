@@ -4,28 +4,28 @@ import Profile from "views/examples/Profile.js";
 import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 */
-import Delavci from "views/Delavci";
-import Skrbniki from "views/Skrbniki";
-import Vozila from "views/Vozila";
-import Nalogi from "views/Nalogi"
-import Izpis from "views/Izpis"
-import Ekipe from "views/Ekipe"
+
+import Nalogi from "views/Nalogi";
+import Izpis from "views/Izpis";
+//  import Ekipe from "views/Ekipe";
+import Upravljanje from "views/Upravljanje";
 
 var routes = [
   {
     path: "/pregled",
-    name: "Pregled",
+    name: "Pregledna plošča",
     icon: "fas fa-desktop text-red",
     component: Pregled,
     layout: "/admin",
   },
   {
     path: "/nalogi",
-    name: "Nalogi",
+    name: "Delovni nalogi",
     icon: "fas fa-file-export text-red",
     component: Nalogi,
     layout: "/admin",
   },
+  /*
   {
     path: "/ekipe",
     name: "Ekipe",
@@ -33,25 +33,12 @@ var routes = [
     component: Ekipe,
     layout: "/admin",
   },
+  */
   {
-    path: "/delavci",
-    name: "Delavci",
-    icon: "fas fa-user text-red",
-    component: Delavci,
-    layout: "/admin",
-  },
-  {
-    path: "/skrbniki",
-    name: "Skrbniki",
+    path: "/upravljanje",
+    name: "Upravljanje",
     icon: "fas fa-user-cog text-red",
-    component: Skrbniki,
-    layout: "/admin",
-  },
-  {
-    path: "/vozila",
-    name: "Vozila",
-    icon: "fas fa-car text-red",
-    component: Vozila,
+    component: Upravljanje,
     layout: "/admin",
   },
   {
@@ -61,7 +48,6 @@ var routes = [
     component: Izpis,
     layout: "/admin",
   },
-
   /* Currently unused, potential set-up of login and profile stuff for later
     {
       path: "/user-profile",

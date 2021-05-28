@@ -19,8 +19,6 @@ import {
     Button,
 } from "reactstrap";
 
-import Header from 'components/Headers/Header';
-
 const data = [
     {
         ime: "ime",
@@ -116,7 +114,9 @@ function Skrbniki() {
         }
     }
 
-    const handleEditSkrbnik = (el) => {
+    const handleEditSkrbnik = (el, e) => {
+        e.preventDefault();
+        
         let seznam = [ ...seznamSkrbnikov ];
         let index = seznam.indexOf(el);
 
@@ -128,7 +128,20 @@ function Skrbniki() {
         setEditing(true);
     }
 
-    const handleRemoveSkrbnik = (el) => {
+    const handleCancel = () => {
+        //  Reset input fields
+        setIme("");
+        setPriimek("");
+        setUporabniskoIme("");
+
+        //  Reset editing status
+        setEditIndex(null);
+        setEditing(false);
+    }
+
+    const handleRemoveSkrbnik = (el, e) => {
+        e.preventDefault();
+
         let seznam = [ ...seznamSkrbnikov ];
         let index = seznam.indexOf(el);
 
@@ -153,8 +166,8 @@ function Skrbniki() {
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem href="#pablo" onClick={(e) => handleEditSkrbnik(el)}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" href="#pablo" onClick={() => handleRemoveSkrbnik(el)}> Odstrani </DropdownItem>
+                            <DropdownItem onClick={(e) => handleEditSkrbnik(el, e)}> Uredi </DropdownItem>
+                            <DropdownItem className="text-red" onClick={(e) => handleRemoveSkrbnik(el, e)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -164,8 +177,8 @@ function Skrbniki() {
 
     return (
         <>
-            <Header />
-            <Container className="mt--7" fluid>
+            <Container className={"management-container"} fluid>
+                <h1>Skrbniki</h1>
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">
@@ -189,7 +202,7 @@ function Skrbniki() {
                     <Col className="mb-5">
                         <Card className="shadow bg-secondary">
                             <CardHeader>
-                                <h3 className="mb-0"> Dodaj skrbnika </h3>
+                                <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj skrbnika"} </h3>
                             </CardHeader>
                             <CardBody>
                                 <Form role="form">
@@ -207,6 +220,7 @@ function Skrbniki() {
                                     </FormGroup>
                                     <div className="text-center">
                                         <Button color="danger" type="button" onClick={handleAddSkrbnik}>{editing ? "Uredi" : "Dodaj"}</Button>
+                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
                                     </div>
                                 </Form>
                             </CardBody>

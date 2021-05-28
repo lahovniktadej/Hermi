@@ -19,8 +19,6 @@ import {
     Button,
 } from "reactstrap";
 
-import Header from 'components/Headers/Header';
-
 const data = [
     {
         naziv: "avto",
@@ -67,12 +65,12 @@ function Vozila() {
 
     const handleAddVozilo = () => {
         if (editing) {
-            if (naziv && registrska) {
+            if (naziv) {
                 let seznam = [ ...seznamVozil ];
 
                 let vozilo = {
                     naziv: naziv,
-                    registrskaStevilka: registrska
+                    registrskaStevilka: registrska ? registrska : null,
                 };
 
                 seznam[editIndex] = vozilo;
@@ -87,10 +85,10 @@ function Vozila() {
                 setEditing(false);
             }
         } else {
-            if (naziv && registrska) {
+            if (naziv) {
                 let novoVozilo = {
                     naziv: naziv,
-                    registrskaStevilka: registrska
+                    registrskaStevilka: registrska ? registrska : null,
                 };
     
                 let seznam = [ ...seznamVozil ];
@@ -107,7 +105,9 @@ function Vozila() {
         }
     }
 
-    const handleEditVehicle = (el) => {
+    const handleEditVehicle = (el, e) => {
+        e.preventDefault();
+
         let seznam = [ ...seznamVozil ];
         let index = seznam.indexOf(el);
 
@@ -118,7 +118,19 @@ function Vozila() {
         setEditing(true);
     }
 
-    const handleRemoveVehicle = (el) => {
+    const handleCancel = () => {
+        //  Reset input fields
+        setNaziv("");
+        setRegistrska("");
+
+        //  Reset editing status
+        setEditIndex(null);
+        setEditing(false);
+    }
+
+    const handleRemoveVehicle = (el, e) => {
+        e.preventDefault();
+
         let seznam = [ ...seznamVozil ];
         let index = seznam.indexOf(el);
 
@@ -143,8 +155,8 @@ function Vozila() {
                             <i className="fas fa-ellipsis-v" />
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
-                            <DropdownItem href="#pablo" onClick={() => handleEditVehicle(el)}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" href="#pablo" onClick={() => handleRemoveVehicle(el)}> Odstrani </DropdownItem>
+                            <DropdownItem onClick={(e) => handleEditVehicle(el, e)}> Uredi </DropdownItem>
+                            <DropdownItem className="text-red" onClick={(e) => handleRemoveVehicle(el, e)}> Odstrani </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -154,8 +166,8 @@ function Vozila() {
 
     return (
         <>
-            <Header />
-            <Container className="mt--7" fluid>
+            <Container fluid className={"management-container"}>
+                <h1>Vozila</h1>
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">
@@ -179,7 +191,7 @@ function Vozila() {
                     <Col className="mb-5">
                         <Card className="shadow bg-secondary">
                             <CardHeader>
-                                <h3 className="mb-0">Dodaj vozilo</h3>
+                            <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj vozilo"}</h3>
                             </CardHeader>
                             <CardBody>
                                 <Form role="form">
@@ -193,6 +205,7 @@ function Vozila() {
                                     </FormGroup>
                                     <div className="text-center">
                                         <Button color="danger" type="button" onClick={handleAddVozilo}>{editing ? "Uredi" : "Dodaj"}</Button>
+                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
                                     </div>
                                 </Form>
                             </CardBody>
