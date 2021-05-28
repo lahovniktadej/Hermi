@@ -17,6 +17,7 @@ import {
     Form,
     Input,
     Button,
+    Modal,
 } from "reactstrap";
 
 import Header from 'components/Headers/Header';
@@ -31,6 +32,9 @@ function Delavci() {
 
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
+
+    const [modal, setModal] = React.useState(false);
+    const [izbranDelavec, setIzbranDelavec] = React.useState(null);
 
     let key = 0;
 
@@ -56,7 +60,7 @@ function Delavci() {
 
     const handleAddDelavec = event => {
         if (editing) {
-            if (ime && priimek && telefon) {
+            if (ime && priimek) {
                 let seznam = [...seznamDelavcev];
 
                 let delavec = {
@@ -80,7 +84,7 @@ function Delavci() {
                 setEditing(false);
             }
         } else {
-            if (ime && priimek && telefon) {
+            if (ime && priimek) {
                 let novDelavec = {
                     ime: ime,
                     priimek: priimek,
@@ -129,16 +133,21 @@ function Delavci() {
         setEditing(false);
     }
 
-    const handleRemoveDelavec = (el, e) => {
-        e.preventDefault();
+    const handleRemoveModal = (el, e) => {
+        setModal(true);
+        setIzbranDelavec(el);
+    }
 
+    const handleRemoveDelavec = () => {
         let seznam = [...seznamDelavcev];
-        let index = seznam.indexOf(el);
+        let index = seznam.indexOf(izbranDelavec);
 
         axios.delete(`/api/delavec/${seznam[index].id}`).then();
 
         seznam.splice(index, 1);
         setSeznamDelavcev(seznam);
+        setModal(false);
+        setIzbranDelavec(null);
     }
 
     const tableRow = (el) => {
@@ -159,7 +168,31 @@ function Delavci() {
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
                             <DropdownItem onClick={(e) => handleEditDelavec(el, e)}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" onClick={(e) => handleRemoveDelavec(el, e)}> Odstrani </DropdownItem>
+                            <DropdownItem className="text-red" onClick={(e) => handleRemoveModal(el, e)}> Odstrani </DropdownItem>
+                            <Modal className="modal-dialog-centered modal-danger" contentClassName="bg-gradient-danger" isOpen={modal} toggle={() => { return null; }}>
+                                <div className="modal-header">
+                                    <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => { setModal(false); }}>
+                                        <span aria-hidden={true}>×</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="py-3 text-center">
+                                        <i className="ni ni-bell-55 ni-3x" />
+                                        <h4 className="heading mt-4">Pozor!</h4>
+                                        <p>
+                                            Ali res želite odstraniti izbranega delavca ({izbranDelavec ? izbranDelavec.ime + " " + izbranDelavec.priimek : null})?
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <Button className="btn-white" color="default" type="button" onClick={handleRemoveDelavec}>
+                                        Da
+                                    </Button>
+                                    <Button className="text-white ml-auto" color="link" data-dismiss="modal" type="button" onClick={() => { setModal(false); }}>
+                                        Ne
+                                    </Button>
+                                </div>
+                            </Modal>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -201,12 +234,12 @@ function Delavci() {
                                 <Form role="form">
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-nameD"> Ime </label>
-                                        <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} />
+                                        <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-nameD"> Priimek </label>
                                         <Input
-                                            id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} />
+                                            id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-phone"> Telefon</label>
