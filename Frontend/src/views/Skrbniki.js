@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 import {
     Card,
@@ -51,10 +52,18 @@ function Skrbniki() {
     const [ime, setIme] = React.useState("");
     const [priimek, setPriimek] = React.useState("");
     const [uporabniskoIme, setUporabniskoIme] = React.useState("");
-    const [seznamSkrbnikov, setSeznamSkrbnikov] = React.useState(data);
+    const [seznamSkrbnikov, setSeznamSkrbnikov] = React.useState([]);
 
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
+
+    React.useEffect(() => {
+        axios.get(`/api/skrbnik`)
+            .then((res) => {
+                const skrbniki = res.data;
+                setSeznamSkrbnikov(skrbniki);
+            });
+    }, []);
 
     const handleChangeIme = event => {
         setIme(event.target.value);
@@ -78,6 +87,8 @@ function Skrbniki() {
                     priimek: priimek,
                     uporabniskoIme: uporabniskoIme,
                 }
+                
+                axios.put(`/api/skrbnik/${seznam[editIndex].id}`, skrbnik).then();
 
                 seznam[editIndex] = skrbnik;
                 setSeznamSkrbnikov(seznam);
@@ -98,6 +109,8 @@ function Skrbniki() {
                     priimek: priimek,
                     uporabniskoIme: uporabniskoIme,
                 }
+
+                axios.post(`/api/skrbnik`, novSkrbnik).then();
         
                 let seznam = [ ...seznamSkrbnikov ];
                 seznam.push(novSkrbnik);
@@ -144,6 +157,8 @@ function Skrbniki() {
 
         let seznam = [ ...seznamSkrbnikov ];
         let index = seznam.indexOf(el);
+
+        axios.delete(`/api/skrbnik/${seznam[index].id}`).then();
 
         seznam.splice(index, 1);
         setSeznamSkrbnikov(seznam);
