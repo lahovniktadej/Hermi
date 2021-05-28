@@ -3,14 +3,14 @@ package si.hermi.nalogi.dto;
 public class VoziloDto {
     private String naziv;
 
-    private String registerskaStevilka;
+    private String registrskaStevilka;
 
     public VoziloDto() {
     }
 
-    public VoziloDto(String naziv, String registerskaStevilka) {
+    public VoziloDto(String naziv, String registrskaStevilka) {
         this.naziv = naziv;
-        this.registerskaStevilka = registerskaStevilka;
+        this.registrskaStevilka = registrskaStevilka;
     }
 
     public String getNaziv() {
@@ -22,10 +22,10 @@ public class VoziloDto {
     }
 
     public String getRegisterskaStevilka() {
-        return registerskaStevilka;
+        return registrskaStevilka;
     }
 
     public void setRegisterskaStevilka(String registerskaStevilka) {
-        this.registerskaStevilka = registerskaStevilka;
+        this.registrskaStevilka = registerskaStevilka;
     }
 }

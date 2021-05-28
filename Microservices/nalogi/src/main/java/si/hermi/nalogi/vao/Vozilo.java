@@ -13,11 +13,14 @@ public class Vozilo {
 
     private String naziv;
 
+    private String registrskaStevilka;
+
     public Vozilo() {
     }
 
-    public Vozilo(String naziv) {
+    public Vozilo(String naziv, String registrskaStevilka) {
         this.naziv = naziv;
+        this.registrskaStevilka = registrskaStevilka;
     }
 
     public int getId() {
@@ -34,5 +37,13 @@ public class Vozilo {
 
     public void setNaziv(String naziv) {
         this.naziv = naziv;
+    }
+
+    public String getRegisterskaStevilka() {
+        return registrskaStevilka;
+    }
+
+    public void setRegisterskaStevilka(String registerskaStevilka) {
+        this.registrskaStevilka = registerskaStevilka;
     }
 }
