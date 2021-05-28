@@ -18,6 +18,7 @@ import {
     Form,
     Input,
     Button,
+    Modal,
 } from "reactstrap";
 
 function Vozila() {
@@ -27,6 +28,9 @@ function Vozila() {
 
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
+
+    const [modal, setModal] = React.useState(false);
+    const [izbranoVozilo, setIzbranoVozilo] = React.useState(null);
 
     React.useEffect(() => {
         axios.get(`/api/vozilo`)
@@ -113,16 +117,21 @@ function Vozila() {
         setEditing(false);
     }
 
-    const handleRemoveVehicle = (el, e) => {
-        e.preventDefault();
+    const handleRemoveModal = (el, e) => {
+        setModal(true);
+        setIzbranoVozilo(el);
+    }
 
+
+    const handleRemoveVehicle = () => {
         let seznam = [ ...seznamVozil ];
-        let index = seznam.indexOf(el);
+        let index = seznam.indexOf(izbranoVozilo);
 
         axios.delete(`/api/vozilo/${seznam[index].id}`).then();
 
         seznam.splice(index, 1);
         setSeznamVozil(seznam);
+        setModal(false);
     }
 
     const tableRow = (el) => {
@@ -143,7 +152,31 @@ function Vozila() {
                         </DropdownToggle>
                         <DropdownMenu className="dropdown-menu-arrow" right>
                             <DropdownItem onClick={(e) => handleEditVehicle(el, e)}> Uredi </DropdownItem>
-                            <DropdownItem className="text-red" onClick={(e) => handleRemoveVehicle(el, e)}> Odstrani </DropdownItem>
+                            <DropdownItem className="text-red" onClick={(e) => handleRemoveModal(el, e)}> Odstrani </DropdownItem>
+                            <Modal className="modal-dialog-centered modal-danger" contentClassName="bg-gradient-danger" isOpen={modal} toggle={() => { return null; }}>
+                                <div className="modal-header">
+                                    <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => { setModal(false); }}>
+                                        <span aria-hidden={true}>×</span>
+                                    </button>
+                                </div>
+                                <div className="modal-body">
+                                    <div className="py-3 text-center">
+                                        <i className="ni ni-bell-55 ni-3x" />
+                                        <h4 className="heading mt-4">Pozor!</h4>
+                                        <p>
+                                            Ali res želite odstraniti izbrano vozilo ({izbranoVozilo ? izbranoVozilo.naziv : null})?
+                                        </p>
+                                    </div>
+                                </div>
+                                <div className="modal-footer">
+                                    <Button className="btn-white" color="default" type="button" onClick={handleRemoveVehicle}>
+                                        Da
+                                    </Button>
+                                    <Button className="text-white ml-auto" color="link" data-dismiss="modal" type="button" onClick={() => { setModal(false); }}>
+                                        Ne
+                                    </Button>
+                                </div>
+                            </Modal>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
