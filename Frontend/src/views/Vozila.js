@@ -1,4 +1,5 @@
 import React from 'react';
+import axios from 'axios';
 
 import {
     Card,
@@ -19,41 +20,21 @@ import {
     Button,
 } from "reactstrap";
 
-const data = [
-    {
-        naziv: "avto",
-        registrskaStevilka: "MB 56 528"
-        
-    },
-    {
-        naziv: "avto",
-        registrskaStevilka: "MB 56 528"
-        
-    },
-    {
-        naziv: "avto",
-        registrskaStevilka: "MB 56 528"
-        
-    },
-    {
-        naziv: "avto",
-        registrskaStevilka: "MB 56 528"
-        
-    },
-    {
-        naziv: "avto",
-        registrskaStevilka: "MB 56 528"
-        
-    },
-];
-
 function Vozila() {
     const [naziv, setNaziv] = React.useState("");
     const [registrska, setRegistrska] = React.useState("");
-    const [seznamVozil, setSeznamVozil] = React.useState(data);
+    const [seznamVozil, setSeznamVozil] = React.useState([]);
 
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
+
+    React.useEffect(() => {
+        axios.get(`/api/vozilo`)
+            .then((res) => {
+                const vozila = res.data;
+                setSeznamVozil(vozila);
+            });
+    }, []);
 
     const handleChangeNaziv = event => {
         setNaziv(event.target.value);
@@ -73,6 +54,8 @@ function Vozila() {
                     registrskaStevilka: registrska ? registrska : null,
                 };
 
+                axios.put(`/api/vozilo/${seznam[editIndex].id}`, vozilo).then();
+
                 seznam[editIndex] = vozilo;
                 setSeznamVozil(seznam);
 
@@ -90,6 +73,8 @@ function Vozila() {
                     naziv: naziv,
                     registrskaStevilka: registrska ? registrska : null,
                 };
+
+                axios.post(`/api/vozilo`, novoVozilo).then();
     
                 let seznam = [ ...seznamVozil ];
                 seznam.push(novoVozilo);
@@ -133,6 +118,8 @@ function Vozila() {
 
         let seznam = [ ...seznamVozil ];
         let index = seznam.indexOf(el);
+
+        axios.delete(`/api/vozilo/${seznam[index].id}`).then();
 
         seznam.splice(index, 1);
         setSeznamVozil(seznam);

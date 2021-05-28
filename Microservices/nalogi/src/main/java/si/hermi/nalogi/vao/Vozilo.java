@@ -39,11 +39,11 @@ public class Vozilo {
         this.naziv = naziv;
     }
 
-    public String getRegisterskaStevilka() {
+    public String getRegistrskaStevilka() {
         return registrskaStevilka;
     }
 
-    public void setRegisterskaStevilka(String registerskaStevilka) {
-        this.registrskaStevilka = registerskaStevilka;
+    public void setRegistrskaStevilka(String registrskaStevilka) {
+        this.registrskaStevilka = registrskaStevilka;
     }
 }
