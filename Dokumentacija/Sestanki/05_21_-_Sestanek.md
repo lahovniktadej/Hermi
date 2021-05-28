@@ -16,6 +16,6 @@
 - Ekipo in potni nalog (?) lahko združimo v eno entiteto
 
 3. ER model
-<p align="center"><img src="Images/sestanek_21_05.png"></p>
+<p align="center"><img src="Images/popravek_sestanek_21_05.png"></p>
 
 
