@@ -21,6 +21,8 @@ import {
     Modal,
 } from "reactstrap";
 
+import Header from 'components/Headers/Header';
+
 function Skrbniki() {
     const [ime, setIme] = React.useState("");
     const [priimek, setPriimek] = React.useState("");
@@ -216,8 +218,8 @@ function Skrbniki() {
 
     return (
         <>
-            <Container className={"management-container"} fluid>
-                <h1>Skrbniki</h1>
+            <Header />
+            <Container className="mt--7" fluid style={{ paddingRight: "15px", paddingLeft: "10px" }}>
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">

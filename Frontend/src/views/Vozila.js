@@ -21,6 +21,8 @@ import {
     Modal,
 } from "reactstrap";
 
+import Header from 'components/Headers/Header';
+
 function Vozila() {
     const [naziv, setNaziv] = React.useState("");
     const [registrska, setRegistrska] = React.useState("");
@@ -205,8 +207,8 @@ function Vozila() {
 
     return (
         <>
-            <Container fluid className={"management-container"}>
-                <h1>Vozila</h1>
+            <Header />
+            <Container className="mt--7" fluid style={{ paddingRight: "10px", paddingLeft: "10px" }}>
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">

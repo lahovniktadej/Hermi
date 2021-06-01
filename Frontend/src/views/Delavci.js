@@ -223,8 +223,7 @@ function Delavci() {
     return (
         <>
             <Header />
-            <Container className="mt--7" fluid>
-                <h1>Delavci</h1>
+            <Container className="mt--7" fluid style={{ paddingRight: "10px", paddingLeft: "15px" }}>
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">

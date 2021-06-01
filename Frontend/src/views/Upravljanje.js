@@ -1,5 +1,10 @@
 import React from 'react';
 
+import {
+    Row,
+    Col,
+} from "reactstrap";
+
 import Delavci from "views/Delavci";
 import Skrbniki from "views/Skrbniki";
 import Vozila from "views/Vozila";
@@ -7,13 +12,17 @@ import Vozila from "views/Vozila";
 function Upravljanje() {
     return (
         <> 
-            <Delavci />
-            <hr className="my-3" />
-
-            <Vozila />
-            <hr className="my-3"  />
-
-            <Skrbniki />
+            <Row>
+                <Col>
+                    <Delavci />
+                </Col>
+                <Col>
+                    <Vozila />
+                </Col>
+                <Col>
+                    <Skrbniki />
+                </Col>
+            </Row>
         </>
     );
 };
