@@ -23,8 +23,7 @@ public class SkrbnikController {
         return skrbnikRepository.findAll();
     }
     @GetMapping("/{id}")
-    public @ResponseBody
-    ResponseEntity getSkrbnik(@PathVariable int id) {
+    public @ResponseBody ResponseEntity getSkrbnik(@PathVariable int id) {
         Optional<Skrbnik> skrbnikOpt = skrbnikRepository.findById(id);
         if (skrbnikOpt.isPresent()) {
             SkrbnikDto skrbnikDto = modelMapper.map(skrbnikOpt.get(), SkrbnikDto.class);

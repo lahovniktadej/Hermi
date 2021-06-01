@@ -1,5 +1,6 @@
 package si.hermi.nalogi.dto;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import si.hermi.nalogi.vao.Ekipa;
 import si.hermi.nalogi.vao.Skrbnik;
 
@@ -12,8 +13,10 @@ public class DelovniNalogDto {
 
     private String objekt;
 
+    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date zacetek;
 
+    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date konec;
 
     private boolean status;

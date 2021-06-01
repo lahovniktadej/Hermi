@@ -11,7 +11,7 @@ public class Ekipa {
     private int id;
 
     @ManyToMany
-    private List<Delavec> delavec;
+    private List<Delavec> delavci;
 
     @OneToOne
     private Delavec sofer;
@@ -129,12 +129,12 @@ public class Ekipa {
         this.odsotnostDelavca = odsotnostDelavca;
     }
 
-    public List<Delavec> getDelavec() {
-        return delavec;
+    public List<Delavec> getDelavci() {
+        return delavci;
     }
 
-    public void setDelavec(List<Delavec> delavec) {
-        this.delavec = delavec;
+    public void setDelavci(List<Delavec> delavec) {
+        this.delavci = delavec;
     }
 
     public Delavec getSofer() {

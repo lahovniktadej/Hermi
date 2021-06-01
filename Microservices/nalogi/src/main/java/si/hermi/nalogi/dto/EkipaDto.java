@@ -7,7 +7,7 @@ import java.util.Date;
 import java.util.List;
 
 public class EkipaDto {
-    private List<Delavec> delavec;
+    private List<Delavec> delavci;
 
     private Delavec sofer;
 
@@ -39,8 +39,8 @@ public class EkipaDto {
     public EkipaDto() {
     }
 
-    public EkipaDto(List<Delavec> delavec, Delavec sofer, Date datum, Date start, Date konec, Date pricetekDela, Date konecDela, float netoDelo, float netoMontaza, Date odsotnostSoferja, Date odsotnostDelavca) {
-        this.delavec = delavec;
+    public EkipaDto(List<Delavec> delavci, Delavec sofer, Date datum, Date start, Date konec, Date pricetekDela, Date konecDela, float netoDelo, float netoMontaza, Date odsotnostSoferja, Date odsotnostDelavca) {
+        this.delavci = delavci;
         this.sofer = sofer;
         this.datum = datum;
         this.start = start;
@@ -53,12 +53,12 @@ public class EkipaDto {
         this.odsotnostDelavca = odsotnostDelavca;
     }
 
-    public List<Delavec> getDelavec() {
-        return delavec;
+    public List<Delavec> getDelavci() {
+        return delavci;
     }
 
-    public void setDelavec(List<Delavec> delavec) {
-        this.delavec = delavec;
+    public void setDelavci(List<Delavec> delavci) {
+        this.delavci = delavci;
     }
 
     public Delavec getSofer() {

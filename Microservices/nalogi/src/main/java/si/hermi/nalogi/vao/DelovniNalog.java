@@ -12,7 +12,7 @@ public class DelovniNalog {
     @OneToOne
     private Skrbnik skrbnik;
 
-    private String sirfa;
+    private String sifra;
 
     private String naziv;
 
@@ -33,7 +33,7 @@ public class DelovniNalog {
     public DelovniNalog(int id, Skrbnik skrbnik, String sirfa, String naziv, Date zacetek, Date konec, Boolean status, Ekipa ekipa, String objekt) {
         this.id = id;
         this.skrbnik = skrbnik;
-        this.sirfa = sirfa;
+        this.sifra = sirfa;
         this.naziv = naziv;
         this.zacetek = zacetek;
         this.konec = konec;
@@ -50,12 +50,12 @@ public class DelovniNalog {
         this.id = id;
     }
 
-    public String getSirfa() {
-        return sirfa;
+    public String getSifra() {
+        return sifra;
     }
 
-    public void setSirfa(String sirfa) {
-        this.sirfa = sirfa;
+    public void setSifra(String sirfa) {
+        this.sifra = sirfa;
     }
 
     public String getNaziv() {

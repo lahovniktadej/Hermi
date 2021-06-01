@@ -29,7 +29,7 @@ public class EkipaController {
         Optional<Ekipa> ekipaOpt = ekipaRepository.findById(id);
         if (ekipaOpt.isPresent()) {
             EkipaDto ekipaDto = modelMapper.map(ekipaOpt.get(), EkipaDto.class);
-            return ResponseEntity.ok(ekipaDto.toString());
+            return ResponseEntity.ok(ekipaDto);
         }
         return ResponseEntity.badRequest().build();
     }
