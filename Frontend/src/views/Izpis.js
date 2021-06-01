@@ -162,7 +162,7 @@ function Izpis() {
             iskaniPodatki = iskaniPodatki.filter((podatek) => ( new Date(obdobjeOD) <= new Date(podatek.datum) && new Date(obdobjeDO) >= new Date(podatek.datum)) === true); 
                
         if(delavecChecked){
-             let iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer === delavec);
+             iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer === delavec);
              let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{return(iskanDelavec===delavec);})) == false); //vem da je tag annoying ampak zaenkrat s tremi ne dela, ne dodajat, hvala <3
              let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
              iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
@@ -394,7 +394,7 @@ function Izpis() {
                         </UncontrolledDropdown>
                         <Button color="danger" type="submit">Filtriraj</Button>
                     </Form><br/>                      
-                    <Table className="align-items-center table-flush" responsive>
+                    <Table className="align-items-center table-flush text-center" responsive >
                         <thead className="thead-light">
                         <tr>
                             <th scope="col">Status</th>
