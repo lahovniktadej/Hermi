@@ -9,10 +9,10 @@ public class DelovniNalog {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne
+    @OneToOne
     private Skrbnik skrbnik;
 
-    private int sirfa;
+    private String sirfa;
 
     private String naziv;
 
@@ -22,15 +22,24 @@ public class DelovniNalog {
 
     private Boolean status;
 
+    @ManyToOne
+    private Ekipa ekipa;
+
+    private String objekt;
+
     public DelovniNalog() {
     }
 
-    public DelovniNalog(int sirfa, String naziv, Date zacetek, Date konec, Boolean status) {
+    public DelovniNalog(int id, Skrbnik skrbnik, String sirfa, String naziv, Date zacetek, Date konec, Boolean status, Ekipa ekipa, String objekt) {
+        this.id = id;
+        this.skrbnik = skrbnik;
         this.sirfa = sirfa;
         this.naziv = naziv;
         this.zacetek = zacetek;
         this.konec = konec;
         this.status = status;
+        this.ekipa = ekipa;
+        this.objekt = objekt;
     }
 
     public int getId() {
@@ -41,11 +50,11 @@ public class DelovniNalog {
         this.id = id;
     }
 
-    public int getSirfa() {
+    public String getSirfa() {
         return sirfa;
     }
 
-    public void setSirfa(int sirfa) {
+    public void setSirfa(String sirfa) {
         this.sirfa = sirfa;
     }
 
@@ -79,5 +88,29 @@ public class DelovniNalog {
 
     public void setStatus(Boolean status) {
         this.status = status;
+    }
+
+    public Skrbnik getSkrbnik() {
+        return skrbnik;
+    }
+
+    public void setSkrbnik(Skrbnik skrbnik) {
+        this.skrbnik = skrbnik;
+    }
+
+    public Ekipa getEkipa() {
+        return ekipa;
+    }
+
+    public void setEkipa(Ekipa ekipa) {
+        this.ekipa = ekipa;
+    }
+
+    public String getObjekt() {
+        return objekt;
+    }
+
+    public void setObjekt(String objekt) {
+        this.objekt = objekt;
     }
 }

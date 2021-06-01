@@ -10,13 +10,10 @@ public class Ekipa {
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
 
-    @ManyToOne
-    private DelovniNalog delovniNalog;
-
     @ManyToMany
     private List<Delavec> delavec;
 
-    @ManyToOne
+    @OneToOne
     private Delavec sofer;
 
     private Date datum;
@@ -29,8 +26,6 @@ public class Ekipa {
 
     private Date konecDela;
 
-    private String objekt;
-
     private float netoDelo;
 
     private float netoMontaza;
@@ -42,13 +37,12 @@ public class Ekipa {
     public Ekipa() {
     }
 
-    public Ekipa(Date datum, Date start, Date konec, Date pricetekDela, Date konecDela, String objekt, float netoDelo, float netoMontaza, Date odsotnostSoferja, Date odsotnostDelavca) {
+    public Ekipa(Date datum, Date start, Date konec, Date pricetekDela, Date konecDela, float netoDelo, float netoMontaza, Date odsotnostSoferja, Date odsotnostDelavca) {
         this.datum = datum;
         this.start = start;
         this.konec = konec;
         this.pricetekDela = pricetekDela;
         this.konecDela = konecDela;
-        this.objekt = objekt;
         this.netoDelo = netoDelo;
         this.netoMontaza = netoMontaza;
         this.odsotnostSoferja = odsotnostSoferja;
@@ -103,14 +97,6 @@ public class Ekipa {
         this.konecDela = konecDela;
     }
 
-    public String getObjekt() {
-        return objekt;
-    }
-
-    public void setObjekt(String objekt) {
-        this.objekt = objekt;
-    }
-
     public float getNetoDelo() {
         return netoDelo;
     }
@@ -141,5 +127,21 @@ public class Ekipa {
 
     public void setOdsotnostDelavca(Date odsotnostDelavca) {
         this.odsotnostDelavca = odsotnostDelavca;
+    }
+
+    public List<Delavec> getDelavec() {
+        return delavec;
+    }
+
+    public void setDelavec(List<Delavec> delavec) {
+        this.delavec = delavec;
+    }
+
+    public Delavec getSofer() {
+        return sofer;
+    }
+
+    public void setSofer(Delavec sofer) {
+        this.sofer = sofer;
     }
 }

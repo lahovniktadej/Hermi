@@ -1,9 +1,6 @@
 package si.hermi.nalogi.vao;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Delavec {
@@ -20,7 +17,8 @@ public class Delavec {
     public Delavec() {
     }
 
-    public Delavec(String ime, String priimek, String telefonskaStevilka) {
+    public Delavec(int id, String ime, String priimek, String telefonskaStevilka) {
+        this.id = id;
         this.ime = ime;
         this.priimek = priimek;
         this.telefonskaStevilka = telefonskaStevilka;
