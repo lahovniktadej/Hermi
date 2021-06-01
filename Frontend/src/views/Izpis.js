@@ -162,10 +162,9 @@ function Izpis() {
             iskaniPodatki = iskaniPodatki.filter((podatek) => ( new Date(obdobjeOD) <= new Date(podatek.datum) && new Date(obdobjeDO) >= new Date(podatek.datum)) === true); 
                
         if(delavecChecked){
-            iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer === delavec);
+             let iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer === delavec);
              let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{return(iskanDelavec===delavec);})) == false); //vem da je tag annoying ampak zaenkrat s tremi ne dela, ne dodajat, hvala <3
              let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
-
              iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
         }
 
@@ -193,7 +192,7 @@ function Izpis() {
         else
             return "ni ni-check-bold text-green";
     }
-    const pridobiCas = (vrsta) => {
+    const pridobiCasMontaza = (vrsta) => {
         let cas = [];
         if(vrsta==="netoMontaza")
             cas = filtrirani.map((data) => data.netoMontaza);
@@ -401,30 +400,23 @@ function Izpis() {
                             <th scope="col">Status</th>
                             <th scope="col">Šifra</th> 
                             <th scope="col">Datum</th>
-                            <th scope="col">NETO<br/>čas delavca</th>
-                            <th scope="col">Odsotnost<br/> šoferja</th>
-                            <th scope="col">Odsotnost<br/> delavca</th>
-                            <th scope="col">NETO<br/> montaža</th>
-                            <th scope="col">BRUTO <br/>montaža</th>
-                            <th scope="col">Podrobnosti in<br/> časi dela</th>
+                            <th scope="col">NETO čas delavca</th>
+                            <th scope="col">Odsotnost šoferja</th>
+                            <th scope="col">Odsotnost delavca</th>
+                            <th scope="col">NETO montaža</th>
+                            <th scope="col">BRUTO montaža</th>
+                            <th scope="col">Podrobnosti</th>
                             </tr>
                         </thead>
                         <tbody>
                             {filtrirani.map((el) => tableRow(el))}
-                        </tbody>
-                    </Table><br/>
-                    <CardHeader>
-                        <h3>Skupni časi</h3>
-                    </CardHeader>
-                    <Table >
-                        <tbody>
-                            <tr> 
-                                <td>Neto čas montaže: </td>
-                                <td>{pridobiCas("netoMontaza")}</td>
+                            <tr>
+                                <td colspan="2"><b>Skupen neto čas montaže:</b></td>
+                                <td>{pridobiCasMontaza("netoMontaza")}</td>
                             </tr>
-                            <tr> 
-                                <td> Bruto čas montaže: </td>
-                                <td>{pridobiCas("brutoMontaza")}</td>
+                            <tr>
+                                <td colspan="2"><b>Skupen bruto čas montaže:</b> </td>
+                                <td>{pridobiCasMontaza("brutoMontaza")}</td>
                             </tr>
                         </tbody>
                     </Table><br/>
