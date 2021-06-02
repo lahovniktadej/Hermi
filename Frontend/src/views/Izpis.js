@@ -6,8 +6,6 @@ import {
     Media,
     Table,
     Container,
-    Row,
-    Col,
     CardBody,
     FormGroup,
     Form,
@@ -15,7 +13,6 @@ import {
     Button,
     UncontrolledDropdown,
     DropdownToggle,
-    DropdownItem,
     DropdownMenu,
     Modal,
     ModalFooter,
@@ -24,6 +21,7 @@ import {
 } from "reactstrap";
 
 import Header from 'components/Headers/Header';
+import Export  from 'views/ExcelExport';
 
 const data = [
     {
@@ -420,9 +418,9 @@ function Izpis() {
                             </tr>
                         </tbody>
                     </Table><br/>
-                    <Form role="form">
-                        <div className="text-right"><Button color="danger" type="button">Shrani</Button></div>
-                    </Form>
+                    <div className="text-right">
+                        <Export data={filtrirani} bruto={pridobiCasMontaza("brutoMontaza")} neto={pridobiCasMontaza("netoMontaza")}/>
+                        </div>
                     </CardBody>
                 </Card>
             </Container>
