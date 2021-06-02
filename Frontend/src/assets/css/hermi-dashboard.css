@@ -10,3 +10,14 @@
 .nav-item.active-pro {
     background: none;
 }
+
+.management-container {
+    padding-left: 39px !important;
+    padding-right: 39px !important;
+}
+
+.management-card {
+    margin-top: -6rem !important;
+    padding-left: 0px !important;
+    padding-right: 0px !important;
+}

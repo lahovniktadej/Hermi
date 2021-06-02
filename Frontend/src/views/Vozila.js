@@ -208,7 +208,7 @@ function Vozila() {
     return (
         <>
             <Header />
-            <Container className="mt--7" fluid style={{ paddingRight: "10px", paddingLeft: "10px" }}>
+            <Container className="management-card">
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">
