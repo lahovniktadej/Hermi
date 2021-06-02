@@ -14,3 +14,13 @@
 .management-container {
     margin-top: 50px;
 }
+
+/*quick fix */
+.nav-pills .nav-link {
+    border-radius: 0.375rem; 
+    color: #96bf31}
+  
+.nav-pills .nav-link.active,
+.nav-pills .show > .nav-link {
+    color: #fff;
+    background-color: #96bf31; }
