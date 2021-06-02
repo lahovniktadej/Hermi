@@ -208,14 +208,14 @@ function Vozila() {
     return (
         <>
             <Header />
-            <Container className="management-card">
+            <Container className="mt--7" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">
                             <CardHeader className="border-0">
                                 <Row>
                                     <Col>
-                                        <h3 className="mb-0">Seznam vozil</h3>                                
+                                        <h3 className="mb-0">Vozila</h3>                                
                                     </Col>
                                     <Col>
                                         <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
