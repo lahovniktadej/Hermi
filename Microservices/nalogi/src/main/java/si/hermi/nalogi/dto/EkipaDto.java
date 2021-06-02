@@ -1,43 +1,47 @@
-package si.hermi.nalogi.vao;
+package si.hermi.nalogi.dto;
 
-import javax.persistence.*;
+import com.fasterxml.jackson.annotation.JsonFormat;
+import si.hermi.nalogi.vao.Delavec;
+
 import java.util.Date;
 import java.util.List;
 
-@Entity
-public class Ekipa {
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private int id;
-
-    @ManyToMany
+public class EkipaDto {
     private List<Delavec> delavci;
 
-    @OneToOne
     private Delavec sofer;
 
+    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date datum;
 
+    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date start;
 
+    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date konec;
 
+    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date pricetekDela;
 
+    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date konecDela;
 
     private float netoDelo;
 
     private float netoMontaza;
 
+    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date odsotnostSoferja;
 
+    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date odsotnostDelavca;
 
-    public Ekipa() {
+    public EkipaDto() {
     }
 
-    public Ekipa(Date datum, Date start, Date konec, Date pricetekDela, Date konecDela, float netoDelo, float netoMontaza, Date odsotnostSoferja, Date odsotnostDelavca) {
+    public EkipaDto(List<Delavec> delavci, Delavec sofer, Date datum, Date start, Date konec, Date pricetekDela, Date konecDela, float netoDelo, float netoMontaza, Date odsotnostSoferja, Date odsotnostDelavca) {
+        this.delavci = delavci;
+        this.sofer = sofer;
         this.datum = datum;
         this.start = start;
         this.konec = konec;
@@ -49,12 +53,20 @@ public class Ekipa {
         this.odsotnostDelavca = odsotnostDelavca;
     }
 
-    public int getId() {
-        return id;
+    public List<Delavec> getDelavci() {
+        return delavci;
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public void setDelavci(List<Delavec> delavci) {
+        this.delavci = delavci;
+    }
+
+    public Delavec getSofer() {
+        return sofer;
+    }
+
+    public void setSofer(Delavec sofer) {
+        this.sofer = sofer;
     }
 
     public Date getDatum() {
@@ -129,19 +141,4 @@ public class Ekipa {
         this.odsotnostDelavca = odsotnostDelavca;
     }
 
-    public List<Delavec> getDelavci() {
-        return delavci;
-    }
-
-    public void setDelavci(List<Delavec> delavec) {
-        this.delavci = delavec;
-    }
-
-    public Delavec getSofer() {
-        return sofer;
-    }
-
-    public void setSofer(Delavec sofer) {
-        this.sofer = sofer;
-    }
 }

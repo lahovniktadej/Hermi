@@ -23,6 +23,7 @@ public class DelavecController {
     public @ResponseBody Iterable<Delavec> all() {
         return delavecRepository.findAll();
     }
+
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity getDelavec(@PathVariable int id) {
         Optional<Delavec> delavecOpt = delavecRepository.findById(id);

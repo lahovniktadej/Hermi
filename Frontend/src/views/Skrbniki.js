@@ -21,6 +21,8 @@ import {
     Modal,
 } from "reactstrap";
 
+import Header from 'components/Headers/Header';
+
 function Skrbniki() {
     const [ime, setIme] = React.useState("");
     const [priimek, setPriimek] = React.useState("");
@@ -32,6 +34,8 @@ function Skrbniki() {
 
     const [modal, setModal] = React.useState(false);
     const [izbranSkrbnik, setIzbranSkrbnik] = React.useState(null);
+
+    const [addModal, setAddModal] = React.useState(false);
 
     React.useEffect(() => {
         axios.get(`/api/skrbnik`)
@@ -69,14 +73,18 @@ function Skrbniki() {
                 seznam[editIndex] = skrbnik;
                 setSeznamSkrbnikov(seznam);
 
-                //  Reset input fields
-                setIme("");
-                setPriimek("");
-                setUporabniskoIme("");
+                setAddModal(false);
 
-                //  Reset editing status
-                setEditIndex(null);
-                setEditing(false);
+                setTimeout(function() {
+                    //  Reset input fields
+                    setIme("");
+                    setPriimek("");
+                    setUporabniskoIme("");
+        
+                    //  Reset editing status
+                    setEditIndex(null);
+                    setEditing(false);
+                }, 500);
             }
         } else {
             if (ime && priimek && uporabniskoIme) {
@@ -91,11 +99,15 @@ function Skrbniki() {
                 let seznam = [ ...seznamSkrbnikov ];
                 seznam.push(novSkrbnik);
                 setSeznamSkrbnikov(seznam);
-        
-                //  Reset input fields
-                setIme("");
-                setPriimek("");
-                setUporabniskoIme("");
+
+                setAddModal(false);
+
+                setTimeout(function() {
+                    //  Reset input fields
+                    setIme("");
+                    setPriimek("");
+                    setUporabniskoIme("");
+                }, 500);
             } else {
                 //  TO-DO 
                 //  Error notification
@@ -115,17 +127,23 @@ function Skrbniki() {
 
         setEditIndex(index);
         setEditing(true);
+
+        setAddModal(true);
     }
 
     const handleCancel = () => {
-        //  Reset input fields
-        setIme("");
-        setPriimek("");
-        setUporabniskoIme("");
+        setAddModal(false);
 
-        //  Reset editing status
-        setEditIndex(null);
-        setEditing(false);
+        setTimeout(function() {
+            //  Reset input fields
+            setIme("");
+            setPriimek("");
+            setUporabniskoIme("");
+
+            //  Reset editing status
+            setEditIndex(null);
+            setEditing(false);
+        }, 500);
     }
 
     const handleRemoveModal = (el, e) => {
@@ -142,6 +160,10 @@ function Skrbniki() {
         seznam.splice(index, 1);
         setSeznamSkrbnikov(seznam);
         setModal(false);
+    }
+
+    const handleAddModal = () => {
+        setAddModal(true);
     }
 
     const tableRow = (el) => {
@@ -196,13 +218,56 @@ function Skrbniki() {
 
     return (
         <>
-            <Container className={"management-container"} fluid>
-                <h1>Skrbniki</h1>
+            <Header />
+            <Container className="management-card">
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">
                             <CardHeader className="border-0">
-                                <h3 className="mb-0"> Seznam skrbnikov</h3>
+                                <Row>
+                                    <Col>
+                                        <h3 className="mb-0"> Seznam skrbnikov</h3>    
+                                    </Col>
+                                    <Col>
+                                        <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
+                                        <Modal isOpen={addModal} toggle={() => { return null; }}>
+                                            <Card className="shadow bg-secondary">
+                                                <CardHeader>
+                                                    <Row>
+                                                        <Col>
+                                                            <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj skrbnika"}</h3>    
+                                                        </Col>
+                                                        <Col>
+                                                            <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={handleCancel}>
+                                                                <span aria-hidden={true}>×</span>
+                                                            </button>
+                                                        </Col>
+                                                    </Row>
+                                                </CardHeader>
+                                                <CardBody>
+                                                    <Form role="form">
+                                                        <FormGroup className="mb-3">
+                                                            <label className="form-control-label"htmlFor="input-nameS"> Ime </label>
+                                                            <Input id="input-nameS" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime}/>
+                                                        </FormGroup>
+                                                        <FormGroup className="mb-3">
+                                                            <label className="form-control-label"htmlFor="input-surnameS"> Priimek </label>
+                                                            <Input id="input-surnameS" className="form-control-alternative" type="text"onChange={handleChangePriimek} value={priimek}/>
+                                                        </FormGroup>
+                                                        <FormGroup className="mb-3">
+                                                            <label className="form-control-label" htmlFor="input-uporabniskoIme"> Uporabniško ime </label>
+                                                            <Input id="input-uporabniskoIme"className="form-control-alternative" type="text"onChange={handleChangeUporabniskoIme} value={uporabniskoIme}/>
+                                                        </FormGroup>
+                                                        <div className="text-center">
+                                                            <Button color="danger" type="button" onClick={handleAddSkrbnik}>{editing ? "Uredi" : "Dodaj"}</Button>
+                                                            {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
+                                                        </div>
+                                                    </Form>
+                                                </CardBody>
+                                            </Card>
+                                        </Modal>
+                                    </Col>
+                                </Row>
                             </CardHeader>
                             <Table className="align-items-center table-flush" responsive>
                                 <thead className="thead-light">
@@ -216,33 +281,6 @@ function Skrbniki() {
                                     {seznamSkrbnikov.map((el) => tableRow(el))}
                                 </tbody>
                             </Table>
-                        </Card>
-                    </Col>
-                    <Col className="mb-5">
-                        <Card className="shadow bg-secondary">
-                            <CardHeader>
-                                <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj skrbnika"} </h3>
-                            </CardHeader>
-                            <CardBody>
-                                <Form role="form">
-                                    <FormGroup className="mb-3">
-                                        <label className="form-control-label"htmlFor="input-nameS"> Ime </label>
-                                        <Input id="input-nameS" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime}/>
-                                    </FormGroup>
-                                    <FormGroup className="mb-3">
-                                        <label className="form-control-label"htmlFor="input-surnameS"> Priimek </label>
-                                        <Input id="input-surnameS" className="form-control-alternative" type="text"onChange={handleChangePriimek} value={priimek}/>
-                                    </FormGroup>
-                                    <FormGroup className="mb-3">
-                                        <label className="form-control-label" htmlFor="input-uporabniskoIme"> Uporabniško ime </label>
-                                        <Input id="input-uporabniskoIme"className="form-control-alternative" type="text"onChange={handleChangeUporabniskoIme} value={uporabniskoIme}/>
-                                    </FormGroup>
-                                    <div className="text-center">
-                                        <Button color="danger" type="button" onClick={handleAddSkrbnik}>{editing ? "Uredi" : "Dodaj"}</Button>
-                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
-                                    </div>
-                                </Form>
-                            </CardBody>
                         </Card>
                     </Col>
                 </Row>

@@ -32,6 +32,11 @@ services:
         build: ./Microservices/nalogi
         networks:
             - traefik-net
+        environment:
+            MYSQL_HOST: db
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
         depends_on:
             - "db"
         labels:
@@ -49,9 +54,9 @@ services:
         networks:
             - traefik-net
         environment:
-            MYSQL_DATABASE: hermi
-            MYSQL_USER: admin
-            MYSQL_PASSWORD: admin
+            MYSQL_DATABASE: ${MYSQL_DATABASE}
+            MYSQL_USER: ${MYSQL_USER}
+            MYSQL_PASSWORD: ${MYSQL_PASSWORD}
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
 
 networks:

@@ -21,6 +21,8 @@ import {
     Modal,
 } from "reactstrap";
 
+import Header from 'components/Headers/Header';
+
 function Vozila() {
     const [naziv, setNaziv] = React.useState("");
     const [registrska, setRegistrska] = React.useState("");
@@ -31,6 +33,8 @@ function Vozila() {
 
     const [modal, setModal] = React.useState(false);
     const [izbranoVozilo, setIzbranoVozilo] = React.useState(null);
+
+    const [addModal, setAddModal] = React.useState(false);
 
     React.useEffect(() => {
         axios.get(`/api/vozilo`)
@@ -63,13 +67,17 @@ function Vozila() {
                 seznam[editIndex] = vozilo;
                 setSeznamVozil(seznam);
 
-                //  Reset input fields
-                setNaziv("");
-                setRegistrska("");
+                setAddModal(false);
 
-                //  Reset editing status
-                setEditIndex(null);
-                setEditing(false);
+                setTimeout(function() {
+                    //  Reset input fields
+                    setNaziv("");
+                    setRegistrska("");
+
+                    //  Reset editing status
+                    setEditIndex(null);
+                    setEditing(false);
+                }, 500);
             }
         } else {
             if (naziv) {
@@ -83,10 +91,14 @@ function Vozila() {
                 let seznam = [ ...seznamVozil ];
                 seznam.push(novoVozilo);
                 setSeznamVozil(seznam);
-    
-                //  Reset input fields
-                setNaziv("");
-                setRegistrska("");
+
+                setAddModal(false);
+
+                setTimeout(function() {
+                    //  Reset input fields
+                    setNaziv("");
+                    setRegistrska("");
+                }, 500);
             } else {
                 //  TO-DO 
                 //  Error notification
@@ -105,23 +117,28 @@ function Vozila() {
 
         setEditIndex(index);
         setEditing(true);
+
+        setAddModal(true);
     }
 
     const handleCancel = () => {
-        //  Reset input fields
-        setNaziv("");
-        setRegistrska("");
+        setAddModal(false);
 
-        //  Reset editing status
-        setEditIndex(null);
-        setEditing(false);
+        setTimeout(function() {
+            //  Reset input fields
+            setNaziv("");
+            setRegistrska("");
+
+            //  Reset editing status
+            setEditIndex(null);
+            setEditing(false);
+        }, 500);
     }
 
     const handleRemoveModal = (el, e) => {
         setModal(true);
         setIzbranoVozilo(el);
     }
-
 
     const handleRemoveVehicle = () => {
         let seznam = [ ...seznamVozil ];
@@ -132,6 +149,10 @@ function Vozila() {
         seznam.splice(index, 1);
         setSeznamVozil(seznam);
         setModal(false);
+    }
+
+    const handleAddModal = () => {
+        setAddModal(true);
     }
 
     const tableRow = (el) => {
@@ -186,13 +207,50 @@ function Vozila() {
 
     return (
         <>
-            <Container fluid className={"management-container"}>
-                <h1>Vozila</h1>
+            <Header />
+            <Container className="management-card">
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">
                             <CardHeader className="border-0">
-                                <h3 className="mb-0">Seznam vozil</h3>
+                                <Row>
+                                    <Col>
+                                        <h3 className="mb-0">Seznam vozil</h3>                                
+                                    </Col>
+                                    <Col>
+                                        <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
+                                        <Modal isOpen={addModal} toggle={() => { return null; }}>
+                                            <CardHeader>
+                                                <Row>
+                                                    <Col>
+                                                        <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj vozilo"}</h3>    
+                                                    </Col>
+                                                    <Col>
+                                                        <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={handleCancel}>
+                                                            <span aria-hidden={true}>×</span>
+                                                        </button>
+                                                    </Col>
+                                                </Row>
+                                            </CardHeader>
+                                            <CardBody>
+                                                <Form role="form">
+                                                    <FormGroup className="mb-3">
+                                                        <label className="form-control-label" htmlFor="input-naziv">Naziv vozila:</label>
+                                                        <Input id="input-naziv" className="form-control-alternative" type="text" onChange={handleChangeNaziv} value={naziv} />
+                                                    </FormGroup>
+                                                    <FormGroup className="mb-3">
+                                                        <label className="form-control-label" htmlFor="input-regNumber"> Registrska stevilka:</label>
+                                                        <Input id="input-regNumber" className="form-control-alternative" type="text" onChange={handleChangeRegistrska} value={registrska} />
+                                                    </FormGroup>
+                                                    <div className="text-center">
+                                                        <Button color="danger" type="button" onClick={handleAddVozilo}>{editing ? "Uredi" : "Dodaj"}</Button>
+                                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
+                                                    </div>
+                                                </Form>
+                                            </CardBody>
+                                        </Modal>
+                                    </Col>
+                                </Row>
                             </CardHeader>
                             <Table className="align-items-center table-flush" responsive>
                                 <thead className="thead-light">
@@ -206,29 +264,6 @@ function Vozila() {
                                     {seznamVozil.map((el) => tableRow(el))}
                                 </tbody>
                             </Table>
-                        </Card>
-                    </Col>
-                    <Col className="mb-5">
-                        <Card className="shadow bg-secondary">
-                            <CardHeader>
-                            <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj vozilo"}</h3>
-                            </CardHeader>
-                            <CardBody>
-                                <Form role="form">
-                                    <FormGroup className="mb-3">
-                                        <label className="form-control-label" htmlFor="input-naziv">Naziv vozila:</label>
-                                        <Input id="input-naziv" className="form-control-alternative" type="text" onChange={handleChangeNaziv} value={naziv} />
-                                    </FormGroup>
-                                    <FormGroup className="mb-3">
-                                        <label className="form-control-label" htmlFor="input-regNumber"> Registrska stevilka:</label>
-                                        <Input id="input-regNumber" className="form-control-alternative" type="text" onChange={handleChangeRegistrska} value={registrska} />
-                                    </FormGroup>
-                                    <div className="text-center">
-                                        <Button color="danger" type="button" onClick={handleAddVozilo}>{editing ? "Uredi" : "Dodaj"}</Button>
-                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
-                                    </div>
-                                </Form>
-                            </CardBody>
                         </Card>
                     </Col>
                 </Row>

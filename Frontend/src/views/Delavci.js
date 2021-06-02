@@ -36,6 +36,8 @@ function Delavci() {
     const [modal, setModal] = React.useState(false);
     const [izbranDelavec, setIzbranDelavec] = React.useState(null);
 
+    const [addModal, setAddModal] = React.useState(false);
+
     let key = 0;
 
     React.useEffect(() => {
@@ -74,14 +76,18 @@ function Delavci() {
                 seznam[editIndex] = delavec;
                 setSeznamDelavcev(seznam);
 
-                //  Reset input fields
-                setIme("");
-                setPriimek("");
-                setTelefon("");
+                setAddModal(false);
 
-                //  Reset editing status
-                setEditIndex(null);
-                setEditing(false);
+                setTimeout(function() {
+                    //  Reset input fields
+                    setIme("");
+                    setPriimek("");
+                    setTelefon("");
+
+                    //  Reset editing status
+                    setEditIndex(null);
+                    setEditing(false);
+                }, 500);
             }
         } else {
             if (ime && priimek) {
@@ -97,10 +103,14 @@ function Delavci() {
                 seznam.push(novDelavec);
                 setSeznamDelavcev(seznam);
 
-                //  Reset input fields
-                setIme("");
-                setPriimek("");
-                setTelefon("");
+                setAddModal(false);
+
+                setTimeout(function() {
+                    //  Reset input fields
+                    setIme("");
+                    setPriimek("");
+                    setTelefon("");
+                }, 500);
             } else {
                 //  TO-DO 
                 //  Error notification
@@ -120,17 +130,23 @@ function Delavci() {
 
         setEditIndex(index);
         setEditing(true);
+
+        setAddModal(true);
     }
 
     const handleCancel = () => {
-        //  Reset input fields
-        setIme("");
-        setPriimek("");
-        setTelefon("");
+        setAddModal(false);
 
-        //  Reset editing status
-        setEditIndex(null);
-        setEditing(false);
+        setTimeout(function() {
+            //  Reset input fields
+            setIme("");
+            setPriimek("");
+            setTelefon("");
+
+            //  Reset editing status
+            setEditIndex(null);
+            setEditing(false);
+        }, 500);
     }
 
     const handleRemoveModal = (el, e) => {
@@ -148,6 +164,10 @@ function Delavci() {
         setSeznamDelavcev(seznam);
         setModal(false);
         setIzbranDelavec(null);
+    }
+
+    const handleAddModal = () => {
+        setAddModal(true);
     }
 
     const tableRow = (el) => {
@@ -203,13 +223,56 @@ function Delavci() {
     return (
         <>
             <Header />
-            <Container className="mt--7" fluid>
-                <h1>Delavci</h1>
+            <Container className="management-card">
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">
                             <CardHeader className="border-0">
-                                <h3 className="mb-0">Seznam delavcev</h3>
+                                <Row>
+                                    <Col>
+                                        <h3 className="mb-0">Seznam delavcev</h3>
+                                    </Col>
+                                    <Col>
+                                        <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
+                                        <Modal isOpen={addModal} toggle={() => { return null; }}>
+                                            <Card className="shadow bg-secondary">
+                                                <CardHeader>
+                                                    <Row>
+                                                        <Col>
+                                                            <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj delavca"}</h3>    
+                                                        </Col>
+                                                        <Col>
+                                                            <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={handleCancel}>
+                                                                <span aria-hidden={true}>×</span>
+                                                            </button>
+                                                        </Col>
+                                                    </Row>
+                                                </CardHeader>
+                                                <CardBody>
+                                                    <Form role="form">
+                                                        <FormGroup className="mb-3">
+                                                            <label className="form-control-label" htmlFor="input-nameD"> Ime </label>
+                                                            <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
+                                                        </FormGroup>
+                                                        <FormGroup className="mb-3">
+                                                            <label className="form-control-label" htmlFor="input-nameD"> Priimek </label>
+                                                            <Input
+                                                                id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
+                                                        </FormGroup>
+                                                        <FormGroup className="mb-3">
+                                                            <label className="form-control-label" htmlFor="input-phone"> Telefon</label>
+                                                            <Input id="input-phone" className="form-control-alternative" type="text" onChange={handleChangeTelefon} value={telefon} />
+                                                        </FormGroup>
+                                                        <div className="text-center">
+                                                            <Button color="danger" type="button" onClick={handleAddDelavec}>{editing ? "Uredi" : "Dodaj"}</Button>
+                                                            {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
+                                                        </div>
+                                                    </Form>
+                                                </CardBody>
+                                            </Card>
+                                        </Modal>
+                                    </Col>
+                                </Row>
                             </CardHeader>
                             <Table className="align-items-center table-flush" responsive>
                                 <thead className="thead-light">
@@ -223,34 +286,6 @@ function Delavci() {
                                     {seznamDelavcev.map((el) => tableRow(el))}
                                 </tbody>
                             </Table>
-                        </Card>
-                    </Col>
-                    <Col className="mb-5">
-                        <Card className="shadow bg-secondary">
-                            <CardHeader>
-                                <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj delavca"}</h3>
-                            </CardHeader>
-                            <CardBody>
-                                <Form role="form">
-                                    <FormGroup className="mb-3">
-                                        <label className="form-control-label" htmlFor="input-nameD"> Ime </label>
-                                        <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
-                                    </FormGroup>
-                                    <FormGroup className="mb-3">
-                                        <label className="form-control-label" htmlFor="input-nameD"> Priimek </label>
-                                        <Input
-                                            id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
-                                    </FormGroup>
-                                    <FormGroup className="mb-3">
-                                        <label className="form-control-label" htmlFor="input-phone"> Telefon</label>
-                                        <Input id="input-phone" className="form-control-alternative" type="text" onChange={handleChangeTelefon} value={telefon} />
-                                    </FormGroup>
-                                    <div className="text-center">
-                                        <Button color="danger" type="button" onClick={handleAddDelavec}>{editing ? "Uredi" : "Dodaj"}</Button>
-                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
-                                    </div>
-                                </Form>
-                            </CardBody>
                         </Card>
                     </Col>
                 </Row>
