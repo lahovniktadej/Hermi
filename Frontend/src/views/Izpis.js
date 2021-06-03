@@ -21,7 +21,7 @@ import {
 } from "reactstrap";
 
 import Header from 'components/Headers/Header';
-//import Export  from 'views/ExcelExport';
+import Export  from 'views/ExcelExport';
 
 const data = [
     {
@@ -145,11 +145,17 @@ function Izpis() {
     const [statusChecked, setStatusChecked] = useState(false);
     const [sifraChecked, setSifraChecked] = useState(false);
 
+    const[neto, setNeto] = useState();
+    const[bruto, setBruto] = useState();
+    const[montaza, setMontaza] = useState(true);
+
     const handleMontaza = (iskaniPodatki) => {
         let casNeto = iskaniPodatki.map((data) => data.netoMontaza);
         let casBruto = iskaniPodatki.map((data) => data.brutoMontaza);
         let sestevekNeto = casNeto.reduce((a, b) => a + b, 0);
         let sestevekBruto = casBruto.reduce((a, b) => a + b, 0);
+        setNeto(sestevekNeto);
+        setBruto(sestevekBruto);
         return (
             <>
              <tr>
@@ -163,7 +169,9 @@ function Izpis() {
             </>
         );
     }
-    const [izpisCasev, setIzpisCasev] = useState(handleMontaza(vsiPodatki));
+    React.useEffect(() => {
+        handleMontaza(vsiPodatki);
+    }, []);
 
     const handleBody = (el) => {
         toggle();
@@ -182,20 +190,8 @@ function Izpis() {
         brutoDelavec = brutoDelavec.map((bruto) => bruto.reduce((a, b) => a + b, 0));
         let skupenNeto =  netoDelavec.reduce((a, b) => a + b, 0);
         let skupenBruto = (brutoDelavec.reduce((a, b) => a + b, 0)) + (odsotnostSofer.reduce((a, b) => a + b, 0));
-        skupenNeto = parseFloat(skupenNeto);
-
-        return(
-            <>
-            <tr>
-                <td colspan="2"><b>Skupen neto čas delavca {delavec}:</b></td>
-                <td>{skupenNeto}</td>
-            </tr>
-            <tr>
-                <td colspan="2"><b>Skupen bruto čas delavca {delavec}:</b> </td>
-                <td>{skupenBruto}</td>
-            </tr>
-            </>
-        );
+        setNeto(skupenNeto);
+        setBruto(skupenBruto);        
     }
 
     const handleSubmit=(e)=>{
@@ -222,10 +218,13 @@ function Izpis() {
             let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{return(iskanDelavec===delavec);})) == false); //vem da je tag annoying ampak zaenkrat s tremi ne dela, ne dodajat, hvala <3
             let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
             iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
-            setIzpisCasev(handleDelavec(iskaniPodatki));
+            handleDelavec(iskaniPodatki);
+            setMontaza(false);
        }
-       else 
-            setIzpisCasev(handleMontaza(iskaniPodatki));
+       else {
+            handleMontaza(iskaniPodatki);
+            setMontaza(true);
+        }
         
         setFiltriran(iskaniPodatki);
         setKoncan(false);
@@ -448,12 +447,18 @@ function Izpis() {
                         </thead>
                         <tbody>
                             {filtrirani.map((el) => tableRow(el))}
-                           
-                            {izpisCasev}
+                            <tr>
+                               {(montaza) ? <td colspan="2"><b>Skupen neto čas montaže:</b></td> : <td colspan="2"><b>Skupen neto čas delavca {delavec}:</b></td>}
+                                <td>{neto}</td>
+                            </tr>
+                            <tr>
+                                {(montaza) ? <td colspan="2"><b>Skupen bruto čas montaže:</b></td> : <td colspan="2"><b>Skupen bruto čas delavca {delavec}:</b></td>}
+                                <td>{bruto}</td>
+                            </tr>
                         </tbody>
                     </Table><br/>
                     <div className="text-right">
-                       {/**  <Export data={filtrirani} bruto={pridobiCasMontaza("brutoMontaza")} neto={pridobiCasMontaza("netoMontaza")}/>*/}
+                       <Export data={filtrirani} bruto={bruto} neto={neto}/>
                     </div>
                     </CardBody>
                 </Card>

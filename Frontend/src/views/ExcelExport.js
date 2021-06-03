@@ -10,7 +10,7 @@ import {
     ModalBody,
 } from "reactstrap";
 
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
+import ReactHTMLTableToExcel from 'react-html-table-to-excel';
 
 
 function ExcelExport(props) {
@@ -26,7 +26,7 @@ function ExcelExport(props) {
             return { backgroundColor: '#2dce89'};   
     }
     
-    const handleBody = (el) => {
+    const handleBody = () => {
         toggle();
         setModalBody(excel());
     }
