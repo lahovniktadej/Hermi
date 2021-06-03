@@ -21,7 +21,7 @@ import {
 } from "reactstrap";
 
 import Header from 'components/Headers/Header';
-import Export  from 'views/ExcelExport';
+//import Export  from 'views/ExcelExport';
 
 const data = [
     {
@@ -145,12 +145,58 @@ function Izpis() {
     const [statusChecked, setStatusChecked] = useState(false);
     const [sifraChecked, setSifraChecked] = useState(false);
 
+    const handleMontaza = (iskaniPodatki) => {
+        let casNeto = iskaniPodatki.map((data) => data.netoMontaza);
+        let casBruto = iskaniPodatki.map((data) => data.brutoMontaza);
+        let sestevekNeto = casNeto.reduce((a, b) => a + b, 0);
+        let sestevekBruto = casBruto.reduce((a, b) => a + b, 0);
+        return (
+            <>
+             <tr>
+                <td colspan="2"><b>Skupen neto čas montaže:</b></td>
+                <td>{sestevekNeto}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Skupen bruto čas montaže:</b> </td>
+                <td>{sestevekBruto}</td>
+            </tr>
+            </>
+        );
+    }
+    const [izpisCasev, setIzpisCasev] = useState(handleMontaza(vsiPodatki));
+
     const handleBody = (el) => {
         toggle();
         setModalBody(izpisiCase(el));
     }
 
     const toggle = () => setModal(!modal);
+
+    const handleDelavec=(iskaniPodatki)=>{
+        let odsotnostSofer = iskaniPodatki.map((podatek) => {if(podatek.sofer===delavec) { return podatek.odsotnostSoferja } else return 0; });
+        let netoDelavec = iskaniPodatki.map((podatek)=> {return (podatek.delavci.map((iskanDelavec)=>{if(podatek.sofer===delavec) { return podatek.netoCas; } else if(iskanDelavec===delavec || podatek.sofer===delavec) { return podatek.netoCas; }  else return 0; }))})
+        let brutoDelavec = iskaniPodatki.map((podatek)=> podatek.delavci.map((iskanDelavec)=>{if(iskanDelavec===delavec) return podatek.odsotnoDelavca;  else return 0;}))
+        console.log(netoDelavec)
+        netoDelavec = netoDelavec.map((neto) => neto.reduce((a, b) => a + b, 0));
+        console.log(netoDelavec)
+        brutoDelavec = brutoDelavec.map((bruto) => bruto.reduce((a, b) => a + b, 0));
+        let skupenNeto =  netoDelavec.reduce((a, b) => a + b, 0);
+        let skupenBruto = (brutoDelavec.reduce((a, b) => a + b, 0)) + (odsotnostSofer.reduce((a, b) => a + b, 0));
+        skupenNeto = parseFloat(skupenNeto);
+
+        return(
+            <>
+            <tr>
+                <td colspan="2"><b>Skupen neto čas delavca {delavec}:</b></td>
+                <td>{skupenNeto}</td>
+            </tr>
+            <tr>
+                <td colspan="2"><b>Skupen bruto čas delavca {delavec}:</b> </td>
+                <td>{skupenBruto}</td>
+            </tr>
+            </>
+        );
+    }
 
     const handleSubmit=(e)=>{
         e.preventDefault();
@@ -159,13 +205,6 @@ function Izpis() {
         if(obdobjeChecked)
             iskaniPodatki = iskaniPodatki.filter((podatek) => ( new Date(obdobjeOD) <= new Date(podatek.datum) && new Date(obdobjeDO) >= new Date(podatek.datum)) === true); 
                
-        if(delavecChecked){
-             iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer === delavec);
-             let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{return(iskanDelavec===delavec);})) == false); //vem da je tag annoying ampak zaenkrat s tremi ne dela, ne dodajat, hvala <3
-             let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
-             iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
-        }
-
         if(sifraChecked)
             iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.sifraNaloga === sifra));
 
@@ -178,6 +217,15 @@ function Izpis() {
             else if(koncan)
                 iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.status === "končan");
         }
+        if(delavecChecked){
+            iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer === delavec);
+            let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{return(iskanDelavec===delavec);})) == false); //vem da je tag annoying ampak zaenkrat s tremi ne dela, ne dodajat, hvala <3
+            let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
+            iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
+            setIzpisCasev(handleDelavec(iskaniPodatki));
+       }
+       else 
+            setIzpisCasev(handleMontaza(iskaniPodatki));
         
         setFiltriran(iskaniPodatki);
         setKoncan(false);
@@ -189,15 +237,6 @@ function Izpis() {
             return "fas fa-ban text-red";
         else
             return "ni ni-check-bold text-green";
-    }
-    const pridobiCasMontaza = (vrsta) => {
-        let cas = [];
-        if(vrsta==="netoMontaza")
-            cas = filtrirani.map((data) => data.netoMontaza);
-        else if(vrsta==="brutoMontaza")
-            cas = filtrirani.map((data) => data.brutoMontaza);
-        let sestevek = cas.reduce((a, b) => a + b, 0);
-        return sestevek;
     }
     const izpisiCase = (el) => {
         let izpis = vsiPodatki.map((podatek)=>{
@@ -247,8 +286,8 @@ function Izpis() {
                 </th>
                 <td>{new Date(el.datum).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>
                 <td>{el.netoCas}</td>
-                <td>{el.odsotnoDelavca}</td>
                 <td>{el.odsotnostSoferja}</td>
+                <td>{el.odsotnoDelavca}</td>
                 <td>{el.netoMontaza}</td>
                 <td>{el.brutoMontaza}</td>
                 <td>
@@ -314,7 +353,7 @@ function Izpis() {
                         <DropdownMenu>
                             <FormGroup>
                             <div class="alert alert-white">
-                                <Input id="input-date" className="form-control-alternative" type="select" onChange={e => setObjekt(e.target.value)}>
+                                <Input id="input-date" value={iskanObjekt} className="form-control-alternative" type="select" onChange={e => setObjekt(e.target.value)}>
                                     {objekti.map((objekt) => {return(<option>{objekt}</option>);})}
                                 </Input>
                             </div>
@@ -334,7 +373,7 @@ function Izpis() {
                         <DropdownMenu>
                             <FormGroup>
                             <div class="alert alert-white">
-                                <Input className="h4" id="input-date" type="select" onChange={e => setDelavec(e.target.value)}>
+                                <Input className="h4" value={delavec} id="input-date" type="select" onChange={e => setDelavec(e.target.value)}>
                                     {delavci.map((delavec) => {return(<option>{delavec}</option>);})}
                                 </Input>
                             </div>
@@ -354,7 +393,7 @@ function Izpis() {
                         <DropdownMenu>
                             <FormGroup>
                             <div class="alert alert-white">
-                                <Input className="h4" id="input-date" type="select" onChange={e => setSifra(e.target.value)}>
+                                <Input className="h4" value={sifra} id="input-date" type="select" onChange={e => setSifra(e.target.value)}>
                                     {sifre.map((sifra) => {return(<option>{sifra}</option>);})}
                                 </Input>
                             </div>
@@ -391,7 +430,7 @@ function Izpis() {
                         </DropdownMenu>
                         </UncontrolledDropdown>
                         <Button color="danger" type="submit">Filtriraj</Button>
-                    </Form><br/>                      
+                    </Form><br/>                   
                     <Table className="align-items-center table-flush text-center" responsive >
                         <thead className="thead-light">
                         <tr>
@@ -408,19 +447,13 @@ function Izpis() {
                         </thead>
                         <tbody>
                             {filtrirani.map((el) => tableRow(el))}
-                            <tr>
-                                <td colspan="2"><b>Skupen neto čas montaže:</b></td>
-                                <td>{pridobiCasMontaza("netoMontaza")}</td>
-                            </tr>
-                            <tr>
-                                <td colspan="2"><b>Skupen bruto čas montaže:</b> </td>
-                                <td>{pridobiCasMontaza("brutoMontaza")}</td>
-                            </tr>
+                           
+                            {izpisCasev}
                         </tbody>
                     </Table><br/>
                     <div className="text-right">
-                        <Export data={filtrirani} bruto={pridobiCasMontaza("brutoMontaza")} neto={pridobiCasMontaza("netoMontaza")}/>
-                        </div>
+                       {/**  <Export data={filtrirani} bruto={pridobiCasMontaza("brutoMontaza")} neto={pridobiCasMontaza("netoMontaza")}/>*/}
+                    </div>
                     </CardBody>
                 </Card>
             </Container>
