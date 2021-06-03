@@ -11,7 +11,7 @@ import Vozila from "views/Vozila";
 
 function Upravljanje() {
     return (
-        <> 
+        <>
             <Row className="management-container">
                 <Col>
                     <Delavci />

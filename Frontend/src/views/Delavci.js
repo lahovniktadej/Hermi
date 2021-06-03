@@ -20,8 +20,6 @@ import {
     Modal,
 } from "reactstrap";
 
-import Header from 'components/Headers/Header';
-
 import axios from 'axios';
 
 function Delavci() {
@@ -231,8 +229,7 @@ function Delavci() {
 
     return (
         <>
-            <Header />
-            <Container className="mt--7" style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+            <Container style={{ paddingLeft: "0px", paddingRight: "0px" }}>
                 <Row>
                     <Col className="mb-5">
                         <Card className="shadow">
