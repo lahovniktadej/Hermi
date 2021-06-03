@@ -136,7 +136,7 @@ function Izpis() {
     const [iskanObjekt, setObjekt] = useState(objekti[0]);
     const [delavec, setDelavec] = useState(delavci[0]);
     const [sifra, setSifra] = useState(sifre[0]);
-    const [aktiven, setAktiven] = useState(false); 
+    const [aktiven, setAktiven] = useState(true); 
     const [koncan, setKoncan] = useState(false);
 
     const [obdobjeChecked, setObdobjeChecked] = useState(false);
@@ -225,10 +225,7 @@ function Izpis() {
             handleMontaza(iskaniPodatki);
             setMontaza(true);
         }
-        
         setFiltriran(iskaniPodatki);
-        setKoncan(false);
-        setAktiven(false);
     }
 
     const pridobiStatus = (status) => {
@@ -404,7 +401,7 @@ function Izpis() {
                         <DropdownToggle>
                             <FormGroup check>
                                 <label className="h4">
-                                    <Input type="checkbox" name="filter" defaultChecked={statusChecked} onClick={e => setStatusChecked(e.target.checked)}/>
+                                    <Input type="checkbox" name="filter" defaultChecked={statusChecked} onChange={e => setStatusChecked(e.target.checked)}/>
                                     Status
                                 </label>
                                 <i className="fas fa-caret-down"></i>  
@@ -415,13 +412,13 @@ function Izpis() {
                             <div class="alert alert-white">
                                 <FormGroup check>
                                     <label>
-                                        <Input type="radio" name="status" checked={aktiven}  onChange={e => setAktiven(e.target.checked)}/>
+                                        <Input type="radio" name="status" checked={aktiven}  onChange={function(e){setAktiven(e.target.checked); setKoncan(!e.target.checked)}}/>
                                             Aktiven
                                     </label>
                                 </FormGroup>
                                 <FormGroup check>
                                     <label>
-                                        <Input type="radio" name="status" checked={koncan} onChange={e => setKoncan(e.target.checked)}/>
+                                        <Input type="radio" name="status" checked={koncan} onChange={function(e){setAktiven(!e.target.checked); setKoncan(e.target.checked)}}/>
                                             Končan
                                     </label>
                                 </FormGroup>
