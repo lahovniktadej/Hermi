@@ -131,8 +131,8 @@ function Izpis() {
     const [objekti] = useState(["objekt1", "objekt2", "objekt3"]);
     const [sifre] = useState(["sifra1", "sifra2", "sifra3", "sifra4"]);
 
-    const [obdobjeOD, setObdobjeOD] = useState();
-    const [obdobjeDO, setObdobjeDO] = useState();
+    const [obdobjeOD, setObdobjeOD] = useState(new Date().toLocaleDateString('en-CA'));
+    const [obdobjeDO, setObdobjeDO] = useState(new Date().toLocaleDateString('en-CA'));
     const [iskanObjekt, setObjekt] = useState(objekti[0]);
     const [delavec, setDelavec] = useState(delavci[0]);
     const [sifra, setSifra] = useState(sifre[0]);
@@ -331,11 +331,12 @@ function Izpis() {
                             <div class="alert alert-white">
                                 <FormGroup>
                                     <label htmlFor="input-od">OD:</label>
-                                    <Input id="input-od" className="form-control-alternative" type="date" onChange={e => setObdobjeOD(e.target.valueAsDate)}/> 
+                                    <Input id="input-od" defaultValue={obdobjeOD}  className="form-control-alternative" type="date" onChange={e => setObdobjeOD(e.target.value)}/> 
                                 </FormGroup>               
                                 <FormGroup>
+                                    {console.log(obdobjeDO)}
                                     <label htmlFor="input-do">DO:</label>
-                                    <Input id="input-do" className="form-control-alternative" type="date" onChange={e => setObdobjeDO(e.target.valueAsDate)}/> 
+                                    <Input id="input-do" defaultValue={obdobjeDO} className="form-control-alternative" type="date" onChange={e => setObdobjeDO(e.target.value)}/> 
                                 </FormGroup>
                             </div>
                             </DropdownMenu>
