@@ -35,8 +35,8 @@ var routes = [
   },
   */
   {
-    path: "/upravljanje",
-    name: "Upravljanje",
+    path: "/sifranti",
+    name: "Šifranti",
     icon: "fas fa-user-cog text-red",
     component: Upravljanje,
     layout: "/admin",

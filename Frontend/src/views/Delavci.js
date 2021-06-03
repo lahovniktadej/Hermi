@@ -71,23 +71,26 @@ function Delavci() {
                     telefonskaStevilka: telefon,
                 }
 
-                axios.put(`/api/delavec/${seznam[editIndex].id}`, delavec).then();
-
-                seznam[editIndex] = delavec;
-                setSeznamDelavcev(seznam);
-
-                setAddModal(false);
-
-                setTimeout(function() {
-                    //  Reset input fields
-                    setIme("");
-                    setPriimek("");
-                    setTelefon("");
-
-                    //  Reset editing status
-                    setEditIndex(null);
-                    setEditing(false);
-                }, 500);
+                axios.put(`/api/delavec/${seznam[editIndex].id}`, delavec).then(function() {
+                    axios.get(`/api/delavec`)
+                        .then((res) => {
+                            const delavci = res.data;
+                            setSeznamDelavcev(delavci);
+                        });
+    
+                    setAddModal(false);
+    
+                    setTimeout(function() {
+                        //  Reset input fields
+                        setIme("");
+                        setPriimek("");
+                        setTelefon("");
+    
+                        //  Reset editing status
+                        setEditIndex(null);
+                        setEditing(false);
+                    }, 500);
+                });
             }
         } else {
             if (ime && priimek) {
@@ -97,20 +100,22 @@ function Delavci() {
                     telefonskaStevilka: telefon,
                 }
 
-                axios.post(`/api/delavec`, novDelavec).then();
-
-                let seznam = [...seznamDelavcev];
-                seznam.push(novDelavec);
-                setSeznamDelavcev(seznam);
-
-                setAddModal(false);
-
-                setTimeout(function() {
-                    //  Reset input fields
-                    setIme("");
-                    setPriimek("");
-                    setTelefon("");
-                }, 500);
+                axios.post(`/api/delavec`, novDelavec).then(function() {
+                    axios.get(`/api/delavec`)
+                        .then((res) => {
+                            const delavci = res.data;
+                            setSeznamDelavcev(delavci);
+                        });
+    
+                    setAddModal(false);
+    
+                    setTimeout(function() {
+                        //  Reset input fields
+                        setIme("");
+                        setPriimek("");
+                        setTelefon("");
+                    }, 500);
+                });
             } else {
                 //  TO-DO 
                 //  Error notification
@@ -158,12 +163,16 @@ function Delavci() {
         let seznam = [...seznamDelavcev];
         let index = seznam.indexOf(izbranDelavec);
 
-        axios.delete(`/api/delavec/${seznam[index].id}`).then();
+        axios.delete(`/api/delavec/${seznam[index].id}`).then(function() {
+            axios.get(`/api/delavec`)
+                .then((res) => {
+                    const delavci = res.data;
+                    setSeznamDelavcev(delavci);
+                });
 
-        seznam.splice(index, 1);
-        setSeznamDelavcev(seznam);
-        setModal(false);
-        setIzbranDelavec(null);
+            setModal(false);
+            setIzbranDelavec(null);
+        });
     }
 
     const handleAddModal = () => {
@@ -251,11 +260,11 @@ function Delavci() {
                                                 <CardBody>
                                                     <Form role="form">
                                                         <FormGroup className="mb-3">
-                                                            <label className="form-control-label" htmlFor="input-nameD"> Ime </label>
+                                                            <label className="form-control-label" htmlFor="input-nameD"> Ime* </label>
                                                             <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
                                                         </FormGroup>
                                                         <FormGroup className="mb-3">
-                                                            <label className="form-control-label" htmlFor="input-nameD"> Priimek </label>
+                                                            <label className="form-control-label" htmlFor="input-nameD"> Priimek* </label>
                                                             <Input
                                                                 id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
                                                         </FormGroup>

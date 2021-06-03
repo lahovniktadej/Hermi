@@ -37,6 +37,8 @@ function Skrbniki() {
 
     const [addModal, setAddModal] = React.useState(false);
 
+    let key = 0;
+
     React.useEffect(() => {
         axios.get(`/api/skrbnik`)
             .then((res) => {
@@ -68,23 +70,26 @@ function Skrbniki() {
                     uporabniskoIme: uporabniskoIme,
                 }
                 
-                axios.put(`/api/skrbnik/${seznam[editIndex].id}`, skrbnik).then();
-
-                seznam[editIndex] = skrbnik;
-                setSeznamSkrbnikov(seznam);
-
-                setAddModal(false);
-
-                setTimeout(function() {
-                    //  Reset input fields
-                    setIme("");
-                    setPriimek("");
-                    setUporabniskoIme("");
-        
-                    //  Reset editing status
-                    setEditIndex(null);
-                    setEditing(false);
-                }, 500);
+                axios.put(`/api/skrbnik/${seznam[editIndex].id}`, skrbnik).then(function() {
+                    axios.get(`/api/skrbnik`)
+                        .then((res) => {
+                            const skrbniki = res.data;
+                            setSeznamSkrbnikov(skrbniki);
+                        });
+    
+                    setAddModal(false);
+    
+                    setTimeout(function() {
+                        //  Reset input fields
+                        setIme("");
+                        setPriimek("");
+                        setUporabniskoIme("");
+            
+                        //  Reset editing status
+                        setEditIndex(null);
+                        setEditing(false);
+                    }, 500);
+                });
             }
         } else {
             if (ime && priimek && uporabniskoIme) {
@@ -94,20 +99,22 @@ function Skrbniki() {
                     uporabniskoIme: uporabniskoIme,
                 }
 
-                axios.post(`/api/skrbnik`, novSkrbnik).then();
-        
-                let seznam = [ ...seznamSkrbnikov ];
-                seznam.push(novSkrbnik);
-                setSeznamSkrbnikov(seznam);
-
-                setAddModal(false);
-
-                setTimeout(function() {
-                    //  Reset input fields
-                    setIme("");
-                    setPriimek("");
-                    setUporabniskoIme("");
-                }, 500);
+                axios.post(`/api/skrbnik`, novSkrbnik).then(function() {
+                    axios.get(`/api/skrbnik`)
+                        .then((res) => {
+                            const skrbniki = res.data;
+                            setSeznamSkrbnikov(skrbniki);
+                        });
+    
+                    setAddModal(false);
+    
+                    setTimeout(function() {
+                        //  Reset input fields
+                        setIme("");
+                        setPriimek("");
+                        setUporabniskoIme("");
+                    }, 500);
+                });
             } else {
                 //  TO-DO 
                 //  Error notification
@@ -155,11 +162,15 @@ function Skrbniki() {
         let seznam = [ ...seznamSkrbnikov ];
         let index = seznam.indexOf(izbranSkrbnik);
 
-        axios.delete(`/api/skrbnik/${seznam[index].id}`).then();
+        axios.delete(`/api/skrbnik/${seznam[index].id}`).then(function() {
+            axios.get(`/api/skrbnik`)
+                .then((res) => {
+                    const skrbniki = res.data;
+                    setSeznamSkrbnikov(skrbniki);
+                });
 
-        seznam.splice(index, 1);
-        setSeznamSkrbnikov(seznam);
-        setModal(false);
+            setModal(false);
+        });
     }
 
     const handleAddModal = () => {
@@ -168,7 +179,7 @@ function Skrbniki() {
 
     const tableRow = (el) => {
         return (
-            <tr>
+            <tr key={key++}>
                 <th scope="row">
                     <Media className="align-items-center">
                             <span className="mb-0 text-sm">
@@ -247,15 +258,15 @@ function Skrbniki() {
                                                 <CardBody>
                                                     <Form role="form">
                                                         <FormGroup className="mb-3">
-                                                            <label className="form-control-label"htmlFor="input-nameS"> Ime </label>
+                                                            <label className="form-control-label"htmlFor="input-nameS"> Ime* </label>
                                                             <Input id="input-nameS" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime}/>
                                                         </FormGroup>
                                                         <FormGroup className="mb-3">
-                                                            <label className="form-control-label"htmlFor="input-surnameS"> Priimek </label>
+                                                            <label className="form-control-label"htmlFor="input-surnameS"> Priimek* </label>
                                                             <Input id="input-surnameS" className="form-control-alternative" type="text"onChange={handleChangePriimek} value={priimek}/>
                                                         </FormGroup>
                                                         <FormGroup className="mb-3">
-                                                            <label className="form-control-label" htmlFor="input-uporabniskoIme"> Uporabniško ime </label>
+                                                            <label className="form-control-label" htmlFor="input-uporabniskoIme"> Uporabniško ime* </label>
                                                             <Input id="input-uporabniskoIme"className="form-control-alternative" type="text"onChange={handleChangeUporabniskoIme} value={uporabniskoIme}/>
                                                         </FormGroup>
                                                         <div className="text-center">

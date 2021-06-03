@@ -36,6 +36,8 @@ function Vozila() {
 
     const [addModal, setAddModal] = React.useState(false);
 
+    let key = 0;
+
     React.useEffect(() => {
         axios.get(`/api/vozilo`)
             .then((res) => {
@@ -62,22 +64,25 @@ function Vozila() {
                     registrskaStevilka: registrska ? registrska : null,
                 };
 
-                axios.put(`/api/vozilo/${seznam[editIndex].id}`, vozilo).then();
-
-                seznam[editIndex] = vozilo;
-                setSeznamVozil(seznam);
-
-                setAddModal(false);
-
-                setTimeout(function() {
-                    //  Reset input fields
-                    setNaziv("");
-                    setRegistrska("");
-
-                    //  Reset editing status
-                    setEditIndex(null);
-                    setEditing(false);
-                }, 500);
+                axios.put(`/api/vozilo/${seznam[editIndex].id}`, vozilo).then(function() {
+                    axios.get(`/api/vozilo`)
+                        .then((res) => {
+                            const vozila = res.data;
+                            setSeznamVozil(vozila);
+                        });
+    
+                    setAddModal(false);
+    
+                    setTimeout(function() {
+                        //  Reset input fields
+                        setNaziv("");
+                        setRegistrska("");
+    
+                        //  Reset editing status
+                        setEditIndex(null);
+                        setEditing(false);
+                    }, 500);
+                });
             }
         } else {
             if (naziv) {
@@ -86,19 +91,21 @@ function Vozila() {
                     registrskaStevilka: registrska ? registrska : null,
                 };
 
-                axios.post(`/api/vozilo`, novoVozilo).then();
+                axios.post(`/api/vozilo`, novoVozilo).then(function() {
+                    axios.get(`/api/vozilo`)
+                        .then((res) => {
+                            const vozila = res.data;
+                            setSeznamVozil(vozila);
+                        });
     
-                let seznam = [ ...seznamVozil ];
-                seznam.push(novoVozilo);
-                setSeznamVozil(seznam);
-
-                setAddModal(false);
-
-                setTimeout(function() {
-                    //  Reset input fields
-                    setNaziv("");
-                    setRegistrska("");
-                }, 500);
+                    setAddModal(false);
+    
+                    setTimeout(function() {
+                        //  Reset input fields
+                        setNaziv("");
+                        setRegistrska("");
+                    }, 500);
+                });
             } else {
                 //  TO-DO 
                 //  Error notification
@@ -144,11 +151,15 @@ function Vozila() {
         let seznam = [ ...seznamVozil ];
         let index = seznam.indexOf(izbranoVozilo);
 
-        axios.delete(`/api/vozilo/${seznam[index].id}`).then();
+        axios.delete(`/api/vozilo/${seznam[index].id}`).then(function() {
+            axios.get(`/api/vozilo`)
+                .then((res) => {
+                    const vozila = res.data;
+                    setSeznamVozil(vozila);
+                });
 
-        seznam.splice(index, 1);
-        setSeznamVozil(seznam);
-        setModal(false);
+            setModal(false);
+        });
     }
 
     const handleAddModal = () => {
@@ -157,7 +168,7 @@ function Vozila() {
 
     const tableRow = (el) => {
         return (
-            <tr>
+            <tr key={key++}>
                 <th scope="row">
                     <Media className="align-items-center">
                         <span className="mb-0 text-sm">
@@ -235,11 +246,11 @@ function Vozila() {
                                             <CardBody>
                                                 <Form role="form">
                                                     <FormGroup className="mb-3">
-                                                        <label className="form-control-label" htmlFor="input-naziv">Naziv vozila:</label>
+                                                        <label className="form-control-label" htmlFor="input-naziv">Naziv vozila*</label>
                                                         <Input id="input-naziv" className="form-control-alternative" type="text" onChange={handleChangeNaziv} value={naziv} />
                                                     </FormGroup>
                                                     <FormGroup className="mb-3">
-                                                        <label className="form-control-label" htmlFor="input-regNumber"> Registrska stevilka:</label>
+                                                        <label className="form-control-label" htmlFor="input-regNumber">Registrska številka</label>
                                                         <Input id="input-regNumber" className="form-control-alternative" type="text" onChange={handleChangeRegistrska} value={registrska} />
                                                     </FormGroup>
                                                     <div className="text-center">
@@ -256,7 +267,7 @@ function Vozila() {
                                 <thead className="thead-light">
                                     <tr>
                                         <th scope="col">Naziv vozila</th>
-                                        <th scope="col">Registrska stevilka</th>
+                                        <th scope="col">Registrska številka</th>
                                         <th scope="col"/>
                                     </tr>
                                 </thead>
