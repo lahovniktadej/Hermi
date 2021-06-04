@@ -18,6 +18,14 @@
     padding-top: 5rem !important;
 }
 
+.dropdown-item:active {
+    background-color: #f5365c;
+}
+
+.nav-pills .nav-link:hover {
+    color: #96bf31;
+}
+
 /*quick fix */
 .nav-pills .nav-link {
     border-radius: 0.375rem; 
