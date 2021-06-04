@@ -53,7 +53,7 @@ function Vozila() {
         setNaziv(event.target.value);
 
         const RGEX = /^[A-Za-z0-9\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
-        let nazivValid = RGEX.test(event.target.value);
+        const nazivValid = RGEX.test(event.target.value);
 
         if (nazivValid || event.target.value == "") {
             setNazivHint("");
@@ -66,7 +66,7 @@ function Vozila() {
         setRegistrska(event.target.value);
 
         const RGEX = /^[A-Z0-9\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
-        let registrskaValid = RGEX.test(event.target.value);
+        const registrskaValid = RGEX.test(event.target.value);
 
         if (registrskaValid || event.target.value == "") {
             setRegistrskaHint("");
