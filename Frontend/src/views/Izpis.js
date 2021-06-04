@@ -131,19 +131,13 @@ function Izpis() {
     const [objekti] = useState(["objekt1", "objekt2", "objekt3"]);
     const [sifre] = useState(["sifra1", "sifra2", "sifra3", "sifra4"]);
 
-    const [obdobjeOD, setObdobjeOD] = useState(new Date().toLocaleDateString('en-CA'));
-    const [obdobjeDO, setObdobjeDO] = useState(new Date().toLocaleDateString('en-CA'));
-    const [iskanObjekt, setObjekt] = useState(objekti[0]);
-    const [delavec, setDelavec] = useState(delavci[0]);
-    const [sifra, setSifra] = useState(sifre[0]);
-    const [aktiven, setAktiven] = useState(true); 
-    const [koncan, setKoncan] = useState(false);
+    const [obdobjeOD, setObdobjeOD] = useState("");
+    const [obdobjeDO, setObdobjeDO] = useState("");
+    const [iskanObjekt, setObjekt] = useState("X");
+    const [delavec, setDelavec] = useState("X");
+    const [sifra, setSifra] = useState("X");
+    const [status, setStatus] = useState("X");
 
-    const [obdobjeChecked, setObdobjeChecked] = useState(false);
-    const [objektChecked, setObjektChecked] = useState(false);
-    const [delavecChecked, setDelavecChecked] = useState(false);
-    const [statusChecked, setStatusChecked] = useState(false);
-    const [sifraChecked, setSifraChecked] = useState(false);
 
     const[neto, setNeto] = useState();
     const[bruto, setBruto] = useState();
@@ -169,9 +163,6 @@ function Izpis() {
             </>
         );
     }
-    React.useEffect(() => {
-        handleMontaza(vsiPodatki);
-    }, []);
 
     const handleBody = (el) => {
         toggle();
@@ -179,6 +170,11 @@ function Izpis() {
     }
 
     const toggle = () => setModal(!modal);
+
+    React.useEffect(() => {
+        handleMontaza(vsiPodatki);
+        handleFiltriranje();
+    },[iskanObjekt, sifra, delavec, status, obdobjeOD, obdobjeDO]);
 
     const handleDelavec=(iskaniPodatki)=>{
         let odsotnostSofer = iskaniPodatki.map((podatek) => {if(podatek.sofer===delavec) { return podatek.odsotnostSoferja } else return 0; });
@@ -194,37 +190,39 @@ function Izpis() {
         setBruto(skupenBruto);        
     }
 
-    const handleSubmit=(e)=>{
-        e.preventDefault();
+    const handleFiltriranje=()=>{
         let iskaniPodatki = vsiPodatki;
 
-        if(obdobjeChecked)
-            iskaniPodatki = iskaniPodatki.filter((podatek) => ( new Date(obdobjeOD) <= new Date(podatek.datum) && new Date(obdobjeDO) >= new Date(podatek.datum)) === true); 
-               
-        if(sifraChecked)
-            iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.sifraNaloga === sifra));
-
-        if(objektChecked)
-            iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.objekt === iskanObjekt));
-
-        if(statusChecked){
-            if(aktiven)
-                iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.status === "aktiven");
-            else if(koncan)
-                iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.status === "končan");
-        }
-        if(delavecChecked){
+        if(delavec !== "X"){
             iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer === delavec);
             let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{return(iskanDelavec===delavec);})) == false); //vem da je tag annoying ampak zaenkrat s tremi ne dela, ne dodajat, hvala <3
             let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
             iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
+       }
+
+        if(obdobjeDO !== "" && obdobjeOD !== "")
+            iskaniPodatki = iskaniPodatki.filter((podatek) => ( new Date(obdobjeOD) <= new Date(podatek.datum) && new Date(obdobjeDO) >= new Date(podatek.datum)) === true); 
+               
+        if(sifra !== "X")
+            iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.sifraNaloga === sifra));
+
+        if(iskanObjekt !== "X")
+            iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.objekt === iskanObjekt));
+
+        if(status==="Aktiven")
+            iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.status === "aktiven");
+        else if(status==="Končan")
+            iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.status === "končan");
+
+        if(delavec !== "X"){
             handleDelavec(iskaniPodatki);
             setMontaza(false);
-       }
-       else {
+        }
+        else{
             handleMontaza(iskaniPodatki);
             setMontaza(true);
         }
+        
         setFiltriran(iskaniPodatki);
     }
 
@@ -309,48 +307,43 @@ function Izpis() {
             <Container className="mt--7" fluid>
                 <Card className="shadow">
                     <CardHeader className="border-0">
-                        <h3 className="mb-0">Zgodovina ekip</h3>
+                        <h3 className="mb-0">Delo po dnevih</h3>
                     </CardHeader> 
                     <CardBody>
-                    <Form role="form" onSubmit={handleSubmit}>
+                    <Form role="form">
                         <UncontrolledDropdown>
                             <DropdownToggle>
-                            <FormGroup check>
-                                <label className="h4" >            
-                                    <Input type="checkbox" name="filter" defaultChecked={obdobjeChecked} onChange={e => setObdobjeChecked(e.target.checked)}/> 
-                                    Obdobje                        
-                                </label>   
-                                <i className="fas fa-caret-down"></i>    
-                            </FormGroup>
+                            <label className="h4" >            
+                                Obdobje                        
+                            </label>   
+                            <i className="fas fa-caret-down"></i>    
                             </DropdownToggle> 
                             <DropdownMenu center>
                             <div class="alert alert-white">
                                 <FormGroup>
-                                    <label htmlFor="input-od">OD:</label>
-                                    <Input id="input-od" defaultValue={obdobjeOD}  className="form-control-alternative" type="date" onChange={e => setObdobjeOD(e.target.value)}/> 
+                                    <label htmlFor="input-od">OD: {(obdobjeOD !== "") ? <> {new Date(obdobjeOD).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</>: <></>}</label>
+                                    <Input id="input-od" className="form-control-alternative" type="date" onChange={e => setObdobjeOD(e.target.value)}/> 
                                 </FormGroup>               
                                 <FormGroup>
-                                    {console.log(obdobjeDO)}
-                                    <label htmlFor="input-do">DO:</label>
-                                    <Input id="input-do" defaultValue={obdobjeDO} className="form-control-alternative" type="date" onChange={e => setObdobjeDO(e.target.value)}/> 
+                                    <label htmlFor="input-do">DO: {(obdobjeDO !== "") ? <> {new Date(obdobjeDO).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</>: <></>}</label>
+                                    <Input id="input-do"  className="form-control-alternative" type="date" onChange={e => setObdobjeDO(e.target.value)}/> 
                                 </FormGroup>
+                                <Button color="danger" onClick={function(){ setObdobjeOD(""); setObdobjeDO("")}}>Resetiraj</Button>
                             </div>
                             </DropdownMenu>
                         </UncontrolledDropdown>
                         <UncontrolledDropdown>
                         <DropdownToggle>
-                            <FormGroup check>
-                                <label className="h4">
-                                    <Input type="checkbox" name="filter" defaultChecked={objektChecked} onChange={e => setObjektChecked(e.target.checked)}/>
-                                        Objekt
-                                </label>
-                                <i className="fas fa-caret-down"></i>  
-                            </FormGroup>
+                            <label className="h4">
+                                    Objekt
+                            </label>
+                            <i className="fas fa-caret-down"></i>  
                         </DropdownToggle>
                         <DropdownMenu>
                             <FormGroup>
                             <div class="alert alert-white">
                                 <Input id="input-date" value={iskanObjekt} className="form-control-alternative" type="select" onChange={e => setObjekt(e.target.value)}>
+                                    <option>X</option>
                                     {objekti.map((objekt) => {return(<option>{objekt}</option>);})}
                                 </Input>
                             </div>
@@ -359,18 +352,16 @@ function Izpis() {
                         </UncontrolledDropdown>
                         <UncontrolledDropdown>
                         <DropdownToggle>
-                            <FormGroup check>
-                                <label className="h4">
-                                    <Input type="checkbox" name="filter" defaultChecked={delavecChecked} onChange={e => setDelavecChecked(e.target.checked)}/>
-                                        Delavec
-                                </label>
-                                <i className="fas fa-caret-down"></i>  
-                            </FormGroup>
+                            <label className="h4">
+                                    Delavec
+                            </label>
+                            <i className="fas fa-caret-down"></i>  
                         </DropdownToggle>
                         <DropdownMenu>
                             <FormGroup>
                             <div class="alert alert-white">
                                 <Input className="h4" value={delavec} id="input-date" type="select" onChange={e => setDelavec(e.target.value)}>
+                                    <option>X</option>
                                     {delavci.map((delavec) => {return(<option>{delavec}</option>);})}
                                 </Input>
                             </div>
@@ -379,18 +370,16 @@ function Izpis() {
                         </UncontrolledDropdown>
                         <UncontrolledDropdown>
                         <DropdownToggle>
-                            <FormGroup check>
-                                <label className="h4">
-                                    <Input type="checkbox" name="filter" defaultChecked={sifraChecked} onChange={e => setSifraChecked(e.target.checked)}/>
-                                        Šifra
-                                </label>
-                                <i className="fas fa-caret-down"></i>  
-                            </FormGroup>
+                            <label className="h4">
+                                    Šifra
+                            </label>
+                            <i className="fas fa-caret-down"></i>  
                         </DropdownToggle>
                         <DropdownMenu>
                             <FormGroup>
                             <div class="alert alert-white">
                                 <Input className="h4" value={sifra} id="input-date" type="select" onChange={e => setSifra(e.target.value)}>
+                                    <option>X</option>   
                                     {sifre.map((sifra) => {return(<option>{sifra}</option>);})}
                                 </Input>
                             </div>
@@ -399,34 +388,27 @@ function Izpis() {
                         </UncontrolledDropdown>
                         <UncontrolledDropdown>
                         <DropdownToggle>
-                            <FormGroup check>
-                                <label className="h4">
-                                    <Input type="checkbox" name="filter" defaultChecked={statusChecked} onChange={e => setStatusChecked(e.target.checked)}/>
-                                    Status
-                                </label>
-                                <i className="fas fa-caret-down"></i>  
-                            </FormGroup>
+                            <label className="h4">
+                                Status
+                            </label>
+                            <i className="fas fa-caret-down"></i>  
                         </DropdownToggle>
                         <DropdownMenu>
                             <FormGroup>
                             <div class="alert alert-white">
                                 <FormGroup check>
-                                    <label>
-                                        <Input type="radio" name="status" checked={aktiven}  onChange={function(e){setAktiven(e.target.checked); setKoncan(!e.target.checked)}}/>
-                                            Aktiven
-                                    </label>
-                                </FormGroup>
-                                <FormGroup check>
-                                    <label>
-                                        <Input type="radio" name="status" checked={koncan} onChange={function(e){setAktiven(!e.target.checked); setKoncan(e.target.checked)}}/>
-                                            Končan
+                                    <label check>
+                                        <Input type="select" name="status" checked={status}  onChange={e=>setStatus(e.target.value)}>
+                                            <option>X</option> 
+                                            <option>Aktiven</option> 
+                                            <option>Končan</option> 
+                                        </Input>
                                     </label>
                                 </FormGroup>
                             </div>
                             </FormGroup>
                         </DropdownMenu>
                         </UncontrolledDropdown>
-                        <Button color="danger" type="submit">Filtriraj</Button>
                     </Form><br/>                   
                     <Table className="align-items-center table-flush text-center" responsive >
                         <thead className="thead-light">
