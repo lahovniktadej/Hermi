@@ -1,10 +1,10 @@
 package si.hermi.nalogi.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import si.hermi.nalogi.vao.Ekipa;
 import si.hermi.nalogi.vao.Skrbnik;
 
 import java.sql.Date;
+import java.util.List;
 
 public class DelovniNalogDto {
     private String sifra;
@@ -13,22 +13,20 @@ public class DelovniNalogDto {
 
     private String objekt;
 
-    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date zacetek;
 
-    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date konec;
 
     private boolean status;
 
     private Skrbnik skrbnik;
 
-    private Ekipa ekipa;
+    private List<Ekipa> ekipe;
 
     public DelovniNalogDto() {
     }
 
-    public DelovniNalogDto(String sifra, String naziv, String objekt, Date zacetek, Date konec, boolean status, Skrbnik skrbnik, Ekipa ekipa) {
+    public DelovniNalogDto(String sifra, String naziv, String objekt, Date zacetek, Date konec, boolean status, Skrbnik skrbnik, List<Ekipa> ekipe) {
         this.sifra = sifra;
         this.naziv = naziv;
         this.objekt = objekt;
@@ -36,7 +34,7 @@ public class DelovniNalogDto {
         this.konec = konec;
         this.status = status;
         this.skrbnik = skrbnik;
-        this.ekipa = ekipa;
+        this.ekipe = ekipe;
     }
 
     public String getSifra() {
@@ -95,11 +93,25 @@ public class DelovniNalogDto {
         this.skrbnik = skrbnik;
     }
 
-    public Ekipa getEkipa() {
-        return ekipa;
+    public List<Ekipa> getEkipe() {
+        return ekipe;
     }
 
-    public void setEkipa(Ekipa ekipa) {
-        this.ekipa = ekipa;
+    public void setEkipe(List<Ekipa> ekipe) {
+        this.ekipe = ekipe;
+    }
+
+    @Override
+    public String toString() {
+        return "DelovniNalogDto{" +
+                "sifra='" + sifra + '\'' +
+                ", naziv='" + naziv + '\'' +
+                ", objekt='" + objekt + '\'' +
+                ", zacetek=" + zacetek +
+                ", konec=" + konec +
+                ", status=" + status +
+                ", skrbnik=" + skrbnik +
+                ", ekipe=" + ekipe +
+                '}';
     }
 }

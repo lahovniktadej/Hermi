@@ -2,6 +2,7 @@ package si.hermi.nalogi.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import si.hermi.nalogi.dto.SkrbnikDto;
@@ -22,6 +23,12 @@ public class SkrbnikController {
     @GetMapping()public @ResponseBody Iterable<Skrbnik> all() {
         return skrbnikRepository.findAll();
     }
+
+    @GetMapping(params = {"page", "perPage"})
+    public Iterable<Skrbnik> getPage(@RequestParam int page, @RequestParam int perPage) {
+        return skrbnikRepository.findAll(PageRequest.of(page, perPage));
+    }
+
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity getSkrbnik(@PathVariable int id) {
         Optional<Skrbnik> skrbnikOpt = skrbnikRepository.findById(id);

@@ -2,6 +2,7 @@ package si.hermi.nalogi.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import si.hermi.nalogi.dto.DelavecDto;
@@ -22,6 +23,11 @@ public class DelavecController {
     @GetMapping()
     public @ResponseBody Iterable<Delavec> all() {
         return delavecRepository.findAll();
+    }
+
+    @GetMapping(params = {"page", "perPage"})
+    public Iterable<Delavec> getPage(@RequestParam int page, @RequestParam int perPage) {
+        return delavecRepository.findAll(PageRequest.of(page, perPage));
     }
 
     @GetMapping("/{id}")

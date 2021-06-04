@@ -2,6 +2,7 @@ package si.hermi.nalogi.vao;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class DelovniNalog {
@@ -22,23 +23,23 @@ public class DelovniNalog {
 
     private Boolean status;
 
-    @ManyToOne
-    private Ekipa ekipa;
+    @OneToMany(cascade = CascadeType.ALL)
+    private List<Ekipa> ekipe;
 
     private String objekt;
 
     public DelovniNalog() {
     }
 
-    public DelovniNalog(int id, Skrbnik skrbnik, String sirfa, String naziv, Date zacetek, Date konec, Boolean status, Ekipa ekipa, String objekt) {
+    public DelovniNalog(int id, Skrbnik skrbnik, String sifra, String naziv, Date zacetek, Date konec, Boolean status, List<Ekipa> ekipe, String objekt) {
         this.id = id;
         this.skrbnik = skrbnik;
-        this.sifra = sirfa;
+        this.sifra = sifra;
         this.naziv = naziv;
         this.zacetek = zacetek;
         this.konec = konec;
         this.status = status;
-        this.ekipa = ekipa;
+        this.ekipe = ekipe;
         this.objekt = objekt;
     }
 
@@ -98,12 +99,12 @@ public class DelovniNalog {
         this.skrbnik = skrbnik;
     }
 
-    public Ekipa getEkipa() {
-        return ekipa;
+    public List<Ekipa> getEkipe() {
+        return ekipe;
     }
 
-    public void setEkipa(Ekipa ekipa) {
-        this.ekipa = ekipa;
+    public void setEkipe(List<Ekipa> ekipe) {
+        this.ekipe = ekipe;
     }
 
     public String getObjekt() {
@@ -112,5 +113,20 @@ public class DelovniNalog {
 
     public void setObjekt(String objekt) {
         this.objekt = objekt;
+    }
+
+    @Override
+    public String toString() {
+        return "DelovniNalog{" +
+                "id=" + id +
+                ", skrbnik=" + skrbnik +
+                ", sifra='" + sifra + '\'' +
+                ", naziv='" + naziv + '\'' +
+                ", zacetek=" + zacetek +
+                ", konec=" + konec +
+                ", status=" + status +
+                ", ekipe=" + ekipe +
+                ", objekt='" + objekt + '\'' +
+                '}';
     }
 }

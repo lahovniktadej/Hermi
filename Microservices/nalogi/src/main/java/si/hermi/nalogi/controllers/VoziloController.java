@@ -2,6 +2,7 @@ package si.hermi.nalogi.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import si.hermi.nalogi.dto.VoziloDto;
@@ -23,6 +24,12 @@ public class VoziloController {
     public @ResponseBody Iterable<Vozilo> all() {
         return voziloRepository.findAll();
     }
+
+    @GetMapping(params = {"page", "perPage"})
+    public Iterable<Vozilo> getPage(@RequestParam int page, @RequestParam int perPage) {
+        return voziloRepository.findAll(PageRequest.of(page, perPage));
+    }
+
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity getVozilo(@PathVariable int id) {
         Optional<Vozilo> vozilaOpt = voziloRepository.findById(id);

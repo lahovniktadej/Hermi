@@ -2,6 +2,7 @@ package si.hermi.nalogi.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import si.hermi.nalogi.dto.EkipaDto;
@@ -22,6 +23,11 @@ public class EkipaController {
     @GetMapping()
     public Iterable<Ekipa> getAll() {
         return ekipaRepository.findAll();
+    }
+
+    @GetMapping(params = {"page", "perPage"})
+    public Iterable<Ekipa> getPage(@RequestParam int page, @RequestParam int perPage) {
+        return ekipaRepository.findAll(PageRequest.of(page, perPage));
     }
 
     @GetMapping("/{id}")
@@ -45,7 +51,8 @@ public class EkipaController {
     public @ResponseBody ResponseEntity updateEkipa(@PathVariable int id, @RequestBody EkipaDto ekipaDto) {
         Optional<Ekipa> ekipaOpt = ekipaRepository.findById(id);
         if (ekipaOpt.isPresent()) {
-            Ekipa ekipa = modelMapper.map(ekipaDto, Ekipa.class);
+            Ekipa ekipa = ekipaOpt.get();
+            modelMapper.map(ekipaDto, ekipa);
             ekipaRepository.save(ekipa);
             return ResponseEntity.ok().build();
         }
@@ -55,6 +62,6 @@ public class EkipaController {
     @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity deleteEkipa(@PathVariable int id) {
         ekipaRepository.deleteById(id);
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok().build();
     }
 }

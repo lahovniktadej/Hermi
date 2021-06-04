@@ -1,6 +1,5 @@
 package si.hermi.nalogi.dto;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import si.hermi.nalogi.vao.Delavec;
 
 import java.util.Date;
@@ -11,29 +10,22 @@ public class EkipaDto {
 
     private Delavec sofer;
 
-    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date datum;
 
-    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date start;
 
-    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date konec;
 
-    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date pricetekDela;
 
-    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date konecDela;
 
     private float netoDelo;
 
     private float netoMontaza;
 
-    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date odsotnostSoferja;
 
-    @JsonFormat(pattern="HH:mm:ss yyyy-MM-dd")
     private Date odsotnostDelavca;
 
     public EkipaDto() {

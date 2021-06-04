@@ -2,6 +2,7 @@ package si.hermi.nalogi.controllers;
 
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import si.hermi.nalogi.dto.DelovniNalogDto;
@@ -22,6 +23,11 @@ public class DelovniNalogController {
     @GetMapping()
     public Iterable<DelovniNalog> getAll() {
         return delovniNalogRepository.findAll();
+    }
+
+    @GetMapping(params = {"page", "perPage"})
+    public Iterable<DelovniNalog> getPage(@RequestParam int page, @RequestParam int perPage) {
+        return delovniNalogRepository.findAll(PageRequest.of(page, perPage));
     }
 
     @GetMapping("/{id}")
@@ -45,7 +51,8 @@ public class DelovniNalogController {
     public @ResponseBody ResponseEntity updateDelovniNalog(@PathVariable int id, @RequestBody DelovniNalogDto delovniNalogDto) {
         Optional<DelovniNalog> delovniNalogOpt = delovniNalogRepository.findById(id);
         if (delovniNalogOpt.isPresent()) {
-            DelovniNalog delovniNalog = modelMapper.map(delovniNalogDto, DelovniNalog.class);
+            DelovniNalog delovniNalog = delovniNalogOpt.get();
+            modelMapper.map(delovniNalogDto, delovniNalog);
             delovniNalogRepository.save(delovniNalog);
             return ResponseEntity.ok().build();
         }
@@ -55,6 +62,6 @@ public class DelovniNalogController {
     @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity deleteDelovniNalog(@PathVariable int id) {
         delovniNalogRepository.deleteById(id);
-        return ResponseEntity.badRequest().build();
+        return ResponseEntity.ok().build();
     }
 }
