@@ -18,6 +18,7 @@ import {
     Input,
     Button,
     Modal,
+    FormText,
 } from "reactstrap";
 
 import axios from 'axios';
@@ -27,6 +28,10 @@ function Delavci() {
     const [priimek, setPriimek] = React.useState("");
     const [telefon, setTelefon] = React.useState("");
     const [seznamDelavcev, setSeznamDelavcev] = React.useState([]);
+
+    const [imeHint, setImeHint] = React.useState("");
+    const [priimekHint, setPriimekHint] = React.useState("");
+    const [telefonHint, setTelefonHint] = React.useState("");
 
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
@@ -48,19 +53,46 @@ function Delavci() {
 
     const handleChangeIme = event => {
         setIme(event.target.value);
+
+        const RGEX = /^[A-Za-z\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
+        let imeValid = RGEX.test(event.target.value);
+
+        if (imeValid || event.target.value == "") {
+            setImeHint("");
+        } else {
+            setImeHint("Vnos lahko vsebuje le velike in male črke, presledek ter pomišljaj.");
+        }
     }
 
     const handleChangePriimek = event => {
         setPriimek(event.target.value);
+
+        const RGEX = /^[A-Za-z\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
+        let priimekValid = RGEX.test(event.target.value);
+
+        if (priimekValid || event.target.value == "") {
+            setPriimekHint("");
+        } else {
+            setPriimekHint("Vnos lahko vsebuje le velike in male črke, presledek ter pomišljaj.");
+        }
     }
 
     const handleChangeTelefon = event => {
         setTelefon(event.target.value);
+
+        const RGEX = /^[0-9]+$/g;
+        let priimekValid = RGEX.test(event.target.value);
+
+        if (priimekValid || event.target.value == "") {
+            setTelefonHint("");
+        } else {
+            setTelefonHint("Vnos lahko vsebuje le števila.");
+        }
     }
 
     const handleAddDelavec = event => {
         if (editing) {
-            if (ime && priimek) {
+            if (ime && priimek && imeHint == "" && priimekHint == "" && telefonHint == "") {
                 let seznam = [...seznamDelavcev];
 
                 let delavec = {
@@ -91,7 +123,7 @@ function Delavci() {
                 });
             }
         } else {
-            if (ime && priimek) {
+            if (ime && priimek && imeHint == "" && priimekHint == "" && telefonHint == "") {
                 let novDelavec = {
                     ime: ime,
                     priimek: priimek,
@@ -149,6 +181,11 @@ function Delavci() {
             //  Reset editing status
             setEditIndex(null);
             setEditing(false);
+
+            //  Reset field validation
+            setImeHint("");
+            setPriimekHint("");
+            setTelefonHint("");
         }, 500);
     }
 
@@ -257,17 +294,25 @@ function Delavci() {
                                                 <CardBody>
                                                     <Form role="form">
                                                         <FormGroup className="mb-3">
-                                                            <label className="form-control-label" htmlFor="input-nameD"> Ime* </label>
+                                                            <label className="form-control-label" htmlFor="input-nameD">Ime*</label>
                                                             <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
+                                                            <FormText color="danger">
+                                                                {imeHint}
+                                                            </FormText>
                                                         </FormGroup>
                                                         <FormGroup className="mb-3">
-                                                            <label className="form-control-label" htmlFor="input-nameD"> Priimek* </label>
-                                                            <Input
-                                                                id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
+                                                            <label className="form-control-label" htmlFor="input-nameD">Priimek*</label>
+                                                            <Input id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
+                                                            <FormText color="danger">
+                                                                {priimekHint}
+                                                            </FormText>
                                                         </FormGroup>
                                                         <FormGroup className="mb-3">
-                                                            <label className="form-control-label" htmlFor="input-phone"> Telefon</label>
+                                                            <label className="form-control-label" htmlFor="input-phone">Telefon</label>
                                                             <Input id="input-phone" className="form-control-alternative" type="text" onChange={handleChangeTelefon} value={telefon} />
+                                                            <FormText color="danger">
+                                                                {telefonHint}
+                                                            </FormText>
                                                         </FormGroup>
                                                         <div className="text-center">
                                                             <Button color="danger" type="button" onClick={handleAddDelavec}>{editing ? "Uredi" : "Dodaj"}</Button>

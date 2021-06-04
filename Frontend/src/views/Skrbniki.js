@@ -18,6 +18,7 @@ import {
     Input,
     Button,
     Modal,
+    FormText,
 } from "reactstrap";
 
 import axios from 'axios';
@@ -27,6 +28,10 @@ function Skrbniki() {
     const [priimek, setPriimek] = React.useState("");
     const [uporabniskoIme, setUporabniskoIme] = React.useState("");
     const [seznamSkrbnikov, setSeznamSkrbnikov] = React.useState([]);
+
+    const [imeHint, setImeHint] = React.useState("");
+    const [priimekHint, setPriimekHint] = React.useState("");
+    const [uporabniskoImeHint, setUporabniskoImeHint] = React.useState("");
 
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
@@ -48,19 +53,46 @@ function Skrbniki() {
 
     const handleChangeIme = event => {
         setIme(event.target.value);
+
+        const RGEX = /^[A-Za-z\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
+        let imeValid = RGEX.test(event.target.value);
+
+        if (imeValid || event.target.value == "") {
+            setImeHint("");
+        } else {
+            setImeHint("Vnos lahko vsebuje le velike in male črke, presledek ter pomišljaj.");
+        }
     }
 
     const handleChangePriimek = event => {
         setPriimek(event.target.value);
+
+        const RGEX = /^[A-Za-z\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
+        let priimekValid = RGEX.test(event.target.value);
+
+        if (priimekValid || event.target.value == "") {
+            setPriimekHint("");
+        } else {
+            setPriimekHint("Vnos lahko vsebuje le velike in male črke, presledek ter pomišljaj.");
+        }
     }
 
     const handleChangeUporabniskoIme = event => {
         setUporabniskoIme(event.target.value);
+
+        const RGEX = /^[A-Za-z0-9\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\_]+$/g;
+        let uporabniskoImeValid = RGEX.test(event.target.value);
+
+        if (uporabniskoImeValid || event.target.value == "") {
+            setUporabniskoImeHint("");
+        } else {
+            setUporabniskoImeHint("Vnos lahko vsebuje le velike in male črke, števila, podčrtaj ter pomišljaj.");
+        }
     }
 
     const handleAddSkrbnik = event => {
         if (editing) {
-            if (ime && priimek && uporabniskoIme) {
+            if (ime && priimek && uporabniskoIme && imeHint == "" && priimekHint == "" && uporabniskoImeHint == "") {
                 let seznam = [ ...seznamSkrbnikov ];
                 
                 let skrbnik = {
@@ -91,7 +123,7 @@ function Skrbniki() {
                 });
             }
         } else {
-            if (ime && priimek && uporabniskoIme) {
+            if (ime && priimek && uporabniskoIme && imeHint == "" && priimekHint == "" && uporabniskoImeHint == "") {
                 let novSkrbnik = {
                     ime: ime,
                     priimek: priimek,
@@ -149,6 +181,11 @@ function Skrbniki() {
             //  Reset editing status
             setEditIndex(null);
             setEditing(false);
+
+            //  Reset field validation
+            setImeHint("");
+            setPriimekHint("");
+            setUporabniskoImeHint("");
         }, 500);
     }
 
@@ -258,14 +295,23 @@ function Skrbniki() {
                                                         <FormGroup className="mb-3">
                                                             <label className="form-control-label"htmlFor="input-nameS"> Ime* </label>
                                                             <Input id="input-nameS" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime}/>
+                                                            <FormText color="danger">
+                                                                {imeHint}
+                                                            </FormText>
                                                         </FormGroup>
                                                         <FormGroup className="mb-3">
                                                             <label className="form-control-label"htmlFor="input-surnameS"> Priimek* </label>
                                                             <Input id="input-surnameS" className="form-control-alternative" type="text"onChange={handleChangePriimek} value={priimek}/>
+                                                            <FormText color="danger">
+                                                                {priimekHint}
+                                                            </FormText>                                                        
                                                         </FormGroup>
                                                         <FormGroup className="mb-3">
                                                             <label className="form-control-label" htmlFor="input-uporabniskoIme"> Uporabniško ime* </label>
                                                             <Input id="input-uporabniskoIme"className="form-control-alternative" type="text"onChange={handleChangeUporabniskoIme} value={uporabniskoIme}/>
+                                                            <FormText color="danger">
+                                                                {uporabniskoImeHint}
+                                                            </FormText>                                                        
                                                         </FormGroup>
                                                         <div className="text-center">
                                                             <Button color="danger" type="button" onClick={handleAddSkrbnik}>{editing ? "Uredi" : "Dodaj"}</Button>
