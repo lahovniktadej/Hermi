@@ -360,7 +360,7 @@ function Izpis() {
                         <DropdownMenu>
                             <FormGroup>
                             <div class="alert alert-white">
-                                <Input className="h4" value={delavec} id="input-date" type="select" onChange={e => setDelavec(e.target.value)}>
+                                <Input className="form-control-alternative" value={delavec} id="input-date" type="select" onChange={e => setDelavec(e.target.value)}>
                                     <option>X</option>
                                     {delavci.map((delavec) => {return(<option>{delavec}</option>);})}
                                 </Input>
@@ -378,7 +378,7 @@ function Izpis() {
                         <DropdownMenu>
                             <FormGroup>
                             <div class="alert alert-white">
-                                <Input className="h4" value={sifra} id="input-date" type="select" onChange={e => setSifra(e.target.value)}>
+                                <Input className="form-control-alternative" value={sifra} id="input-date" type="select" onChange={e => setSifra(e.target.value)}>
                                     <option>X</option>   
                                     {sifre.map((sifra) => {return(<option>{sifra}</option>);})}
                                 </Input>
@@ -398,7 +398,7 @@ function Izpis() {
                             <div class="alert alert-white">
                                 <FormGroup check>
                                     <label check>
-                                        <Input type="select" name="status" checked={status}  onChange={e=>setStatus(e.target.value)}>
+                                        <Input type="select" className="form-control-alternative" name="status" checked={status}  onChange={e=>setStatus(e.target.value)}>
                                             <option>X</option> 
                                             <option>Aktiven</option> 
                                             <option>Končan</option> 
