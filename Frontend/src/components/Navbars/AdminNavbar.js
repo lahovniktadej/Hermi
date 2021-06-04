@@ -48,14 +48,6 @@ const AdminNavbar = (props) => {
               </DropdownToggle>
               <DropdownMenu className="dropdown-menu-arrow" right>
                 <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-single-02" />
-                  <span>Moj profil</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
-                  <i className="ni ni-settings-gear-65" />
-                  <span>Nastavitve</span>
-                </DropdownItem>
-                <DropdownItem to="/admin/user-profile" tag={Link}>
                   <i className="ni ni-calendar-grid-58" />
                   <span>Zgodovina urejanja</span>
                 </DropdownItem>
