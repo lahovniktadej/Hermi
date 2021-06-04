@@ -54,10 +54,13 @@ function Delavci() {
     const handleChangeIme = event => {
         setIme(event.target.value);
 
-        const RGEX = /^[A-Za-z\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
-        let imeValid = RGEX.test(event.target.value);
+        const RGEX_ALLOWED = /^[A-Za-z\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
+        const RGEX_FORBIDDEN = /[^0-9]+$/g;
 
-        if (imeValid || event.target.value == "") {
+        const allowed = RGEX_ALLOWED.test(event.target.value);
+        const forbidden = RGEX_FORBIDDEN.test(event.target.value);
+
+        if ((allowed && forbidden) || event.target.value == "") {
             setImeHint("");
         } else {
             setImeHint("Vnos lahko vsebuje le velike in male črke, presledek ter pomišljaj.");
@@ -67,10 +70,13 @@ function Delavci() {
     const handleChangePriimek = event => {
         setPriimek(event.target.value);
 
-        const RGEX = /^[A-Za-z\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
-        let priimekValid = RGEX.test(event.target.value);
+        const RGEX_ALLOWED = /^[A-Za-z\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
+        const RGEX_FORBIDDEN = /[^0-9]+$/g;
+        
+        const allowed = RGEX_ALLOWED.test(event.target.value);
+        const forbidden = RGEX_FORBIDDEN.test(event.target.value);
 
-        if (priimekValid || event.target.value == "") {
+        if ((allowed && forbidden) || event.target.value == "") {
             setPriimekHint("");
         } else {
             setPriimekHint("Vnos lahko vsebuje le velike in male črke, presledek ter pomišljaj.");
@@ -81,7 +87,7 @@ function Delavci() {
         setTelefon(event.target.value);
 
         const RGEX = /^[0-9]+$/g;
-        let priimekValid = RGEX.test(event.target.value);
+        const priimekValid = RGEX.test(event.target.value);
 
         if (priimekValid || event.target.value == "") {
             setTelefonHint("");
