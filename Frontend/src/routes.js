@@ -5,9 +5,8 @@ import Register from "views/examples/Register.js";
 import Login from "views/examples/Login.js";
 */
 
-import Nalogi from "views/Nalogi";
+import Nalogi from "views/Nalogi/Nalogi";
 import Izpis from "views/Izpis";
-//  import Ekipe from "views/Ekipe";
 import Upravljanje from "views/Upravljanje";
 
 var routes = [
@@ -25,15 +24,6 @@ var routes = [
     component: Nalogi,
     layout: "/admin",
   },
-  /*
-  {
-    path: "/ekipe",
-    name: "Ekipe",
-    icon: "fas fa-users text-red",
-    component: Ekipe,
-    layout: "/admin",
-  },
-  */
   {
     path: "/sifranti",
     name: "Šifranti",
