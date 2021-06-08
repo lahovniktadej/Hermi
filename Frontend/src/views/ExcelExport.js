@@ -17,10 +17,10 @@ function ExcelExport(props) {
     const toggle = () => setModal(!modal);
 
     const pridobiStatus = (status) => {
-        if(status === "aktiven")
-            return { backgroundColor: '#f5365c'};
+        if(status)
+            return { backgroundColor: '#2dce89'};
         else 
-            return { backgroundColor: '#2dce89'};   
+            return { backgroundColor: '#f5365c'};   
     }
     
     const handleBody = () => {
@@ -61,8 +61,8 @@ function ExcelExport(props) {
                 <td>{el.objekt}</td>  
                 <td>{new Date(el.datum).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>              
                 <td>{el.avto}</td>
-                <td>{el.sofer}</td>
-                <td>{el.delavci.map((delavec)=> <>{delavec} </>)}</td>
+                <td>{el.sofer.ime} {el.sofer.priimek}</td>
+                <td>{el.delavci.map((delavec)=> <>{delavec.ime} {delavec.priimek}<br/></>)}</td>
                 <td>{el.start}</td>
                 <td>{el.pricetekDela}</td>
                 <td>{el.konecDela}</td>

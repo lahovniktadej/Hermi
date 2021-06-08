@@ -152,9 +152,9 @@ function Izpis() {
             iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.objekt === iskanObjekt));
 
         if(status==="Aktiven")
-            iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.status));
-        else if(status==="Končan")
             iskaniPodatki = iskaniPodatki.filter((podatek) => (!podatek.status));
+        else if(status==="Končan")
+            iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.status));
 
         if(delavec !== "X"){
             handleDelavec(iskaniPodatki);
@@ -170,9 +170,9 @@ function Izpis() {
 
     const pridobiStatus = (status) => {
         if(status)
-            return "fas fa-ban text-red";
+            return "fas fa-circle fa-xs text-green";
         else
-            return "ni ni-check-bold text-green";
+            return "fas fa-circle fa-xs text-red";
     }
     const izpisiCase = (el) => {
         let izpis = vsiPodatki.map((podatek)=>{
