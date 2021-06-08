@@ -19,6 +19,7 @@ import {
     ModalFooter,
     ModalHeader,
     ModalBody,
+    CardFooter
 } from "reactstrap";
 
 import Header from 'components/Headers/Header';
@@ -62,10 +63,11 @@ function Izpis() {
                 .then((resEkipe) => {
                     if(resEkipe.data != null){
                         let podatki = [];
-                        nalogi.forEach((nalog)=> nalog.ekipe.forEach((ekipa)=>podatki.push({sifraNaloga:nalog.sifra, objekt:nalog.objekt, datum:ekipa.datum, sofer:ekipa.sofer, delavci:ekipa.delavci, start:ekipa.start, konec:ekipa.konec, pricetekDela:ekipa.pricetekDela, konecDela:ekipa.konecDela, netoCas:ekipa.netoDelo, netoMontaza:ekipa.netoMontaza})));
+                        nalogi.forEach((nalog)=> nalog.ekipe.forEach((ekipa)=>podatki.push({id:ekipa.id, sifraNaloga:nalog.sifra, objekt:nalog.objekt, datum:ekipa.datum, sofer:ekipa.sofer, delavci:ekipa.delavci, start:ekipa.start, konec:ekipa.konec, pricetekDela:ekipa.pricetekDela, konecDela:ekipa.konecDela, netoCas:ekipa.netoDelo, netoMontaza:ekipa.netoMontaza})));
                         let objekti = podatki.map((podatek) => podatek.objekt);
-                        let razlicniObjekti= [...new Set(objekti)];
-                        let sifre = nalogi.map((nalog)=>nalog.sifra);
+                        let razlicniObjekti = [...new Set(objekti)];
+                        let sifre = nalogi.map((nalog)=>nalog.sifra);    
+                        sifre = [...new Set(sifre)];
                         setPodatki(podatki);
                         setFiltriran(podatki);
                         setSifre(sifre);
@@ -74,6 +76,7 @@ function Izpis() {
                 })  
             }
         });
+        
     },[]);
 
     const handleMontaza = (iskaniPodatki) => {
@@ -105,7 +108,11 @@ function Izpis() {
         );
     }
 
-    const handleBody = (el) => {
+    const handleBodySifranti = (el) => {
+        toggle();
+        setModalBody(izpisiSifrante(el));
+    }
+    const handleBodyCasi = (el) => {
         toggle();
         setModalBody(izpisiCase(el));
     }
@@ -179,12 +186,8 @@ function Izpis() {
             if(podatek === el){
                 return(
                     <>
-                    <Table className="align-items-center table-flush" responsive>
+                    <Table className="align-items-center table-flush text-center" responsive>
                         <thead className="thead-light">
-                                <th scope="col">Objekt</th>
-                                <th scope="col">Avto</th>
-                                <th scope="col">Šofer</th>
-                                <th scope="col">Delavci</th>
                                 <th scope="col">START</th>
                                 <th scope="col">Pričetek</th>
                                 <th scope="col">Konec</th>
@@ -192,14 +195,36 @@ function Izpis() {
                         </thead>
                         <tbody>
                             <tr>
-                                <td>{podatek.objekt}</td>
-                                <td>{podatek.avto}</td>
-                                <td>{podatek.sofer.ime} {podatek.sofer.priimek}</td>
-                                <td>{podatek.delavci.map((delavec)=> <>{delavec.ime} {delavec.priimek}<br/></>)}</td>
                                 <td>{podatek.start}</td>
                                 <td>{podatek.pricetekDela}</td>
                                 <td>{podatek.konecDela}</td>
                                 <td>{podatek.konec}</td>
+                            </tr>
+                        </tbody>
+                    </Table>
+                    </>
+                    );
+            }
+            else return null;
+        })
+        return izpis;
+    }
+    const izpisiSifrante = (el) => {
+        let izpis = vsiPodatki.map((podatek)=>{
+            if(podatek === el){
+                return(
+                    <>
+                    <Table className="align-items-center table-flush text-center" responsive>
+                        <thead className="thead-light">
+                                <th scope="col">Avto</th>
+                                <th scope="col">Šofer</th>
+                                <th scope="col">Delavci</th>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>{podatek.avto}</td>
+                                <td>{podatek.sofer.ime} {podatek.sofer.priimek}</td>
+                                <td>{podatek.delavci.map((delavec)=> <>{delavec.ime} {delavec.priimek}<br/></>)}</td>
                             </tr>
                         </tbody>
                     </Table>
@@ -219,25 +244,25 @@ function Izpis() {
                     <Media className="align-items-center">
                         <span className="mb-0 text-sm">{el.sifraNaloga}</span>
                     </Media>
-                </th>
+                </th>    
                 <td>{new Date(el.datum).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>
+                <td>{el.objekt}</td>
+                <td><Button size="sm" center color="secondary" onClick={function(){ handleBodySifranti(el);}}><i class="far fa-eye"></i></Button></td>
+                <td><Button size="sm" center color="secondary" onClick={function(){ handleBodyCasi(el);}}><i class="far fa-eye"></i></Button></td>
                 <td>{el.netoDelo}</td>
                 <td>{el.odsotnostSoferja}</td>
                 <td>{el.odsotnoDelavca}</td>
                 <td>{el.netoMontaza}</td>
                 <td>{el.brutoMontaza}</td>
-                <td>
-                    <Button size="sm" center color="secondary" onClick={function(){ handleBody(el);}}>Poglej</Button>
-                    <Modal isOpen={modal} toggle={toggle} size="lg">
-                        <ModalHeader toggle={toggle}><h2>Podrobnosti</h2></ModalHeader>
-                        <ModalBody>
-                            {modalBody}
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="danger" onClick={toggle}>Zapri</Button>
-                        </ModalFooter>
-                    </Modal>
-                </td>
+                <Modal isOpen={modal} toggle={toggle} size="lg">
+                <ModalHeader toggle={toggle}><h2>Podrobnosti</h2></ModalHeader>
+                <ModalBody>
+                    {modalBody}
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="danger" onClick={toggle}>Zapri</Button>
+                </ModalFooter>
+            </Modal>
             </tr>
      
         );
@@ -351,20 +376,21 @@ function Izpis() {
                             </FormGroup>
                         </DropdownMenu>
                         </UncontrolledDropdown>
-                    </Form><br/>                   
-                    <Table className="align-items-center table-flush text-center" responsive >
+                    </Form> 
+                    </CardBody>                 
+                    <Table className="align-items-center table-flush text-center" responsive>
                         <thead className="thead-light">
-                        <tr>
                             <th scope="col">Status</th>
                             <th scope="col">Šifra</th> 
                             <th scope="col">Datum</th>
-                            <th scope="col">NETO čas delavca</th>
-                            <th scope="col">Odsotnost šoferja</th>
-                            <th scope="col">Odsotnost delavca</th>
-                            <th scope="col">NETO montaža</th>
-                            <th scope="col">BRUTO montaža</th>
-                            <th scope="col">Podrobnosti</th>
-                            </tr>
+                            <th scope="col">Objekt</th>
+                            <th scope="col">Šifranti</th>
+                            <th scope="col">Delovni<br/>časi</th>
+                            <th scope="col">NETO čas<br/>delavca</th>
+                            <th scope="col">Odsotnost<br/>šoferja</th>
+                            <th scope="col">Odsotnost<br/>delavca</th>
+                            <th scope="col">NETO<br/>montaža</th>
+                            <th scope="col">BRUTO<br/>montaža</th>
                         </thead>
                         <tbody>
                             {(filtrirani!=null)?filtrirani.map((el) => tableRow(el)):<></>}
@@ -377,11 +403,12 @@ function Izpis() {
                                 <td>{bruto}</td>
                             </tr>
                         </tbody>
-                    </Table><br/>
-                    <div className="text-right">
-                       <Export data={filtrirani} bruto={bruto} neto={neto}/>
-                    </div>
-                    </CardBody>
+                    </Table>
+                    <CardFooter>
+                        <div className="text-right">
+                        <Export data={filtrirani} bruto={bruto} neto={neto}/>
+                        </div>
+                    </CardFooter>
                 </Card>
             </Container>
         </>
