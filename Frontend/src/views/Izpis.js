@@ -33,9 +33,9 @@ function Izpis() {
     const [modal, setModal] = useState();
     const [modalBody, setModalBody] = useState();
     
-    const [delavci, setDelavci] = useState();
-    const [objekti, setObjekti] = useState();
-    const [sifre, setSifre] = useState();
+    const [delavci, setDelavci] = useState([]);
+    const [objekti, setObjekti] = useState([]);
+    const [sifre, setSifre] = useState([]);
 
     const [obdobjeOD, setObdobjeOD] = useState("");
     const [obdobjeDO, setObdobjeDO] = useState("");
@@ -125,17 +125,15 @@ function Izpis() {
     },[iskanObjekt, sifra, delavec, status, obdobjeOD, obdobjeDO]);
 
     const handleDelavec=(iskaniPodatki)=>{
-        if(delavec != null){
-            let odsotnostSofer = iskaniPodatki.map((podatek) => {if(podatek.sofer===delavec) { return podatek.odsotnostSoferja } else return 0; });
-            let netoDelavec = iskaniPodatki.map((podatek)=> {return (podatek.delavci.map((iskanDelavec)=>{if(podatek.sofer===delavec) { return podatek.netoCas; } else if(iskanDelavec===delavec || podatek.sofer===delavec) { return podatek.netoCas; }  else return 0; }))})
-            let brutoDelavec = iskaniPodatki.map((podatek)=> podatek.delavci.map((iskanDelavec)=>{if(iskanDelavec===delavec) return podatek.odsotnoDelavca;  else return 0;}))
-            netoDelavec = netoDelavec.map((neto) => neto.reduce((a, b) => a + b, 0));
-            brutoDelavec = brutoDelavec.map((bruto) => bruto.reduce((a, b) => a + b, 0));
-            let skupenNeto =  netoDelavec.reduce((a, b) => a + b, 0);
-            let skupenBruto = (brutoDelavec.reduce((a, b) => a + b, 0)) + (odsotnostSofer.reduce((a, b) => a + b, 0));
-            setNeto(skupenNeto);
-            setBruto(skupenBruto);        
-        }
+        let odsotnostSofer = iskaniPodatki.map((podatek) => {if(podatek.sofer===delavec) { return podatek.odsotnostSoferja } else return 0; });
+        let netoDelavec = iskaniPodatki.map((podatek)=> {return (podatek.delavci.map((iskanDelavec)=>{if(podatek.sofer===delavec) { return podatek.netoCas; } else if(iskanDelavec===delavec || podatek.sofer===delavec) { return podatek.netoCas; }  else return 0; }))})
+        let brutoDelavec = iskaniPodatki.map((podatek)=> podatek.delavci.map((iskanDelavec)=>{if(iskanDelavec===delavec) return podatek.odsotnoDelavca;  else return 0;}))
+        netoDelavec = netoDelavec.map((neto) => neto.reduce((a, b) => a + b, 0));
+        brutoDelavec = brutoDelavec.map((bruto) => bruto.reduce((a, b) => a + b, 0));
+        let skupenNeto =  netoDelavec.reduce((a, b) => a + b, 0);
+        let skupenBruto = (brutoDelavec.reduce((a, b) => a + b, 0)) + (odsotnostSofer.reduce((a, b) => a + b, 0));
+        setNeto(skupenNeto);
+        setBruto(skupenBruto);        
     }
 
     const handleFiltriranje=()=>{
@@ -311,7 +309,7 @@ function Izpis() {
                             <div class="alert alert-white">
                                 <Input id="input-date" value={iskanObjekt} className="form-control-alternative" type="select" onChange={e => setObjekt(e.target.value)}>
                                     <option>X</option>
-                                    {(objekti != null)?objekti.map((objekt) => {return(<option>{objekt}</option>);}):<></>}
+                                    {objekti.map((objekt) => {return(<option>{objekt}</option>);})}
                                 </Input>
                             </div>
                             </FormGroup>
@@ -329,7 +327,7 @@ function Izpis() {
                             <div class="alert alert-white">
                                 <Input className="form-control-alternative" value={delavec} id="input-date" type="select" onChange={e => setDelavec(e.target.value)}>
                                     <option>X</option>
-                                    {(delavci != null)?delavci.map((iskanDelavec) => {return(<option>{iskanDelavec.ime} {iskanDelavec.priimek}</option>);}):<></>}
+                                    {delavci.map((iskanDelavec) => {return(<option>{iskanDelavec.ime} {iskanDelavec.priimek}</option>);})}
                                 </Input>
                             </div>
                             </FormGroup>
@@ -347,7 +345,7 @@ function Izpis() {
                             <div class="alert alert-white">
                                 <Input className="form-control-alternative" value={sifra} id="input-date" type="select" onChange={e => setSifra(e.target.value)}>
                                     <option>X</option>   
-                                    {(sifre != null)?sifre.map((sifra) => {return(<option>{sifra}</option>);}): <></>}
+                                    {sifre.map((sifra) => {return(<option>{sifra}</option>);})}
                                 </Input>
                             </div>
                             </FormGroup>
