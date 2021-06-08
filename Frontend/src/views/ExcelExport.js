@@ -104,7 +104,7 @@ function ExcelExport(props) {
                             </tr>
                         </thead>
                         <tbody> 
-                            {props.data.map((el) => tableRow(el))}
+                            {(props.data!=null)?props.data.map((el) => tableRow(el)):<></>}
                             <tr>
                                 <td colspan="2"><b>Skupen neto čas montaže:</b></td>
                                 <td>{props.neto}</td>

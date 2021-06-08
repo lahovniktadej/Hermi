@@ -1,4 +1,5 @@
 import React, {useState} from 'react';
+import axios from 'axios';
 
 import {
     Card,
@@ -23,113 +24,17 @@ import {
 import Header from 'components/Headers/Header';
 import Export  from 'views/ExcelExport';
 
-const data = [
-    {
-        sifraNaloga:"sifra1",
-        objekt: "objekt1",
-        datum: "2021-08-22",
-        avto: "avto",
-        sofer: "delavec1",
-        delavci: ["delavec2", "delavec3"],
-        start: "6:25",
-        pricetekDela: "8:10",
-        konecDela: "13:55",
-        prihod: "16:20",
-        status: "aktiven",
-        netoCas: 8,
-        odsotnostSoferja: 9,
-        odsotnoDelavca: 8,
-        netoMontaza: 23,
-        brutoMontaza: 25
-
-    },
-    {
-        sifraNaloga:"sifra2",
-        objekt: "objekt3",
-        datum: "2021-05-22",
-        avto: "avto",
-        sofer: "delavec1",
-        delavci:  ["delavec3"],
-        start: "6:25",
-        pricetekDela: "8:10",
-        konecDela: "13:55",
-        prihod: "16:20",
-        status: "končan",
-        netoCas: 7,
-        odsotnostSoferja: 9,
-        odsotnoDelavca: 8,
-        netoMontaza: 21,
-        brutoMontaza: 25
-
-    },
-    {
-        sifraNaloga:"sifra3",
-        objekt: "objekt2",
-        datum: "2020-05-22",
-        avto: "avto",
-        sofer: "delavec1",
-        delavci:  ["delavec2", "delavec3"],
-        start: "6:25",
-        pricetekDela: "8:10",
-        konecDela: "13:55",
-        prihod: "16:20",
-        status: "aktiven",
-        netoCas: 7,
-        odsotnostSoferja: 9,
-        odsotnoDelavca: 8,
-        netoMontaza: 21,
-        brutoMontaza: 25
-    },
-    {
-        sifraNaloga:"sifra3",
-        objekt: "objekt1",
-        datum: "2021-05-22",
-        avto: "avto",
-        sofer: "delavec2",
-        delavci:  ["delavec1"],
-        start: "6:25",
-        pricetekDela: "8:10",
-        konecDela: "13:55",
-        prihod: "16:20",
-        status: "končan",
-        netoCas: 8,
-        odsotnostSoferja: 9,
-        odsotnoDelavca: 8,
-        netoMontaza: 23,
-        brutoMontaza: 25
-
-    },
-    {   sifraNaloga:"sifra4",
-        objekt: "objekt2",
-        datum: "2021-05-22",
-        avto: "avto",
-        sofer: "delavec1",
-        delavci: ["delavec2"],
-        start: "6:25",
-        pricetekDela: "8:10",
-        konecDela: "13:55",
-        prihod: "16:20",
-        status: "aktiven",
-        netoCas: 7,
-        odsotnostSoferja: 10,
-        odsotnoDelavca: 8,
-        netoMontaza: 21,
-        brutoMontaza: 25
-
-    },
-];
-
 function Izpis() {
 
-    const [vsiPodatki] = useState(data);
-    const [filtrirani, setFiltriran] = useState(data);
+    const [vsiPodatki, setPodatki] = useState();
+    const [filtrirani, setFiltriran] = useState();
 
     const [modal, setModal] = useState();
     const [modalBody, setModalBody] = useState();
     
-    const [delavci] = useState(["delavec1", "delavec2", "delavec3"]);
-    const [objekti] = useState(["objekt1", "objekt2", "objekt3"]);
-    const [sifre] = useState(["sifra1", "sifra2", "sifra3", "sifra4"]);
+    const [delavci, setDelavci] = useState();
+    const [objekti, setObjekti] = useState();
+    const [sifre, setSifre] = useState();
 
     const [obdobjeOD, setObdobjeOD] = useState("");
     const [obdobjeDO, setObdobjeDO] = useState("");
@@ -143,16 +48,52 @@ function Izpis() {
     const[bruto, setBruto] = useState();
     const[montaza, setMontaza] = useState(true);
 
+    React.useEffect(() => {
+        axios.get(`/api/delavec`)
+        .then((res) => {
+            const delavci = res.data;
+            setDelavci(delavci);
+        });
+        axios.get(`/api/delovniNalog`)
+        .then((res) => {
+            const nalogi = res.data;
+            if(nalogi != null){
+                axios.get(`/api/ekipa`)
+                .then((resEkipe) => {
+                    if(resEkipe.data != null){
+                        let podatki = [];
+                        nalogi.forEach((nalog)=> nalog.ekipe.forEach((ekipa)=>podatki.push({sifraNaloga:nalog.sifra, objekt:nalog.objekt, datum:ekipa.datum, sofer:ekipa.sofer, delavci:ekipa.delavci, start:ekipa.start, konec:ekipa.konec, pricetekDela:ekipa.pricetekDela, konecDela:ekipa.konecDela, netoCas:ekipa.netoDelo, netoMontaza:ekipa.netoMontaza})));
+                        let objekti = podatki.map((podatek) => podatek.objekt);
+                        let razlicniObjekti= [...new Set(objekti)];
+                        let sifre = nalogi.map((nalog)=>nalog.sifra);
+                        setPodatki(podatki);
+                        setFiltriran(podatki);
+                        setSifre(sifre);
+                        setObjekti(razlicniObjekti);
+                    }
+                })  
+            }
+        });
+    },[]);
+
     const handleMontaza = (iskaniPodatki) => {
-        let casNeto = iskaniPodatki.map((data) => data.netoMontaza);
-        let casBruto = iskaniPodatki.map((data) => data.brutoMontaza);
-        let sestevekNeto = casNeto.reduce((a, b) => a + b, 0);
-        let sestevekBruto = casBruto.reduce((a, b) => a + b, 0);
+        let sestevekNeto;
+        let sestevekBruto
+        if(iskaniPodatki!=null){
+            let casNeto = iskaniPodatki.map((data) => data.netoMontaza);
+            let casBruto = iskaniPodatki.map((data) => data.brutoMontaza);
+            sestevekNeto = casNeto.reduce((a, b) => a + b, 0);
+            sestevekBruto = casBruto.reduce((a, b) => a + b, 0);
+        }
+        else{
+            sestevekNeto=0;
+            sestevekBruto=0;
+        }
         setNeto(sestevekNeto);
         setBruto(sestevekBruto);
         return (
             <>
-             <tr>
+            <tr>
                 <td colspan="2"><b>Skupen neto čas montaže:</b></td>
                 <td>{sestevekNeto}</td>
             </tr>
@@ -177,27 +118,28 @@ function Izpis() {
     },[iskanObjekt, sifra, delavec, status, obdobjeOD, obdobjeDO]);
 
     const handleDelavec=(iskaniPodatki)=>{
-        let odsotnostSofer = iskaniPodatki.map((podatek) => {if(podatek.sofer===delavec) { return podatek.odsotnostSoferja } else return 0; });
-        let netoDelavec = iskaniPodatki.map((podatek)=> {return (podatek.delavci.map((iskanDelavec)=>{if(podatek.sofer===delavec) { return podatek.netoCas; } else if(iskanDelavec===delavec || podatek.sofer===delavec) { return podatek.netoCas; }  else return 0; }))})
-        let brutoDelavec = iskaniPodatki.map((podatek)=> podatek.delavci.map((iskanDelavec)=>{if(iskanDelavec===delavec) return podatek.odsotnoDelavca;  else return 0;}))
-        console.log(netoDelavec)
-        netoDelavec = netoDelavec.map((neto) => neto.reduce((a, b) => a + b, 0));
-        console.log(netoDelavec)
-        brutoDelavec = brutoDelavec.map((bruto) => bruto.reduce((a, b) => a + b, 0));
-        let skupenNeto =  netoDelavec.reduce((a, b) => a + b, 0);
-        let skupenBruto = (brutoDelavec.reduce((a, b) => a + b, 0)) + (odsotnostSofer.reduce((a, b) => a + b, 0));
-        setNeto(skupenNeto);
-        setBruto(skupenBruto);        
+        if(delavec != null){
+            let odsotnostSofer = iskaniPodatki.map((podatek) => {if(podatek.sofer===delavec) { return podatek.odsotnostSoferja } else return 0; });
+            let netoDelavec = iskaniPodatki.map((podatek)=> {return (podatek.delavci.map((iskanDelavec)=>{if(podatek.sofer===delavec) { return podatek.netoCas; } else if(iskanDelavec===delavec || podatek.sofer===delavec) { return podatek.netoCas; }  else return 0; }))})
+            let brutoDelavec = iskaniPodatki.map((podatek)=> podatek.delavci.map((iskanDelavec)=>{if(iskanDelavec===delavec) return podatek.odsotnoDelavca;  else return 0;}))
+            netoDelavec = netoDelavec.map((neto) => neto.reduce((a, b) => a + b, 0));
+            brutoDelavec = brutoDelavec.map((bruto) => bruto.reduce((a, b) => a + b, 0));
+            let skupenNeto =  netoDelavec.reduce((a, b) => a + b, 0);
+            let skupenBruto = (brutoDelavec.reduce((a, b) => a + b, 0)) + (odsotnostSofer.reduce((a, b) => a + b, 0));
+            setNeto(skupenNeto);
+            setBruto(skupenBruto);        
+        }
     }
 
     const handleFiltriranje=()=>{
         let iskaniPodatki = vsiPodatki;
-
+       
         if(delavec !== "X"){
-            iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer === delavec);
-            let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{return(iskanDelavec===delavec);})) == false); //vem da je tag annoying ampak zaenkrat s tremi ne dela, ne dodajat, hvala <3
+            iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.sofer.ime + " " + podatek.sofer.priimek)=== delavec);
+            let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{return((iskanDelavec.ime + " " + iskanDelavec.priimek)===delavec);})) == false); 
             let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
             iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
+            iskaniPodatki = [...new Set(iskaniPodatki)];   
        }
 
         if(obdobjeDO !== "" && obdobjeOD !== "")
@@ -210,9 +152,9 @@ function Izpis() {
             iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.objekt === iskanObjekt));
 
         if(status==="Aktiven")
-            iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.status === "aktiven");
+            iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.status));
         else if(status==="Končan")
-            iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.status === "končan");
+            iskaniPodatki = iskaniPodatki.filter((podatek) => (!podatek.status));
 
         if(delavec !== "X"){
             handleDelavec(iskaniPodatki);
@@ -227,7 +169,7 @@ function Izpis() {
     }
 
     const pridobiStatus = (status) => {
-        if(status === "aktiven")
+        if(status)
             return "fas fa-ban text-red";
         else
             return "ni ni-check-bold text-green";
@@ -252,12 +194,12 @@ function Izpis() {
                             <tr>
                                 <td>{podatek.objekt}</td>
                                 <td>{podatek.avto}</td>
-                                <td>{podatek.sofer}</td>
-                                <td>{podatek.delavci.map((delavec)=> <>{delavec}<br/></>)}</td>
+                                <td>{podatek.sofer.ime} {podatek.sofer.priimek}</td>
+                                <td>{podatek.delavci.map((delavec)=> <>{delavec.ime} {delavec.priimek}<br/></>)}</td>
                                 <td>{podatek.start}</td>
                                 <td>{podatek.pricetekDela}</td>
                                 <td>{podatek.konecDela}</td>
-                                <td>{podatek.prihod}</td>
+                                <td>{podatek.konec}</td>
                             </tr>
                         </tbody>
                     </Table>
@@ -279,7 +221,7 @@ function Izpis() {
                     </Media>
                 </th>
                 <td>{new Date(el.datum).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>
-                <td>{el.netoCas}</td>
+                <td>{el.netoDelo}</td>
                 <td>{el.odsotnostSoferja}</td>
                 <td>{el.odsotnoDelavca}</td>
                 <td>{el.netoMontaza}</td>
@@ -344,7 +286,7 @@ function Izpis() {
                             <div class="alert alert-white">
                                 <Input id="input-date" value={iskanObjekt} className="form-control-alternative" type="select" onChange={e => setObjekt(e.target.value)}>
                                     <option>X</option>
-                                    {objekti.map((objekt) => {return(<option>{objekt}</option>);})}
+                                    {(objekti != null)?objekti.map((objekt) => {return(<option>{objekt}</option>);}):<></>}
                                 </Input>
                             </div>
                             </FormGroup>
@@ -362,7 +304,7 @@ function Izpis() {
                             <div class="alert alert-white">
                                 <Input className="form-control-alternative" value={delavec} id="input-date" type="select" onChange={e => setDelavec(e.target.value)}>
                                     <option>X</option>
-                                    {delavci.map((delavec) => {return(<option>{delavec}</option>);})}
+                                    {(delavci != null)?delavci.map((iskanDelavec) => {return(<option>{iskanDelavec.ime} {iskanDelavec.priimek}</option>);}):<></>}
                                 </Input>
                             </div>
                             </FormGroup>
@@ -380,7 +322,7 @@ function Izpis() {
                             <div class="alert alert-white">
                                 <Input className="form-control-alternative" value={sifra} id="input-date" type="select" onChange={e => setSifra(e.target.value)}>
                                     <option>X</option>   
-                                    {sifre.map((sifra) => {return(<option>{sifra}</option>);})}
+                                    {(sifre != null)?sifre.map((sifra) => {return(<option>{sifra}</option>);}): <></>}
                                 </Input>
                             </div>
                             </FormGroup>
@@ -425,7 +367,7 @@ function Izpis() {
                             </tr>
                         </thead>
                         <tbody>
-                            {filtrirani.map((el) => tableRow(el))}
+                            {(filtrirani!=null)?filtrirani.map((el) => tableRow(el)):<></>}
                             <tr>
                                {(montaza) ? <td colspan="2"><b>Skupen neto čas montaže:</b></td> : <td colspan="2"><b>Skupen neto čas delavca {delavec}:</b></td>}
                                 <td>{neto}</td>
