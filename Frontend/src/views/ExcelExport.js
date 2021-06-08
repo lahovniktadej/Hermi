@@ -84,7 +84,6 @@ function ExcelExport(props) {
                 <ModalBody>
                 <Table className="align-items-center table-flush text-center" id="table" responsive >
                         <thead className="thead-light">
-                            <tr>
                                 <th scope="col">Status</th>
                                 <th scope="col">Šifra</th> 
                                 <th scope="col">Objekt</th>
@@ -101,16 +100,16 @@ function ExcelExport(props) {
                                 <th scope="col">Odsotnost delavca</th>
                                 <th scope="col">NETO montaža</th>
                                 <th scope="col">BRUTO montaža</th>                     
-                            </tr>
+
                         </thead>
                         <tbody> 
                             {(props.data!=null)?props.data.map((el) => tableRow(el)):<></>}
                             <tr>
-                                <td colspan="2"><b>Skupen neto čas montaže:</b></td>
+                               {(props.montaza) ? <td colspan="2"><b>Skupen neto čas montaže:</b></td> : <td colspan="2"><b>Skupen neto čas delavca {props.delavec}:</b></td>}
                                 <td>{props.neto}</td>
                             </tr>
                             <tr>
-                                <td colspan="2"><b>Skupen bruto čas montaže:</b> </td>
+                                {(props.montaza) ? <td colspan="2"><b>Skupen bruto čas montaže:</b></td> : <td colspan="2"><b>Skupen bruto čas delavca {props.delavec}:</b></td>}
                                 <td>{props.bruto}</td>
                             </tr>
                         </tbody>

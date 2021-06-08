@@ -406,7 +406,7 @@ function Izpis() {
                     </Table>
                     <CardFooter>
                         <div className="text-right">
-                        <Export data={filtrirani} bruto={bruto} neto={neto}/>
+                        <Export data={filtrirani} bruto={bruto} neto={neto} montaza={montaza} delavec={delavec}/>
                         </div>
                     </CardFooter>
                 </Card>
