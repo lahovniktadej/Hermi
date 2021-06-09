@@ -26,6 +26,14 @@
     background-color: #f5365c;
 }
 
+.link-text {
+    color: #f5365c;
+}
+
+.link-text:hover {
+    color: #f5365c;
+}
+
 .nav-pills .nav-link:hover {
     color: #96bf31;
 }

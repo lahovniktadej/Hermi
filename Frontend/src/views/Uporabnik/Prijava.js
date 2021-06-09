@@ -28,8 +28,10 @@ import {
   InputGroupText,
   InputGroup,
   Col,
+  Row,
   Container,
   FormText,
+  Modal,
 } from "reactstrap";
 
 import { useHistory } from "react-router-dom";
@@ -66,8 +68,10 @@ function Prijava() {
 
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
+    const [resetEmail, setResetEmail] = React.useState("");
 
     const [isError, setIsError] = React.useState("");
+    const [resetModal, setResetModal] = React.useState(false);
 
     const handleEmail = (event) => {
         setEmail(event.target.value);
@@ -77,13 +81,20 @@ function Prijava() {
         setPassword(event.target.value);
     }
 
+    const handleResetEmail = (event) => {
+        setResetEmail(event.target.value);
+    }
+
     const handleSubmit = (event) => {
         event.preventDefault();
 
         firebase.auth().signInWithEmailAndPassword(email, password).then((userCredential) => {
-            let uid = userCredential.user.uid;
+            let user = userCredential.user;
+            let display = user.email;
 
-            sessionStorage.setItem("user_uid", uid);
+            sessionStorage.setItem("user_uid", user.email);
+            sessionStorage.setItem("user_display", display);
+
             history.push({
                 pathname: `/admin/pregled`,
             });
@@ -92,6 +103,20 @@ function Prijava() {
             let errorMessage = error.message;
 
             setIsError("Prijava je bila neuspešna. Prosimo, poskusite znova.");
+        });
+    }
+
+    const handleResetModal = (event) => {
+        event.preventDefault();
+        setResetModal(true);
+    }
+
+    const handleReset = () => {
+        firebase.auth().sendPasswordResetEmail(resetEmail).then(function() {
+            // Email sent.
+            setResetModal(false);
+        }).catch(function(error) {
+            // An error happened.
         });
     }
 
@@ -142,21 +167,6 @@ function Prijava() {
                                     {isError ? "Pri prijavi je prišlo do napake. Prosimo, poskusite znova." : ""}
                                 </FormText>
                             </FormGroup>
-                            {/*
-                            <div className="custom-control custom-control-alternative custom-checkbox">
-                                <input
-                                    className="custom-control-input"
-                                    id=" customCheckLogin"
-                                    type="checkbox"
-                                />
-                                <label
-                                    className="custom-control-label"
-                                    htmlFor=" customCheckLogin"
-                                >
-                                    <span className="text-muted">Remember me</span>
-                                </label>
-                            </div>
-                            */}
                             <div className="text-center">
                                 <Button className="my-4" color="danger" type="submit">
                                     Prijava
@@ -165,28 +175,52 @@ function Prijava() {
                         </Form>
                     </CardBody>
                 </Card>
-                {/*
+                <Modal className="modal-dialog-centered modal-danger" contentClassName="bg-gradient-danger" isOpen={resetModal} toggle={() => { return null; }}>
+                    <div className="modal-header">
+                        <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => { setResetModal(false); }}>
+                            <span aria-hidden={true}>×</span>
+                        </button>
+                    </div>
+                    <div className="modal-body">
+                        <div className="py-3 text-center">
+                            <i className="ni ni-bell-55 ni-3x" />
+                            <h4 className="heading mt-4"></h4>
+                            <p>
+                                <small>Po oddani prošnji za ponastavitev gesla boste prejeli e-poštno sporočilo z nadaljnimi navodili.</small>
+                            </p>
+                            <Form role="form">
+                                <FormGroup className="mb-3">
+                                    <InputGroup className="input-group-alternative">
+                                    <InputGroupAddon addonType="prepend">
+                                        <InputGroupText>
+                                        <i className="ni ni-email-83" />
+                                        </InputGroupText>
+                                    </InputGroupAddon>
+                                    <Input
+                                        placeholder="E-poštni naslov"
+                                        type="email"
+                                        autoComplete="new-email"
+                                        value={resetEmail}
+                                        onChange={(e) => handleResetEmail(e)}
+                                    />
+                                    </InputGroup>
+                                </FormGroup>
+                            </Form>
+                        </div>
+                    </div>
+                    <div className="modal-footer">
+                        <Button className="btn-white" color="default" type="button" onClick={handleReset}>
+                            Ponastavi geslo
+                        </Button>
+                    </div>
+                </Modal>
                 <Row className="mt-3">
                     <Col xs="6">
-                        <a
-                            className="text-light"
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                        >
-                            <small>Forgot password?</small>
-                        </a>
-                    </Col>
-                    <Col className="text-right" xs="6">
-                        <a
-                            className="text-light"
-                            href="#pablo"
-                            onClick={(e) => e.preventDefault()}
-                        >
-                            <small>Create new account</small>
+                        <a href="#" className="link-text" onClick={(e) => handleResetModal(e)}>
+                            <small>Ste pozabili geslo?</small>
                         </a>
                     </Col>
                 </Row>
-                */}
             </Col>
         </Container>
     </>
