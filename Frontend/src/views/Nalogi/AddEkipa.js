@@ -9,13 +9,14 @@ import {
     ListGroupItem,
     Button,
     Row,
-    Col,
-    FormGroup,
-    Input
+    Col
 } from 'reactstrap';
 
 function AddEkipa(props) {
-    let soferIndex = props.delavci.findIndex((el) => {return el.id == props.ekipa.sofer.id});
+    const [dropdowns, setDropdowns] = React.useState({
+        sofer: "Izberi šoferja",
+        vozilo: "Izberi vozilo"
+    })
 
     const DelavecListItem = (data) => {
         return (
@@ -36,10 +37,36 @@ function AddEkipa(props) {
         );
     }
 
-    const soferChange = (el) => {
-        const index = el.target.value;
-        props.spremeniSoferja(index);
-        soferIndex = index;
+    const SoferItem = (data) => {
+        return (
+            <DropdownItem onClick={() => changeSofer(data.sofer)}>
+                <span>{data.sofer.ime + " " + data.sofer.priimek}</span>
+            </DropdownItem>
+        );
+    }
+
+    const VoziloItem = (data) => {
+        return (
+            <DropdownItem onClick={() => changeVozilo(data.vozilo)}>
+                <span>{data.vozilo.naziv}</span>
+            </DropdownItem>
+        );
+    }
+
+    const changeSofer = (sofer) => {
+        setDropdowns({
+            ...dropdowns,
+            sofer: sofer.ime + " " + sofer.priimek
+        });
+        props.spremeniSoferja(sofer);
+    }
+
+    const changeVozilo = (vozilo) => {
+        setDropdowns({
+            ...dropdowns,
+            vozilo: vozilo.naziv
+        });
+        props.spremeniVozilo(vozilo);
     }
 
     return (
@@ -63,14 +90,24 @@ function AddEkipa(props) {
                 </div>
             </Col>
             <Col lg="4">
-                <FormGroup>
-                    <label className="form-control-label d-inline">
-                        <span>Šofer</span>
-                        <Input className="form-control-alternative" type="select" required value={soferIndex} onChange={soferChange} >
-                            {props.delavci.map((delavec, index) => { return <option value={index}>{delavec.ime + " " + delavec.priimek}</option> })}
-                        </Input>
-                    </label>
-                </FormGroup>
+                <UncontrolledDropdown className="d-block">
+                    <DropdownToggle color="secondary">
+                        <span>{dropdowns.sofer}</span>
+                        <i class="fas fa-caret-down"></i>
+                        </DropdownToggle>
+                    <DropdownMenu>
+                        {props.delavci.map((delavec) => { return <SoferItem sofer={delavec} /> })}
+                    </DropdownMenu>
+                </UncontrolledDropdown>
+                <UncontrolledDropdown className="my-2">
+                    <DropdownToggle color="secondary">
+                        <span>{dropdowns.vozilo}</span>
+                        <i class="fas fa-caret-down"></i>
+                        </DropdownToggle>
+                    <DropdownMenu>
+                        {props.vozila.map((vozilo) => { return <VoziloItem vozilo={vozilo} /> })}
+                    </DropdownMenu>
+                </UncontrolledDropdown>
             </Col>
         </Row>
     );

@@ -27,21 +27,28 @@ import {
 } from 'reactstrap';
 
 function Nalogi() {
-    const [nalogi, setNalogi] = React.useState([]);
-    const [delavci, setDelavci] = React.useState([]);
-    const [nalog, setNalog] = React.useState({
+    const emptyNalog = {
         sifra: "",
         naziv: "",
         objekt: "",
-        zacetek: "",
-        ekipe: []
-    });
+        ekipe: [],
+        zacetek: null,
+        konec: null
+    }
+
+    const [nalogi, setNalogi] = React.useState([]);
+    const [delavci, setDelavci] = React.useState([]);
+    const [vozila, setVozila] = React.useState([]);
+    const [nalog, setNalog] = React.useState(emptyNalog);
     const [ekipa, setEkipa] = React.useState({
         sofer: {},
-        delavci: []
+        delavci: [],
+        vozilo: {}
     });
+    
+    const [selectedNalog, setSelectedNalog] = React.useState(nalog);
     const [totalPages, setTotalPages] = React.useState(0);
-    const perPage = 5;
+    const [perPage, setPerPage] = React.useState(5);
 
     React.useEffect(() => {
         axios.get(`/api/delovniNalog`, { params: { page: 0, perPage: perPage } })
@@ -55,7 +62,12 @@ function Nalogi() {
                 const delavci = res.data;
                 setDelavci(delavci);
             });
-    }, []);
+        axios.get(`/api/vozilo`)
+            .then((res) => {
+                const vozila = res.data;
+                setVozila(vozila);
+            });
+    }, [perPage]);
 
     const dodajNalog = (el) => {
         el.preventDefault();
@@ -66,11 +78,11 @@ function Nalogi() {
         nalog.ekipe.push(ekipa)
         nalog.zacetek = new Date(nalog.zacetek).toISOString();
 
-        nalogiArr.push(nalog);
-
-        axios.post(`/api/delovniNalog`, nalog).then();
-
-        setNalogi(nalogiArr);
+        axios.post(`/api/delovniNalog`, nalog)
+            .then((res) => {
+                nalogiArr.push(res.data);
+                setNalogi(nalogiArr);
+            });
     }
 
     const nalogChange = (el) => {
@@ -78,6 +90,13 @@ function Nalogi() {
             ...nalog,
             [el.target.name]: el.target.value,
             ekipe: [...nalog.ekipe]
+        });
+    }
+
+    const nalogModalChange = (nalog) => {
+        setSelectedNalog({
+            ...selectedNalog,
+            ...nalog
         });
     }
 
@@ -103,17 +122,30 @@ function Nalogi() {
     }
 
     const posodobiEkipo = (ekipa) => {
-        console.log(selectedNalog, ekipa);
         axios.put(`/api/ekipa/${ekipa.id}`, ekipa)
-            .then(() => {
-                axios.get(`/api/delovniNalog/${selectedNalog.id}`)
-                    .then((res) => {
-                        let nalogiArr = Array.from(nalogi);
-                        let index = nalogiArr.indexOf(selectedNalog);
-                        nalogiArr[index] = res.data;
-                        setNalogi(nalogiArr);
-                    });
+            .then((res) => {
+                let nalogiArr = Array.from(nalogi);
+                let nalogaIndex = nalogiArr.indexOf(selectedNalog);
+                let ekipaIndex = nalogiArr[nalogaIndex].ekipe.findIndex((val) => { return val.id == ekipa.id });
+                nalogiArr[nalogaIndex].ekipe[ekipaIndex] = res.data;
+                setNalogi(nalogiArr);
             });
+    }
+
+    const posodobiDelovniNalog = (nalog) => {
+        axios.put(`/api/delovniNalog/${nalog.id}`, nalog)
+            .then((res) => {
+                let nalogiArr = Array.from(nalogi);
+                let nalogaIndex = nalogiArr.findIndex((val) => { return val.id == nalog.id });
+                nalogiArr[nalogaIndex] = res.data;
+                setNalogi(nalogiArr);
+            });
+    }
+
+    const zakljuciNalog = (nalog) => {
+        let nalogCopy = { ...nalog };
+        nalogCopy.status = true;
+        posodobiDelovniNalog(nalogCopy);
     }
 
     const dodajDelavca = (delavec) => {
@@ -134,48 +166,54 @@ function Nalogi() {
         });
     }
 
-    const spremeniSoferja = (index) => {
+    const spremeniSoferja = (sofer) => {
         setEkipa({
             ...ekipa,
-            sofer: delavci[index]
+            sofer: sofer
         });
     }
 
-    const [selectedNalog, setSelectedNalog] = React.useState(nalog);
-    const [ekipaModalState, setEkipaModalState] = React.useState(false);
+    const spremeniVozilo = (vozilo) => {
+        setEkipa({
+            ...ekipa,
+            vozilo: vozilo
+        });
+    }
+
+    const [modalState, setModalState] = React.useState({
+        nalog: false,
+        ekipa: false,
+        delete: false
+    })
+
     const toggleEkipaModal = (nalog) => {
-        setEkipaModalState(!ekipaModalState);
-        if (!ekipaModalState) {
-            setSelectedNalog(nalog || {
-                sifra: "",
-                naziv: "",
-                objekt: "",
-                zacetek: "",
-                ekipa: []
-            });
+        if (!modalState.ekipa) {
+            setSelectedNalog(nalog || emptyNalog);
         }
+        setModalState({
+            ...modalState,
+            ekipa: !modalState.ekipa
+        });
     };
 
-    const [nalogModalState, setNalogModalState] = React.useState(false);
     const toggleNalogModal = (nalog) => {
-        setNalogModalState(!nalogModalState);
-        if (!nalogModalState) {
-            setSelectedNalog(nalog || {
-                sifra: "",
-                naziv: "",
-                objekt: "",
-                zacetek: "",
-                ekipa: []
-            });
+        if (!modalState.nalog) {
+            setSelectedNalog(nalog || emptyNalog);
         }
+        setModalState({
+            ...modalState,
+            nalog: !modalState.nalog
+        });
     };
 
-    const [deleteModalState, setDeleteModalState] = React.useState(false);
     const toggleDeleteModal = (nalog) => {
-        setDeleteModalState(!deleteModalState);
-        if (!deleteModalState) {
-            setSelectedNalog(nalog || {});
+        if (!modalState.delete) {
+            setSelectedNalog(nalog || emptyNalog);
         }
+        setModalState({
+            ...modalState,
+            delete: !modalState.delete
+        })
     };
 
     const Tr = (props) => {
@@ -193,7 +231,7 @@ function Nalogi() {
                     <td>{props.row.objekt}</td>
                     <td>{new Date(props.row.zacetek).toLocaleDateString()}</td>
                     <td>
-                        <Button size="sm" color="success" onClick={() => toggleEkipaModal(props.row)} >Ekipe</Button>
+                        <Button size="sm" color="success" onClick={() => toggleEkipaModal(props.row)} >Dnevno delo</Button>
                     </td>
                     <td className="text-right">
                         <UncontrolledDropdown>
@@ -228,7 +266,24 @@ function Nalogi() {
                     <Col className="mb-5">
                         <Card className="shadow">
                             <CardHeader className="border-0">
-                                <h3 className="mb-0">Delovni nalogi</h3>
+                                <Row className="align-items-center">
+                                    <Col>
+                                        <h3 className="mb-0">Delovni nalogi</h3>
+                                    </Col>
+                                    <Col className="text-right">
+                                        <UncontrolledDropdown direction="left">
+                                            <DropdownToggle size="sm">
+                                                <span>Št. na stran: {perPage}</span>
+                                                <i class="fas fa-caret-down"></i>
+                                            </DropdownToggle>
+                                            <DropdownMenu>
+                                                <DropdownItem onClick={() => setPerPage(5)}>5</DropdownItem>
+                                                <DropdownItem onClick={() => setPerPage(10)}>10</DropdownItem>
+                                                <DropdownItem onClick={() => setPerPage(15)}>15</DropdownItem>
+                                            </DropdownMenu>
+                                        </UncontrolledDropdown>
+                                    </Col>
+                                </Row>
                             </CardHeader>
                             <Table className="align-items-center table-flush text-center" responsive>
                                 <thead className="thead-light">
@@ -237,7 +292,7 @@ function Nalogi() {
                                     <th scope="col">Naziv</th>
                                     <th scope="col">Objekt</th>
                                     <th scope="col">Zacetek</th>
-                                    <th scope="col">Ekipa</th>
+                                    <th scope="col">Delo</th>
                                     <th scope="col" />
                                 </thead>
                                 <tbody>
@@ -247,9 +302,9 @@ function Nalogi() {
                             <CardFooter>
                                 {(totalPages > 1) ? <PaginationStrip onChange={changePage} totalPages={totalPages} /> : <></>}
                             </CardFooter>
-                            <EkipaModal toggle={toggleEkipaModal} state={ekipaModalState} nalog={selectedNalog} delavci={delavci} dodajEkipo={dodajEkipo} posodobiEkipo={posodobiEkipo} />
-                            <NalogModal toggle={toggleNalogModal} state={nalogModalState} nalog={selectedNalog} />
-                            <DeleteModal toggle={toggleDeleteModal} state={deleteModalState} text="Ali res želite odstraniti izbrani delovni nalog?" onSubmit={removeNalog} />
+                            <EkipaModal toggle={toggleEkipaModal} state={modalState.ekipa} nalog={selectedNalog} delavci={delavci} dodajEkipo={dodajEkipo} posodobiEkipo={posodobiEkipo} vozila={vozila} />
+                            <NalogModal toggle={toggleNalogModal} state={modalState.nalog} nalog={selectedNalog} onSubmit={posodobiDelovniNalog} onChange={nalogModalChange} zakljuciNalog={zakljuciNalog} />
+                            <DeleteModal toggle={toggleDeleteModal} state={modalState.delete} text="Ali res želite odstraniti izbrani delovni nalog?" onSubmit={removeNalog} />
                         </Card>
                     </Col>
                 </Row>
@@ -281,7 +336,7 @@ function Nalogi() {
                                     <hr className="my-4" />
                                     <h6 className="heading-small text-muted mb-4">Ekipa</h6>
                                     <div className="pl-lg-4">
-                                        <AddEkipa ekipa={ekipa} delavci={delavci} dodajDelavca={dodajDelavca} odstraniDelavca={odstraniDelavca} spremeniSoferja={spremeniSoferja} />
+                                        <AddEkipa ekipa={ekipa} delavci={delavci} dodajDelavca={dodajDelavca} odstraniDelavca={odstraniDelavca} spremeniSoferja={spremeniSoferja} vozila={vozila} spremeniVozilo={spremeniVozilo} />
                                     </div>
                                 </CardBody>
                                 <CardFooter className="border-0">

@@ -26,7 +26,7 @@ function DeleteModal(props) {
             </div>
             <div className="modal-footer">
                 <Button className="btn-white" color="default" onClick={submit}>Da</Button>
-                <Button className="text-white ml-auto" color="link" onClick={props.toggle}>Ne</Button>
+                <Button className="text-white ml-auto" color="" onClick={props.toggle}>Ne</Button>
             </div>
         </Modal>
     );

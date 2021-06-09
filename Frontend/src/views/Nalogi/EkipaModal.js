@@ -13,7 +13,8 @@ import {
 function EkipaModal(props) {
     const [ekipa, setEkipa] = React.useState({
         sofer: {},
-        delavci: []
+        delavci: [],
+        vozilo: {}
     });
 
     const dodajDelavca = (delavec) => {
@@ -41,19 +42,29 @@ function EkipaModal(props) {
         });
     }
 
+    const spremeniVozilo = (vozilo) => {
+        setEkipa({
+            ...ekipa,
+            vozilo: vozilo
+        });
+    }
+
     const dodajEkipo = (e) => {
         e.preventDefault();
         props.dodajEkipo(ekipa);
     }
 
     const ponovnoUporabi = (ekipa) => {
-        setEkipa(ekipa);
+        let ekipaCopy = { ...ekipa };
+        ekipaCopy.status = false;
+        ekipaCopy.datum = new Date().toISOString();
+        setEkipa(ekipaCopy);
     }
 
     return (
         <Modal scrollable className="modal-dialog-centered" size="lg" isOpen={props.state} toggle={props.toggle}>
             <div className="modal-header">
-                <h6 className="heading">Ekipe</h6>
+                <h6 className="heading">Dnevno delo</h6>
                 <Button color className="close" onClick={props.toggle}>
                     <i class="fas fa-times"></i>
                 </Button>
@@ -65,7 +76,7 @@ function EkipaModal(props) {
                             <h6 className="heading-small text-muted mb-4">Dodaj ekipo</h6>
                         </Col>
                     </Row>
-                    <AddEkipa ekipa={ekipa} delavci={props.delavci} dodajDelavca={dodajDelavca} odstraniDelavca={odstraniDelavca} spremeniSoferja={spremeniSoferja} />
+                    <AddEkipa ekipa={ekipa} delavci={props.delavci} dodajDelavca={dodajDelavca} odstraniDelavca={odstraniDelavca} spremeniSoferja={spremeniSoferja} vozila={props.vozila} spremeniVozilo={spremeniVozilo} />
                     <Row>
                         <Col className="text-center">
                             <Button color="danger">Dodaj</Button>
