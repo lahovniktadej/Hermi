@@ -60,24 +60,23 @@ const Index = (props) => {
         const nalogi = res.data;
         if(nalogi != null){
             let neto = [];
-            nalogi.forEach((nalog)=> nalog.ekipe.forEach((ekipa)=>neto.push({montaza:ekipa.netoMontaza, datum:ekipa.datum})));
+            nalogi.forEach((nalog)=> nalog.ekipe.forEach((ekipa)=>{if(ekipa.datum!=undefined){neto.push({montaza:ekipa.netoMontaza, datum:ekipa.datum})}}));
             handleMontazaTeden(neto);
             handleMontazaMesec(neto);
         }
     });
+    setChartExample1Data(data1);
   },[]);
+
   React.useEffect(() => {
     setChartExample1Data(data1);
   },[dataMontazaMesec]);
-  React.useEffect(() => {
-    setChartExample1Data(data2);
-  },[dataMontazaTeden]);
 
   const handleMontazaMesec = (neto) => {
     let now = new Date();
     let meseci =[];
     let dataLeto = neto.map((data)=>{if((now.getFullYear())===(new Date(data.datum).getFullYear()))return data;});
-    for(let i = 1; i<=12; i++){
+    for(let i = 0; i<12; i++){
       let temp = dataLeto.map((data)=> {if((new Date(data.datum).getMonth()===i)) return data.montaza; else return 0;});
       temp = temp.reduce((a, b) => a + b, 0);
       meseci.push(temp);
