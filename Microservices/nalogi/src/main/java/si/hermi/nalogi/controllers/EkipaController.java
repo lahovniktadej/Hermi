@@ -43,8 +43,7 @@ public class EkipaController {
     @PostMapping()
     public @ResponseBody ResponseEntity addEkipa(@RequestBody EkipaDto ekipaDto) {
         Ekipa ekipa = modelMapper.map(ekipaDto, Ekipa.class);
-        ekipaRepository.save(ekipa);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(ekipaRepository.save(ekipa));
     }
 
     @PutMapping("/{id}")
@@ -53,8 +52,7 @@ public class EkipaController {
         if (ekipaOpt.isPresent()) {
             Ekipa ekipa = ekipaOpt.get();
             modelMapper.map(ekipaDto, ekipa);
-            ekipaRepository.save(ekipa);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(ekipaRepository.save(ekipa));
         }
         return ResponseEntity.badRequest().build();
     }

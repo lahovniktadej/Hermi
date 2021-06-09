@@ -51,12 +51,20 @@ public class DelovniNalog {
         this.id = id;
     }
 
+    public Skrbnik getSkrbnik() {
+        return skrbnik;
+    }
+
+    public void setSkrbnik(Skrbnik skrbnik) {
+        this.skrbnik = skrbnik;
+    }
+
     public String getSifra() {
         return sifra;
     }
 
-    public void setSifra(String sirfa) {
-        this.sifra = sirfa;
+    public void setSifra(String sifra) {
+        this.sifra = sifra;
     }
 
     public String getNaziv() {
@@ -91,14 +99,6 @@ public class DelovniNalog {
         this.status = status;
     }
 
-    public Skrbnik getSkrbnik() {
-        return skrbnik;
-    }
-
-    public void setSkrbnik(Skrbnik skrbnik) {
-        this.skrbnik = skrbnik;
-    }
-
     public List<Ekipa> getEkipe() {
         return ekipe;
     }
@@ -113,20 +113,5 @@ public class DelovniNalog {
 
     public void setObjekt(String objekt) {
         this.objekt = objekt;
-    }
-
-    @Override
-    public String toString() {
-        return "DelovniNalog{" +
-                "id=" + id +
-                ", skrbnik=" + skrbnik +
-                ", sifra='" + sifra + '\'' +
-                ", naziv='" + naziv + '\'' +
-                ", zacetek=" + zacetek +
-                ", konec=" + konec +
-                ", status=" + status +
-                ", ekipe=" + ekipe +
-                ", objekt='" + objekt + '\'' +
-                '}';
     }
 }

@@ -43,8 +43,7 @@ public class DelovniNalogController {
     @PostMapping()
     public @ResponseBody ResponseEntity addDelovniNalog(@RequestBody DelovniNalogDto delovniNalogDto) {
         DelovniNalog delovniNalog = modelMapper.map(delovniNalogDto, DelovniNalog.class);
-        delovniNalogRepository.save(delovniNalog);
-        return ResponseEntity.ok().build();
+        return ResponseEntity.ok(delovniNalogRepository.save(delovniNalog));
     }
 
     @PutMapping("/{id}")
@@ -53,8 +52,7 @@ public class DelovniNalogController {
         if (delovniNalogOpt.isPresent()) {
             DelovniNalog delovniNalog = delovniNalogOpt.get();
             modelMapper.map(delovniNalogDto, delovniNalog);
-            delovniNalogRepository.save(delovniNalog);
-            return ResponseEntity.ok().build();
+            return ResponseEntity.ok(delovniNalogRepository.save(delovniNalog));
         }
         return ResponseEntity.badRequest().build();
     }

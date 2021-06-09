@@ -7,34 +7,42 @@ import java.sql.Date;
 import java.util.List;
 
 public class DelovniNalogDto {
+    private Skrbnik skrbnik;
+
     private String sifra;
 
     private String naziv;
-
-    private String objekt;
 
     private Date zacetek;
 
     private Date konec;
 
-    private boolean status;
-
-    private Skrbnik skrbnik;
+    private Boolean status;
 
     private List<Ekipa> ekipe;
+
+    private String objekt;
 
     public DelovniNalogDto() {
     }
 
-    public DelovniNalogDto(String sifra, String naziv, String objekt, Date zacetek, Date konec, boolean status, Skrbnik skrbnik, List<Ekipa> ekipe) {
+    public DelovniNalogDto(Skrbnik skrbnik, String sifra, String naziv, Date zacetek, Date konec, Boolean status, List<Ekipa> ekipe, String objekt) {
+        this.skrbnik = skrbnik;
         this.sifra = sifra;
         this.naziv = naziv;
-        this.objekt = objekt;
         this.zacetek = zacetek;
         this.konec = konec;
         this.status = status;
-        this.skrbnik = skrbnik;
         this.ekipe = ekipe;
+        this.objekt = objekt;
+    }
+
+    public Skrbnik getSkrbnik() {
+        return skrbnik;
+    }
+
+    public void setSkrbnik(Skrbnik skrbnik) {
+        this.skrbnik = skrbnik;
     }
 
     public String getSifra() {
@@ -53,14 +61,6 @@ public class DelovniNalogDto {
         this.naziv = naziv;
     }
 
-    public String getObjekt() {
-        return objekt;
-    }
-
-    public void setObjekt(String objekt) {
-        this.objekt = objekt;
-    }
-
     public Date getZacetek() {
         return zacetek;
     }
@@ -77,20 +77,12 @@ public class DelovniNalogDto {
         this.konec = konec;
     }
 
-    public boolean isStatus() {
+    public Boolean getStatus() {
         return status;
     }
 
-    public void setStatus(boolean status) {
+    public void setStatus(Boolean status) {
         this.status = status;
-    }
-
-    public Skrbnik getSkrbnik() {
-        return skrbnik;
-    }
-
-    public void setSkrbnik(Skrbnik skrbnik) {
-        this.skrbnik = skrbnik;
     }
 
     public List<Ekipa> getEkipe() {
@@ -101,17 +93,11 @@ public class DelovniNalogDto {
         this.ekipe = ekipe;
     }
 
-    @Override
-    public String toString() {
-        return "DelovniNalogDto{" +
-                "sifra='" + sifra + '\'' +
-                ", naziv='" + naziv + '\'' +
-                ", objekt='" + objekt + '\'' +
-                ", zacetek=" + zacetek +
-                ", konec=" + konec +
-                ", status=" + status +
-                ", skrbnik=" + skrbnik +
-                ", ekipe=" + ekipe +
-                '}';
+    public String getObjekt() {
+        return objekt;
+    }
+
+    public void setObjekt(String objekt) {
+        this.objekt = objekt;
     }
 }
