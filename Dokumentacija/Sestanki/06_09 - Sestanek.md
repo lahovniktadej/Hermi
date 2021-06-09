@@ -1,5 +1,5 @@
 # Sestanek
-*11. 06. 2021*
+*09. 06. 2021*
 
 1. Plan dela za naprej
   * Firebase - prijava, odjava, ustvarjanje novega računa
