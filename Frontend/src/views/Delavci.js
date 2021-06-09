@@ -29,10 +29,6 @@ function Delavci() {
     const [telefon, setTelefon] = React.useState("");
     const [seznamDelavcev, setSeznamDelavcev] = React.useState([]);
 
-    const [imeHint, setImeHint] = React.useState("");
-    const [priimekHint, setPriimekHint] = React.useState("");
-    const [telefonHint, setTelefonHint] = React.useState("");
-
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
 
@@ -53,52 +49,21 @@ function Delavci() {
 
     const handleChangeIme = event => {
         setIme(event.target.value);
-
-        const RGEX_ALLOWED = /^[A-Za-z\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
-        const RGEX_FORBIDDEN = /[^0-9]+$/g;
-
-        const allowed = RGEX_ALLOWED.test(event.target.value);
-        const forbidden = RGEX_FORBIDDEN.test(event.target.value);
-
-        if ((allowed && forbidden) || event.target.value == "") {
-            setImeHint("");
-        } else {
-            setImeHint("Vnos lahko vsebuje le velike in male črke, presledek ter pomišljaj.");
-        }
     }
 
     const handleChangePriimek = event => {
         setPriimek(event.target.value);
-
-        const RGEX_ALLOWED = /^[A-Za-z\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
-        const RGEX_FORBIDDEN = /[^0-9]+$/g;
-        
-        const allowed = RGEX_ALLOWED.test(event.target.value);
-        const forbidden = RGEX_FORBIDDEN.test(event.target.value);
-
-        if ((allowed && forbidden) || event.target.value == "") {
-            setPriimekHint("");
-        } else {
-            setPriimekHint("Vnos lahko vsebuje le velike in male črke, presledek ter pomišljaj.");
-        }
     }
 
     const handleChangeTelefon = event => {
         setTelefon(event.target.value);
-
-        const RGEX = /^[0-9]+$/g;
-        const priimekValid = RGEX.test(event.target.value);
-
-        if (priimekValid || event.target.value == "") {
-            setTelefonHint("");
-        } else {
-            setTelefonHint("Vnos lahko vsebuje le števila.");
-        }
     }
 
     const handleAddDelavec = event => {
+        event.preventDefault();
+
         if (editing) {
-            if (ime && priimek && imeHint == "" && priimekHint == "" && telefonHint == "") {
+            if (ime && priimek) {
                 let seznam = [...seznamDelavcev];
 
                 let delavec = {
@@ -129,7 +94,7 @@ function Delavci() {
                 });
             }
         } else {
-            if (ime && priimek && imeHint == "" && priimekHint == "" && telefonHint == "") {
+            if (ime && priimek) {
                 let novDelavec = {
                     ime: ime,
                     priimek: priimek,
@@ -152,9 +117,6 @@ function Delavci() {
                         setTelefon("");
                     }, 500);
                 });
-            } else {
-                //  TO-DO 
-                //  Error notification
             }
         }
     }
@@ -187,11 +149,6 @@ function Delavci() {
             //  Reset editing status
             setEditIndex(null);
             setEditing(false);
-
-            //  Reset field validation
-            setImeHint("");
-            setPriimekHint("");
-            setTelefonHint("");
         }, 500);
     }
 
@@ -298,30 +255,21 @@ function Delavci() {
                                                     </Row>
                                                 </CardHeader>
                                                 <CardBody>
-                                                    <Form role="form">
+                                                    <Form role="form" onSubmit={(e) => handleAddDelavec(e)}>
                                                         <FormGroup className="mb-3">
                                                             <label className="form-control-label" htmlFor="input-nameD">Ime*</label>
                                                             <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
-                                                            <FormText color="danger">
-                                                                {imeHint}
-                                                            </FormText>
                                                         </FormGroup>
                                                         <FormGroup className="mb-3">
                                                             <label className="form-control-label" htmlFor="input-nameD">Priimek*</label>
                                                             <Input id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
-                                                            <FormText color="danger">
-                                                                {priimekHint}
-                                                            </FormText>
                                                         </FormGroup>
                                                         <FormGroup className="mb-3">
                                                             <label className="form-control-label" htmlFor="input-phone">Telefon</label>
                                                             <Input id="input-phone" className="form-control-alternative" type="text" onChange={handleChangeTelefon} value={telefon} />
-                                                            <FormText color="danger">
-                                                                {telefonHint}
-                                                            </FormText>
                                                         </FormGroup>
                                                         <div className="text-center">
-                                                            <Button color="danger" type="button" onClick={handleAddDelavec}>{editing ? "Uredi" : "Dodaj"}</Button>
+                                                            <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
                                                             {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
                                                         </div>
                                                     </Form>

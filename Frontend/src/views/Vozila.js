@@ -28,9 +28,6 @@ function Vozila() {
     const [registrska, setRegistrska] = React.useState("");
     const [seznamVozil, setSeznamVozil] = React.useState([]);
 
-    const [nazivHint, setNazivHint] = React.useState("");
-    const [registrskaHint, setRegistrskaHint] = React.useState("");
-
     const [editing, setEditing] = React.useState(false);
     const [editIndex, setEditIndex] = React.useState(null);
 
@@ -51,33 +48,17 @@ function Vozila() {
 
     const handleChangeNaziv = event => {
         setNaziv(event.target.value);
-
-        const RGEX = /^[A-Za-z0-9\č\ć\ž\š\đ\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
-        const nazivValid = RGEX.test(event.target.value);
-
-        if (nazivValid || event.target.value == "") {
-            setNazivHint("");
-        } else {
-            setNazivHint("Vnos lahko vsebuje le velike in male črke, števila, presledek ter pomišljaj.");
-        }
     }
 
     const handleChangeRegistrska = event => {
         setRegistrska(event.target.value);
-
-        const RGEX = /^[A-Z0-9\Č\Ć\Ž\Š\Đ\-\ ]+$/g;
-        const registrskaValid = RGEX.test(event.target.value);
-
-        if (registrskaValid || event.target.value == "") {
-            setRegistrskaHint("");
-        } else {
-            setRegistrskaHint("Vnos lahko vsebuje le velike črke, števila, presledek ter pomišljaj.");
-        }
     }
 
-    const handleAddVozilo = () => {
+    const handleAddVozilo = event => {
+        event.preventDefault();
+
         if (editing) {
-            if (naziv && nazivHint == "" && registrskaHint == "") {
+            if (naziv) {
                 let seznam = [ ...seznamVozil ];
 
                 let vozilo = {
@@ -106,7 +87,7 @@ function Vozila() {
                 });
             }
         } else {
-            if (naziv && nazivHint == "" && registrskaHint == "") {
+            if (naziv) {
                 let novoVozilo = {
                     naziv: naziv,
                     registrskaStevilka: registrska ? registrska : null,
@@ -127,9 +108,6 @@ function Vozila() {
                         setRegistrska("");
                     }, 500);
                 });
-            } else {
-                //  TO-DO 
-                //  Error notification
             }
         }
     }
@@ -160,10 +138,6 @@ function Vozila() {
             //  Reset editing status
             setEditIndex(null);
             setEditing(false);
-
-            //  Reset field validation
-            setNazivHint("");
-            setRegistrskaHint("");
         }, 500);
     }
 
@@ -268,23 +242,17 @@ function Vozila() {
                                                 </Row>
                                             </CardHeader>
                                             <CardBody>
-                                                <Form role="form">
+                                                <Form role="form" onSubmit={(e) => handleAddVozilo(e)}>
                                                     <FormGroup className="mb-3">
                                                         <label className="form-control-label" htmlFor="input-naziv">Naziv vozila*</label>
-                                                        <Input id="input-naziv" className="form-control-alternative" type="text" onChange={handleChangeNaziv} value={naziv} />
-                                                        <FormText color="danger">
-                                                            {nazivHint}
-                                                        </FormText>
+                                                        <Input id="input-naziv" className="form-control-alternative" type="text" onChange={handleChangeNaziv} value={naziv} required />
                                                     </FormGroup>
                                                     <FormGroup className="mb-3">
                                                         <label className="form-control-label" htmlFor="input-regNumber">Registrska številka</label>
                                                         <Input id="input-regNumber" className="form-control-alternative" type="text" onChange={handleChangeRegistrska} value={registrska} />
-                                                        <FormText color="danger">
-                                                            {registrskaHint}
-                                                        </FormText>
                                                     </FormGroup>
                                                     <div className="text-center">
-                                                        <Button color="danger" type="button" onClick={handleAddVozilo}>{editing ? "Uredi" : "Dodaj"}</Button>
+                                                        <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
                                                         {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
                                                     </div>
                                                 </Form>
