@@ -343,28 +343,6 @@ let chartExample1 = {
       },
     },
   },
-  data1: (canvas) => {
-    return {
-      labels: ["Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
-      datasets: [
-        {
-          label: "Performance",
-          data: [0, 10, 30, 15, 40, 20, 20, 20],
-        },
-      ],
-    };
-  },
-  data2: (canvas) => {
-    return {
-      labels: ["Pon", "Tor", "Sre", "Čet", "Pet", "Sob", "Ned"],
-      datasets: [
-        {
-          label: "Performance",
-          data: [1, 2, 3, 1, 1, 4, 1, 2, 1],
-        },
-      ],
-    };
-  },
 };
 
 // Example 2 of Chart inside src/views/Index.js (Total orders - Card)
