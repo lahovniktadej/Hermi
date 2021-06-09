@@ -16,7 +16,7 @@
 
 */
 import React from "react";
-import { Link } from "react-router-dom";
+import { Link, useHistory } from "react-router-dom";
 
 import {
   DropdownMenu,
@@ -30,18 +30,32 @@ import {
 } from "reactstrap";
 
 const AdminNavbar = (props) => {
+  let history = useHistory();
+
+  const handleOdjava = (event) => {
+    if (sessionStorage.getItem("user_uid")) {
+      sessionStorage.removeItem("user_uid");
+      sessionStorage.removeItem("user_display");
+      history.push({
+        pathname: `/admin/prijava`,
+      });
+    }
+  }
+
   return (
     <>
+
       <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
         <Container fluid>
           <span className="h4 mb-0 text-black text-uppercase d-none d-lg-inline-block" to="/"> {props.brandText} </span>
+          {sessionStorage.getItem("user_uid") ? 
           <Nav className="align-items-center d-none d-md-flex" navbar>
             <UncontrolledDropdown nav>
               <DropdownToggle className="pr-0" nav>
                 <Media className="align-items-center">
                   <Media className="ml-2 d-none d-lg-block">
                     <span className="mb-0 text-sm font-weight-bold text-dark">
-                      Admin 1
+                      {sessionStorage.getItem("user_display") !== "null" ? sessionStorage.getItem("user_display") : "Admin"}
                     </span>
                   </Media>
                 </Media>
@@ -52,13 +66,14 @@ const AdminNavbar = (props) => {
                   <span>Zgodovina urejanja</span>
                 </DropdownItem>
                 <DropdownItem divider />
-                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+                <DropdownItem href="#pablo" onClick={(e) => handleOdjava(e)}>
                   <i className="fas fa-sign-out-alt text-red"/>
-                  <span className="text-red"> Odjava</span>
+                  <span className="text-red">Odjava</span>
                 </DropdownItem>
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
+          : ""}
         </Container>
       </Navbar>
     </>
