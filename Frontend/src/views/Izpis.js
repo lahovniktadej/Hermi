@@ -40,7 +40,7 @@ function Izpis() {
     const [obdobjeOD, setObdobjeOD] = useState("");
     const [obdobjeDO, setObdobjeDO] = useState("");
     const [iskanObjekt, setObjekt] = useState("X");
-    const [delavec, setDelavec] = useState("X");
+    const [delavec, setDelavec] = useState({});
     const [sifra, setSifra] = useState("X");
     const [status, setStatus] = useState("X");
 
@@ -125,8 +125,8 @@ function Izpis() {
     },[iskanObjekt, sifra, delavec, status, obdobjeOD, obdobjeDO]);
 
     const handleDelavec=(iskaniPodatki)=>{
-        let odsotnostSofer = iskaniPodatki.map((podatek) => {if(podatek.sofer===delavec) { return podatek.odsotnostSoferja } else return 0; });
-        let netoDelavec = iskaniPodatki.map((podatek)=> {return (podatek.delavci.map((iskanDelavec)=>{if(podatek.sofer===delavec) { return podatek.netoCas; } else if(iskanDelavec===delavec || podatek.sofer===delavec) { return podatek.netoCas; }  else return 0; }))})
+        let odsotnostSofer = iskaniPodatki.map((podatek) => {if(podatek.sofer.id===delavec.id) { return podatek.odsotnostSoferja } else return 0; });
+        let netoDelavec = iskaniPodatki.map((podatek)=> {return (podatek.delavci.map((iskanDelavec)=>{if(podatek.sofer.id===delavec.id) { return podatek.netoCas; } else if(iskanDelavec.id===delavec.id || podatek.sofer.id===delavec.id) { return podatek.netoCas; }  else return 0; }))})
         let brutoDelavec = iskaniPodatki.map((podatek)=> podatek.delavci.map((iskanDelavec)=>{if(iskanDelavec===delavec) return podatek.odsotnoDelavca;  else return 0;}))
         netoDelavec = netoDelavec.map((neto) => neto.reduce((a, b) => a + b, 0));
         brutoDelavec = brutoDelavec.map((bruto) => bruto.reduce((a, b) => a + b, 0));
@@ -139,9 +139,10 @@ function Izpis() {
     const handleFiltriranje=()=>{
         let iskaniPodatki = vsiPodatki;
        
-        if(delavec !== "X"){
-            iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.sofer.ime + " " + podatek.sofer.priimek)=== delavec);
-            let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{return((iskanDelavec.ime + " " + iskanDelavec.priimek)===delavec);})) == false); 
+        if(Object.keys(delavec).length > 0){
+            console.log(delavec)
+            iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer.id=== delavec.id);
+            let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec)=>{return(iskanDelavec.id===delavec.id);})) == false); 
             let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
             iskaniPodatki = iskaniPodatki.concat(iskaniDelavci);
             iskaniPodatki = [...new Set(iskaniPodatki)];   
@@ -161,7 +162,7 @@ function Izpis() {
         else if(status==="Končan")
             iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.status));
 
-        if(delavec !== "X"){
+        if(Object.keys(delavec).length > 0){
             handleDelavec(iskaniPodatki);
             setMontaza(false);
         }
@@ -325,9 +326,9 @@ function Izpis() {
                         <DropdownMenu>
                             <FormGroup>
                             <div class="alert alert-white">
-                                <Input className="form-control-alternative" value={delavec} id="input-date" type="select" onChange={e => setDelavec(e.target.value)}>
-                                    <option>X</option>
-                                    {delavci.map((iskanDelavec) => {return(<option>{iskanDelavec.ime} {iskanDelavec.priimek}</option>);})}
+                                <Input className="form-control-alternative" value={JSON.stringify(delavec)} id="input-date" type="select" onChange={e => setDelavec(JSON.parse(e.target.value))}>
+                                    <option value={JSON.stringify({})} label="X"></option>
+                                    {delavci.map((iskanDelavec) => {return(<option value={JSON.stringify(iskanDelavec)} label={iskanDelavec.ime+" "+iskanDelavec.priimek}></option>);})}
                                 </Input>
                             </div>
                             </FormGroup>
@@ -393,11 +394,11 @@ function Izpis() {
                         <tbody>
                             {(filtrirani!=null)?filtrirani.map((el) => tableRow(el)):<></>}
                             <tr>
-                               {(montaza) ? <td colspan="2"><b>Skupen neto čas montaže:</b></td> : <td colspan="2"><b>Skupen neto čas delavca {delavec}:</b></td>}
+                               {(montaza) ? <td colspan="2"><b>Skupen neto čas montaže:</b></td> : <td colspan="2"><b>Skupen neto čas delavca {delavec.ime + " " + delavec.priimek}:</b></td>}
                                 <td>{neto}</td>
                             </tr>
                             <tr>
-                                {(montaza) ? <td colspan="2"><b>Skupen bruto čas montaže:</b></td> : <td colspan="2"><b>Skupen bruto čas delavca {delavec}:</b></td>}
+                                {(montaza) ? <td colspan="2"><b>Skupen bruto čas montaže:</b></td> : <td colspan="2"><b>Skupen bruto čas delavca {delavec.ime + " " + delavec.priimek}:</b></td>}
                                 <td>{bruto}</td>
                             </tr>
                         </tbody>
