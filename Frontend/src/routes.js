@@ -8,6 +8,7 @@ import Login from "views/examples/Login.js";
 import Nalogi from "views/Nalogi/Nalogi";
 import Izpis from "views/Izpis";
 import Upravljanje from "views/Upravljanje";
+import Prijava from "views/Uporabnik/Prijava";
 
 var routes = [
   {
@@ -36,6 +37,13 @@ var routes = [
     name: "Izpis",
     icon: "fas fa-chart-line text-red",
     component: Izpis,
+    layout: "/admin",
+  },
+  {
+    path: "/prijava",
+    name: "Prijava",
+    icon: "ni ni-key-25 text-info",
+    component: Prijava,
     layout: "/admin",
   },
   /* Currently unused, potential set-up of login and profile stuff for later

@@ -18,6 +18,10 @@
     padding-top: 5rem !important;
 }
 
+.login.container {
+    padding-top: 5rem !important;
+}
+
 .dropdown-item:active {
     background-color: #f5365c;
 }
