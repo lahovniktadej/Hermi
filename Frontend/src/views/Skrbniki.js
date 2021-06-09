@@ -36,6 +36,7 @@ function Skrbniki() {
     const [izbranSkrbnik, setIzbranSkrbnik] = React.useState(null);
 
     const [addModal, setAddModal] = React.useState(false);
+    const [isError, setIsError] = React.useState(false);
 
     let key = 0;
 
@@ -61,7 +62,7 @@ function Skrbniki() {
 
     const handleAddSkrbnik = event => {
         event.preventDefault();
-        
+
         if (editing) {
             if (ime && priimek && uporabniskoIme) {
                 let seznam = [ ...seznamSkrbnikov ];
@@ -91,6 +92,8 @@ function Skrbniki() {
                         setEditIndex(null);
                         setEditing(false);
                     }, 500);
+                }).catch((error) => {
+                    setIsError(true);
                 });
             }
         } else {
@@ -116,6 +119,8 @@ function Skrbniki() {
                         setPriimek("");
                         setUporabniskoIme("");
                     }, 500);
+                }).catch((error) => {
+                    setIsError(true);
                 });
             }
         }
@@ -149,6 +154,9 @@ function Skrbniki() {
             //  Reset editing status
             setEditIndex(null);
             setEditing(false);
+
+            //  Reset error status
+            setIsError(false);            
         }, 500);
     }
 
@@ -267,6 +275,11 @@ function Skrbniki() {
                                                             <label className="form-control-label" htmlFor="input-uporabniskoIme"> Uporabniško ime* </label>
                                                             <Input id="input-uporabniskoIme"className="form-control-alternative" type="text"onChange={handleChangeUporabniskoIme} value={uporabniskoIme} required />                                                      
                                                         </FormGroup>
+                                                        <FormGroup className="mb-3">
+                                                            <FormText color="danger">
+                                                                {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}
+                                                            </FormText>
+                                                        </FormGroup>                                                        
                                                         <div className="text-center">
                                                             <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
                                                             {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}

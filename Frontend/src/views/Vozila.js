@@ -35,6 +35,7 @@ function Vozila() {
     const [izbranoVozilo, setIzbranoVozilo] = React.useState(null);
 
     const [addModal, setAddModal] = React.useState(false);
+    const [isError, setIsError] = React.useState(false);
 
     let key = 0;
 
@@ -84,6 +85,8 @@ function Vozila() {
                         setEditIndex(null);
                         setEditing(false);
                     }, 500);
+                }).catch((error) => {
+                    setIsError(true);
                 });
             }
         } else {
@@ -107,6 +110,8 @@ function Vozila() {
                         setNaziv("");
                         setRegistrska("");
                     }, 500);
+                }).catch((error) => {
+                    setIsError(true);
                 });
             }
         }
@@ -138,6 +143,9 @@ function Vozila() {
             //  Reset editing status
             setEditIndex(null);
             setEditing(false);
+
+            //  Reset error status
+            setIsError(false);
         }, 500);
     }
 
@@ -250,6 +258,11 @@ function Vozila() {
                                                     <FormGroup className="mb-3">
                                                         <label className="form-control-label" htmlFor="input-regNumber">Registrska številka</label>
                                                         <Input id="input-regNumber" className="form-control-alternative" type="text" onChange={handleChangeRegistrska} value={registrska} />
+                                                    </FormGroup>
+                                                    <FormGroup className="mb-3">
+                                                        <FormText color="danger">
+                                                            {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}
+                                                        </FormText>
                                                     </FormGroup>
                                                     <div className="text-center">
                                                         <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
