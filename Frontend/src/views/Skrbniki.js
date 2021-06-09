@@ -23,6 +23,27 @@ import {
 
 import axios from 'axios';
 
+import firebase from "firebase/app";
+require('firebase/auth');
+
+//  Firebase configuration
+const firebaseConfig = {
+    apiKey: "AIzaSyC_94J4ZIWevlT__Uc8bvnG1UZjnH0nQuc",
+    authDomain: "hermi-dab7b.firebaseapp.com",
+    projectId: "hermi-dab7b",
+    storageBucket: "hermi-dab7b.appspot.com",
+    messagingSenderId: "1063139661285",
+    appId: "1:1063139661285:web:8ec0758dd5fe895e234b0c",
+    measurementId: "G-TDKEQRNNW4"
+};
+
+// Initialize Firebase
+if (!firebase.apps.length) {
+    firebase.initializeApp(firebaseConfig);
+} else {
+    firebase.app();
+}
+
 function Skrbniki() {
     const [ime, setIme] = React.useState("");
     const [priimek, setPriimek] = React.useState("");
@@ -58,6 +79,17 @@ function Skrbniki() {
 
     const handleChangeUporabniskoIme = event => {
         setUporabniskoIme(event.target.value);
+    }
+
+    const sendPasswordResetEmail = (email) => {
+        setTimeout(function() {
+            firebase.auth().sendPasswordResetEmail(email).then(function() {
+                // Email sent.
+            }).catch(function(error) {
+                console.log(error);
+            // An error happened.
+            })
+        }, 5000);
     }
 
     const handleAddSkrbnik = event => {
@@ -105,6 +137,17 @@ function Skrbniki() {
                 }
 
                 axios.post(`/api/skrbnik`, novSkrbnik).then(function() {
+                    //  Ustvarjanje novega uporabnika in pošiljanje e-poštnega sporočila za ponastavitev gesla
+                    firebase.auth().createUserWithEmailAndPassword(uporabniskoIme, Math.floor(Math.random(1000000000) * 9999999999).toString()).then((userCredential) => {
+                        let user = userCredential.user;
+                    }).then(() => {
+                        sendPasswordResetEmail(uporabniskoIme);
+                    }).catch((error) => {
+                        var errorCode = error.code;
+                        var errorMessage = error.message;
+                        console.log(errorCode, errorMessage);
+                    });
+
                     axios.get(`/api/skrbnik`)
                         .then((res) => {
                             const skrbniki = res.data;
@@ -272,8 +315,8 @@ function Skrbniki() {
                                                             <Input id="input-surnameS" className="form-control-alternative" type="text"onChange={handleChangePriimek} value={priimek} required />
                                                         </FormGroup>
                                                         <FormGroup className="mb-3">
-                                                            <label className="form-control-label" htmlFor="input-uporabniskoIme"> Uporabniško ime* </label>
-                                                            <Input id="input-uporabniskoIme"className="form-control-alternative" type="text"onChange={handleChangeUporabniskoIme} value={uporabniskoIme} required />                                                      
+                                                            <label className="form-control-label" htmlFor="input-uporabniskoIme"> E-poštni naslov* </label>
+                                                            <Input id="input-uporabniskoIme"className="form-control-alternative" type="email"onChange={handleChangeUporabniskoIme} value={uporabniskoIme} required />                                                      
                                                         </FormGroup>
                                                         <FormGroup className="mb-3">
                                                             <FormText color="danger">
@@ -295,7 +338,7 @@ function Skrbniki() {
                                 <thead className="thead-light">
                                     <tr>
                                         <th scope="col"> Ime in priimek </th>
-                                        <th scope="col"> Uporabniško ime </th>
+                                        <th scope="col"> E-poštni naslov </th>
                                         <th scope="col" />
                                     </tr>
                                 </thead>
