@@ -16,10 +16,10 @@
 
 */
 import React, { useState } from "react";
-
 import classnames from "classnames";
 import Chart from "chart.js";
 import { Line, Bar } from "react-chartjs-2";
+import axios from 'axios';
 import {
   Button,
   Card,
@@ -48,8 +48,82 @@ import {
 import Header from "components/Headers/Header.js";
 
 const Index = (props) => {
+
   const [activeNav, setActiveNav] = useState(1);
-  const [chartExample1Data, setChartExample1Data] = useState("data1");
+  const [dataMontazaMesec, setDataMontazaMesec] = useState([0,0,0,0,0,0,0,0,0,0,0,0]);
+  const [dataMontazaTeden, setDataMontazaTeden] = useState([0,0,0,0,0,0,0]);
+
+
+  React.useEffect(() => {
+    axios.get(`/api/delovniNalog`)
+    .then((res) => {
+        const nalogi = res.data;
+        if(nalogi != null){
+            let neto = [];
+            nalogi.forEach((nalog)=> nalog.ekipe.forEach((ekipa)=>neto.push({montaza:ekipa.netoMontaza, datum:ekipa.datum})));
+            handleMontazaTeden(neto);
+            handleMontazaMesec(neto);
+        }
+    });
+  },[]);
+  React.useEffect(() => {
+    setChartExample1Data(data1);
+  },[dataMontazaMesec]);
+  React.useEffect(() => {
+    setChartExample1Data(data2);
+  },[dataMontazaTeden]);
+
+  const handleMontazaMesec = (neto) => {
+    let now = new Date();
+    let meseci =[];
+    let dataLeto = neto.map((data)=>{if((now.getFullYear())===(new Date(data.datum).getFullYear()))return data;});
+    for(let i = 1; i<=12; i++){
+      let temp = dataLeto.map((data)=> {if((new Date(data.datum).getMonth()===i)) return data.montaza; else return 0;});
+      temp = temp.reduce((a, b) => a + b, 0);
+      meseci.push(temp);
+    }
+    setDataMontazaMesec(meseci);
+}
+const handleMontazaTeden = (neto) => {
+  let now = new Date();
+  let dnevi =[];
+  let prviDanVTednu = new Date(now.setDate(now.getDate() - now.getDay())).toUTCString();
+  let zadnjiDanVTednu = new Date(now.setDate(now.getDate() - now.getDay() + 7)).toUTCString();
+  console.log(prviDanVTednu, zadnjiDanVTednu)
+  let dataTeden = neto.filter((data)=>{if(new Date(prviDanVTednu) < new Date(data.datum) && new Date(data.datum) <= new Date(zadnjiDanVTednu))return data;});
+  console.log(dataTeden)
+  for(let i = 1; i<=7; i++){
+    let danVTednu = new Date(now.setDate(now.getDate() - now.getDay() + i)).toUTCString()
+    let temp = dataTeden.map((data)=> {if((new Date(data.datum).getDay()===new Date(danVTednu).getDay())) return data.montaza; else return 0;});
+    temp = temp.reduce((a, b) => a + b, 0);
+    dnevi.push(temp);
+  }
+  setDataMontazaTeden(dnevi);
+}
+
+  const data1 = () => {
+    return {
+      labels: ["Jan", "Feb", "Mar", "Apr", "Maj","Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
+      datasets: [
+        {
+          label: "Performance",
+          data: dataMontazaMesec
+        },
+      ],
+    };
+  };
+  const data2 = () => {
+    return {
+      labels: ["Pon", "Tor", "Sre", "Čet", "Pet", "Sob", "Ned"],
+      datasets: [
+        {
+          label: "Performance",
+          data: dataMontazaTeden,
+        },
+      ],
+    };
+  };
+  const [chartExample1Data, setChartExample1Data] = useState(data1);
 
   if (window.Chart) {
     parseOptions(Chart, chartOptions());
@@ -58,8 +132,12 @@ const Index = (props) => {
   const toggleNavs = (e, index) => {
     e.preventDefault();
     setActiveNav(index);
-    setChartExample1Data("data" + index);
+    if(index===1)
+      setChartExample1Data(data1);
+    else
+      setChartExample1Data(data2);
   };
+
   return (
     <>
       <Header />
@@ -72,14 +150,9 @@ const Index = (props) => {
                 <Row className="align-items-center">
                   <div className="col">
                     <h6 className="text-uppercase text-light ls-1 mb-1">
-                      Pregled dela delavca
+                      Analiza po montaži
                     </h6>
-                    <FormGroup className="mb-3">
-                      <Input id="input-delovec" className="form-control-alternative" type="select"> 
-                        <option>Delavec1</option>
-                        <option>Delavec2</option>
-                      </Input>
-                    </FormGroup>
+                    <h2 className="mb-0">Neto montaža</h2>
                   </div>
                   <div className="col">
                     <Nav className="justify-content-end" pills>
@@ -116,7 +189,7 @@ const Index = (props) => {
                 {/* Chart */}
                 <div className="chart">
                   <Line
-                    data={chartExample1[chartExample1Data]}
+                    data={chartExample1Data}
                     options={chartExample1.options}
                     getDatasetAtEvent={(e) => console.log(e)}
                   />
