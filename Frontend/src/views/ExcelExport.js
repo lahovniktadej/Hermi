@@ -100,16 +100,15 @@ function ExcelExport(props) {
                                 <th scope="col">Odsotnost delavca</th>
                                 <th scope="col">NETO montaža</th>
                                 <th scope="col">BRUTO montaža</th>                     
-
                         </thead>
                         <tbody> 
                             {(props.data!=null)?props.data.map((el) => tableRow(el)):<></>}
                             <tr>
-                               {(props.montaza) ? <td colspan="2"><b>Skupen neto čas montaže:</b></td> : <td colspan="2"><b>Skupen neto čas delavca {props.delavec}:</b></td>}
+                               {(props.montaza) ? <td colspan="2"><b>Skupen neto čas montaže:</b></td> : <td colspan="2"><b>Skupen neto čas delavca {props.delavec.ime + " " + props.delavec.priimek}:</b></td>}
                                 <td>{props.neto}</td>
                             </tr>
                             <tr>
-                                {(props.montaza) ? <td colspan="2"><b>Skupen bruto čas montaže:</b></td> : <td colspan="2"><b>Skupen bruto čas delavca {props.delavec}:</b></td>}
+                                {(props.montaza) ? <td colspan="2"><b>Skupen bruto čas montaže:</b></td> : <td colspan="2"><b>Skupen bruto čas delavca  {props.delavec.ime + " " + props.delavec.priimek}:</b></td>}
                                 <td>{props.bruto}</td>
                             </tr>
                         </tbody>
