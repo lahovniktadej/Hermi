@@ -1,5 +1,5 @@
 .navbar-vertical.navbar-expand-md .navbar-nav .nav-link.active:before {
-    border-left: 2px solid #e40514;
+    border-left: 2px solid #e40716;
 }
 
 .footer {
@@ -50,6 +50,14 @@
 }
 
 .page-item.active .page-link {
-    background-color: #f5365c;
-    border-color: #f5365c;
+    background-color: #e40716;
+    border-color: #e40716;
+}
+
+.fill-default {
+    fill: rgb(201 223 142);
+}
+
+.bg-default {
+    background-color: rgb(201 223 142) !important;
 }
