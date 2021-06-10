@@ -5,8 +5,8 @@ import PaginationStrip from './PaginationStrip';
 import EkipaModal from './EkipaModal';
 import NalogModal from './NalogModal';
 import AddEkipa from './AddEkipa';
-import ManagedInput from '../common/ManagedInput';
-import DeleteModal from '../common/DeleteModal';
+import ManagedInput from 'views/common/ManagedInput';
+import DeleteModal from 'views/common/DeleteModal';
 
 import {
     Container,
@@ -102,10 +102,10 @@ function Nalogi() {
 
     const removeNalog = () => {
         let nalogiArr = Array.from(nalogi);
-        nalogiArr.splice(nalogiArr.indexOf(setSelectedNalog), 1);
+        nalogiArr.splice(nalogiArr.indexOf(selectedNalog), 1);
         setNalogi(nalogiArr);
 
-        axios.delete(`/api/delovniNalog/${setSelectedNalog.id}`).then();
+        axios.delete(`/api/delovniNalog/${selectedNalog.id}`).then();
     }
 
     const dodajEkipo = (ekipa) => {

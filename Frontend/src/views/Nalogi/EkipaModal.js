@@ -35,10 +35,10 @@ function EkipaModal(props) {
         });
     }
 
-    const spremeniSoferja = (index) => {
+    const spremeniSoferja = (sofer) => {
         setEkipa({
             ...ekipa,
-            sofer: props.delavci[index]
+            sofer: sofer
         });
     }
 
@@ -52,6 +52,11 @@ function EkipaModal(props) {
     const dodajEkipo = (e) => {
         e.preventDefault();
         props.dodajEkipo(ekipa);
+        setEkipa({
+            sofer: {},
+            delavci: [],
+            vozilo: {}
+        });
     }
 
     const ponovnoUporabi = (ekipa) => {

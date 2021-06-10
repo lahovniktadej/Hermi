@@ -125,14 +125,12 @@ function EditEkipa(props) {
                         <ManagedInput label="Bruto montaža" required type="number" step="0.01" name="brutoMontaza" value={ekipa.brutoMontaza} onChange={ekipaChangeNumber} />
                     </Col>
                 </Row>
-                <Row>
+                <Row className="justify-content-between">
                     <Col>
-                        <Button color="primary" type="button" onClick={ponovnoUporabi}>Ponovno uporabi</Button>
+                        <Button color="secondary" type="button" onClick={ponovnoUporabi}>Ponovno uporabi</Button>
                     </Col>
                     <Col className="text-right">
                         <Button color="success" onClick={zakljuciDelo}>Zaključi delo</Button>
-                    </Col>
-                    <Col className="text-right">
                         <Button color="danger" type="submit">Shrani spremembe</Button>
                     </Col>
                 </Row>

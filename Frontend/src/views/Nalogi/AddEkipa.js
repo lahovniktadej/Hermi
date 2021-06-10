@@ -13,6 +13,7 @@ import {
 } from 'reactstrap';
 
 function AddEkipa(props) {
+    let sofer = (props.ekipa.sofer)
     const [dropdowns, setDropdowns] = React.useState({
         sofer: "Izberi šoferja",
         vozilo: "Izberi vozilo"
@@ -72,7 +73,7 @@ function AddEkipa(props) {
     return (
         <Row className="justify-content-md-center">
             <Col lg="4">
-                <label className="form-control-label" htmlFor="sofer" >Delavci</label>
+                <label className="form-control-label">Delavci</label>
                 <div className="text-center">
                     <ListGroup>
                         {props.ekipa.delavci.map((delavec) => { return <DelavecListItem delavec={delavec} /> })}
@@ -89,21 +90,25 @@ function AddEkipa(props) {
                     </UncontrolledDropdown>
                 </div>
             </Col>
-            <Col lg="4">
-                <UncontrolledDropdown className="d-block">
+            <Col lg="3">
+                <label className="form-control-label">Šofer</label>
+                <UncontrolledDropdown>
                     <DropdownToggle color="secondary">
                         <span>{dropdowns.sofer}</span>
                         <i class="fas fa-caret-down"></i>
-                        </DropdownToggle>
+                    </DropdownToggle>
                     <DropdownMenu>
                         {props.delavci.map((delavec) => { return <SoferItem sofer={delavec} /> })}
                     </DropdownMenu>
                 </UncontrolledDropdown>
-                <UncontrolledDropdown className="my-2">
+            </Col>
+            <Col lg="3">
+                <label className="form-control-label">Vozilo</label>
+                <UncontrolledDropdown>
                     <DropdownToggle color="secondary">
                         <span>{dropdowns.vozilo}</span>
                         <i class="fas fa-caret-down"></i>
-                        </DropdownToggle>
+                    </DropdownToggle>
                     <DropdownMenu>
                         {props.vozila.map((vozilo) => { return <VoziloItem vozilo={vozilo} /> })}
                     </DropdownMenu>

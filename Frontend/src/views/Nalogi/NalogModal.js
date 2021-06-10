@@ -43,6 +43,7 @@ function NalogaModal(props) {
                 </Button>
             </div>
             <Form onSubmit={submit}>
+                {console.log(props.nalog)}
                 <div className="modal-body bg-secondary pl-lg-4">
                     <Row>
                         <Col lg="4">
@@ -67,9 +68,7 @@ function NalogaModal(props) {
                 <div className="modal-footer">
                     <Row>
                         <Col>
-                            <Button color="success" onClick={zakljuci} >Zaključi&nbsp;nalog</Button>
-                        </Col>
-                        <Col>
+                            <Button color="success" onClick={zakljuci} >Zaključi nalog</Button>
                             <Button color="danger">Shrani</Button>
                         </Col>
                     </Row>

@@ -46,4 +46,10 @@
 .nav-pills .nav-link.active,
 .nav-pills .show > .nav-link {
     color: #fff;
-    background-color: #96bf31; }
+    background-color: #96bf31; 
+}
+
+.page-item.active .page-link {
+    background-color: #f5365c;
+    border-color: #f5365c;
+}
