@@ -1,11 +1,9 @@
 import React from 'react';
 import Header from 'components/Headers/Header';
 import axios from 'axios';
-import PaginationStrip from './PaginationStrip';
+import PaginationStrip from 'views/common/PaginationStrip';
 import EkipaModal from './EkipaModal';
 import NalogModal from './NalogModal';
-import AddEkipa from './AddEkipa';
-import ManagedInput from 'views/common/ManagedInput';
 import DeleteModal from 'views/common/DeleteModal';
 
 import {
@@ -20,8 +18,6 @@ import {
     DropdownToggle,
     DropdownItem,
     Button,
-    CardBody,
-    Form,
     CardFooter,
     UncontrolledTooltip
 } from 'reactstrap';
@@ -39,14 +35,8 @@ function Nalogi() {
     const [nalogi, setNalogi] = React.useState([]);
     const [delavci, setDelavci] = React.useState([]);
     const [vozila, setVozila] = React.useState([]);
-    const [nalog, setNalog] = React.useState(emptyNalog);
-    const [ekipa, setEkipa] = React.useState({
-        sofer: {},
-        delavci: [],
-        vozilo: {}
-    });
-    
-    const [selectedNalog, setSelectedNalog] = React.useState(nalog);
+
+    const [selectedNalog, setSelectedNalog] = React.useState(emptyNalog);
     const [totalPages, setTotalPages] = React.useState(0);
     const [perPage, setPerPage] = React.useState(5);
 
@@ -68,30 +58,6 @@ function Nalogi() {
                 setVozila(vozila);
             });
     }, [perPage]);
-
-    const dodajNalog = (el) => {
-        el.preventDefault();
-        changePage(0);
-
-        let nalogiArr = Array.from(nalogi);
-
-        nalog.ekipe.push(ekipa)
-        nalog.zacetek = new Date(nalog.zacetek).toISOString();
-
-        axios.post(`/api/delovniNalog`, nalog)
-            .then((res) => {
-                nalogiArr.push(res.data);
-                setNalogi(nalogiArr);
-            });
-    }
-
-    const nalogChange = (el) => {
-        setNalog({
-            ...nalog,
-            [el.target.name]: el.target.value,
-            ekipe: [...nalog.ekipe]
-        });
-    }
 
     const nalogModalChange = (nalog) => {
         setSelectedNalog({
@@ -146,38 +112,6 @@ function Nalogi() {
         let nalogCopy = { ...nalog };
         nalogCopy.status = true;
         posodobiDelovniNalog(nalogCopy);
-    }
-
-    const dodajDelavca = (delavec) => {
-        let delavci = Array.from(ekipa.delavci);
-        delavci.push(delavec);
-        setEkipa({
-            ...ekipa,
-            delavci: delavci
-        });
-    }
-
-    const odstraniDelavca = (delavec) => {
-        let delavci = Array.from(ekipa.delavci);
-        delavci.splice(delavci.indexOf(delavec), 1);
-        setEkipa({
-            ...ekipa,
-            delavci: delavci
-        });
-    }
-
-    const spremeniSoferja = (sofer) => {
-        setEkipa({
-            ...ekipa,
-            sofer: sofer
-        });
-    }
-
-    const spremeniVozilo = (vozilo) => {
-        setEkipa({
-            ...ekipa,
-            vozilo: vozilo
-        });
     }
 
     const [modalState, setModalState] = React.useState({
@@ -299,54 +233,16 @@ function Nalogi() {
                                     {nalogi.map((nalog) => { return <Tr row={nalog} /> })}
                                 </tbody>
                             </Table>
-                            <CardFooter>
-                                {(totalPages > 1) ? <PaginationStrip onChange={changePage} totalPages={totalPages} /> : <></>}
-                            </CardFooter>
+                            {
+                                (totalPages > 1) ? (
+                                    <CardFooter>
+                                        <PaginationStrip onChange={changePage} totalPages={totalPages} />
+                                    </CardFooter>
+                                ) : <></>
+                            }
                             <EkipaModal toggle={toggleEkipaModal} state={modalState.ekipa} nalog={selectedNalog} delavci={delavci} dodajEkipo={dodajEkipo} posodobiEkipo={posodobiEkipo} vozila={vozila} />
                             <NalogModal toggle={toggleNalogModal} state={modalState.nalog} nalog={selectedNalog} onSubmit={posodobiDelovniNalog} onChange={nalogModalChange} zakljuciNalog={zakljuciNalog} />
                             <DeleteModal toggle={toggleDeleteModal} state={modalState.delete} text="Ali res želite odstraniti izbrani delovni nalog?" onSubmit={removeNalog} />
-                        </Card>
-                    </Col>
-                </Row>
-                <Row>
-                    <Col className="mb-5">
-                        <Card className="shadow bg-secondary">
-                            <CardHeader className="border-0">
-                                <h3 className="mb-0">Dodaj delovni nalog</h3>
-                            </CardHeader>
-                            <Form onSubmit={dodajNalog} >
-                                <CardBody>
-                                    <h6 className="heading-small text-muted mb-4">Delovni nalog</h6>
-                                    <div className="pl-lg-4">
-                                        <Row>
-                                            <Col lg="3">
-                                                <ManagedInput label="Šifra" required name="sifra" value={nalog.sifra} onChange={nalogChange} />
-                                            </Col>
-                                            <Col lg="3">
-                                                <ManagedInput label="Naziv" required name="naziv" value={nalog.naziv} onChange={nalogChange} />
-                                            </Col>
-                                            <Col lg="3">
-                                                <ManagedInput label="Objekt" required name="objekt" value={nalog.objekt} onChange={nalogChange} />
-                                            </Col>
-                                            <Col lg="3">
-                                                <ManagedInput label="Začetek" required name="zacetek" value={nalog.zacetek} onChange={nalogChange} type="date" />
-                                            </Col>
-                                        </Row>
-                                    </div>
-                                    <hr className="my-4" />
-                                    <h6 className="heading-small text-muted mb-4">Ekipa</h6>
-                                    <div className="pl-lg-4">
-                                        <AddEkipa ekipa={ekipa} delavci={delavci} dodajDelavca={dodajDelavca} odstraniDelavca={odstraniDelavca} spremeniSoferja={spremeniSoferja} vozila={vozila} spremeniVozilo={spremeniVozilo} />
-                                    </div>
-                                </CardBody>
-                                <CardFooter className="border-0">
-                                    <Row>
-                                        <Col className="text-center">
-                                            <Button color="danger">Dodaj</Button>
-                                        </Col>
-                                    </Row>
-                                </CardFooter>
-                            </Form>
                         </Card>
                     </Col>
                 </Row>

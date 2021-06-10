@@ -1,5 +1,4 @@
 import React from 'react';
-import AddEkipa from 'views/Nalogi/AddEkipa';
 import axios from 'axios';
 import ManagedInput from 'views/common/ManagedInput';
 import {
@@ -23,32 +22,11 @@ function Nalogi() {
         konec: null
     }
 
-    const [delavci, setDelavci] = React.useState([]);
-    const [vozila, setVozila] = React.useState([]);
     const [nalog, setNalog] = React.useState(emptyNalog);
-    const [ekipa, setEkipa] = React.useState({
-        sofer: {},
-        delavci: [],
-        vozilo: {}
-    });
-
-    React.useEffect(() => {
-        axios.get(`/api/delavec`)
-            .then((res) => {
-                const delavci = res.data;
-                setDelavci(delavci);
-            });
-        axios.get(`/api/vozilo`)
-            .then((res) => {
-                const vozila = res.data;
-                setVozila(vozila);
-            });
-    }, []);
 
     const dodajNalog = (el) => {
         el.preventDefault();   
 
-        //nalog.ekipe.push(ekipa)
         nalog.zacetek = new Date(nalog.zacetek).toISOString();
 
         axios.post(`/api/delovniNalog`, nalog)
@@ -60,38 +38,6 @@ function Nalogi() {
             ...nalog,
             [el.target.name]: el.target.value,
             ekipe: [...nalog.ekipe]
-        });
-    }
-
-    const dodajDelavca = (delavec) => {
-        let delavci = Array.from(ekipa.delavci);
-        delavci.push(delavec);
-        setEkipa({
-            ...ekipa,
-            delavci: delavci
-        });
-    }
-
-    const odstraniDelavca = (delavec) => {
-        let delavci = Array.from(ekipa.delavci);
-        delavci.splice(delavci.indexOf(delavec), 1);
-        setEkipa({
-            ...ekipa,
-            delavci: delavci
-        });
-    }
-
-    const spremeniSoferja = (sofer) => {
-        setEkipa({
-            ...ekipa,
-            sofer: sofer
-        });
-    }
-
-    const spremeniVozilo = (vozilo) => {
-        setEkipa({
-            ...ekipa,
-            vozilo: vozilo
         });
     }
 

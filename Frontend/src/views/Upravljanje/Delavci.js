@@ -9,10 +9,9 @@ import {
     DropdownToggle,
     Media,
     Table,
-    Container,
     Row,
     Col,
-    CardBody,
+    CardFooter,
     FormGroup,
     Form,
     Input,
@@ -22,6 +21,8 @@ import {
 } from "reactstrap";
 
 import axios from 'axios';
+import DeleteModal from 'views/common/DeleteModal';
+import PaginationStrip from 'views/common/PaginationStrip';
 
 function Delavci() {
     const [ime, setIme] = React.useState("");
@@ -38,15 +39,19 @@ function Delavci() {
     const [addModal, setAddModal] = React.useState(false);
     const [isError, setIsError] = React.useState(false);
 
+    const [totalPages, setTotalPages] = React.useState(0);
+    const [perPage, setPerPage] = React.useState(5);
+
     let key = 0;
 
     React.useEffect(() => {
-        axios.get(`/api/delavec`)
+        axios.get(`/api/delavec`, { params: { page: 0, perPage: perPage } })
             .then((res) => {
-                const delavci = res.data;
+                const delavci = res.data.content;
+                setTotalPages(res.data.totalPages);
                 setSeznamDelavcev(delavci);
             });
-    }, []);
+    }, [perPage]);
 
     const handleChangeIme = event => {
         setIme(event.target.value);
@@ -185,6 +190,15 @@ function Delavci() {
         setAddModal(true);
     }
 
+    const changePage = (page) => {
+        axios.get(`/api/delavec`, { params: { page: page, perPage: perPage } })
+            .then((res) => {
+                const delavci = res.data.content;
+                setTotalPages(res.data.totalPages);
+                setSeznamDelavcev(delavci);
+            });
+    }
+
     const tableRow = (el) => {
         return (
             <tr key={key++}>
@@ -204,30 +218,6 @@ function Delavci() {
                         <DropdownMenu className="dropdown-menu-arrow" right>
                             <DropdownItem onClick={(e) => handleEditDelavec(el, e)}> Uredi </DropdownItem>
                             <DropdownItem className="text-red" onClick={(e) => handleRemoveModal(el, e)}> Odstrani </DropdownItem>
-                            <Modal className="modal-dialog-centered modal-danger" contentClassName="bg-gradient-danger" isOpen={modal} toggle={() => { return null; }}>
-                                <div className="modal-header">
-                                    <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => { setModal(false); }}>
-                                        <span aria-hidden={true}>×</span>
-                                    </button>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="py-3 text-center">
-                                        <i className="ni ni-bell-55 ni-3x" />
-                                        <h4 className="heading mt-4">Pozor!</h4>
-                                        <p>
-                                            Ali res želite odstraniti izbranega delavca ({izbranDelavec ? izbranDelavec.ime + " " + izbranDelavec.priimek : null})?
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="modal-footer">
-                                    <Button className="btn-white" color="default" type="button" onClick={handleRemoveDelavec}>
-                                        Da
-                                    </Button>
-                                    <Button className="text-white ml-auto" color="link" data-dismiss="modal" type="button" onClick={() => { setModal(false); }}>
-                                        Ne
-                                    </Button>
-                                </div>
-                            </Modal>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -242,48 +232,51 @@ function Delavci() {
                     <Col>
                         <h3 className="mb-0">Delavci</h3>
                     </Col>
-                    <Col>
-                        <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
-                        <Modal isOpen={addModal} toggle={() => { return null; }}>
-                            <Card className="shadow bg-secondary">
-                                <CardHeader>
-                                    <Row>
-                                        <Col>
-                                            <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj delavca"}</h3>
-                                        </Col>
-                                        <Col>
-                                            <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={handleCancel}>
-                                                <span aria-hidden={true}>×</span>
-                                            </button>
-                                        </Col>
-                                    </Row>
-                                </CardHeader>
-                                <CardBody>
-                                    <Form role="form" onSubmit={(e) => handleAddDelavec(e)}>
-                                        <FormGroup className="mb-3">
-                                            <label className="form-control-label" htmlFor="input-nameD">Ime*</label>
-                                            <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
-                                        </FormGroup>
-                                        <FormGroup className="mb-3">
-                                            <label className="form-control-label" htmlFor="input-nameD">Priimek*</label>
-                                            <Input id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
-                                        </FormGroup>
-                                        <FormGroup className="mb-3">
-                                            <label className="form-control-label" htmlFor="input-phone">Telefon</label>
-                                            <Input id="input-phone" className="form-control-alternative" type="text" onChange={handleChangeTelefon} value={telefon} />
-                                        </FormGroup>
-                                        <FormGroup className="mb-3">
-                                            <FormText color="danger">
-                                                {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}
-                                            </FormText>
-                                        </FormGroup>
-                                        <div className="text-center">
-                                            <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
-                                            {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
-                                        </div>
-                                    </Form>
-                                </CardBody>
-                            </Card>
+                    <Col className="text-right">
+                        <UncontrolledDropdown direction="left">
+                            <DropdownToggle size="sm">
+                                <span>Št. na stran: {perPage}</span>
+                                <i class="fas fa-caret-down"></i>
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem onClick={() => setPerPage(5)}>5</DropdownItem>
+                                <DropdownItem onClick={() => setPerPage(10)}>10</DropdownItem>
+                                <DropdownItem onClick={() => setPerPage(15)}>15</DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                        <Button color="danger" type="button" size="sm" onClick={handleAddModal}>Dodaj</Button>
+                        <Modal className="modal-dialog-centered" isOpen={addModal} toggle={handleCancel}>
+                            <div className="modal-header">
+                                <h6 className="heading">{editing ? "Uredi podatke" : "Dodaj delavca"}</h6>
+                                <Button className="close" color="" onClick={handleCancel}>
+                                    <i class="fas fa-times"></i>
+                                </Button>
+                            </div>
+                            <Form onSubmit={handleAddDelavec}>
+                                <div className="modal-body bg-secondary">
+                                    <FormGroup className="mb-3">
+                                        <label className="form-control-label" htmlFor="input-nameD">Ime*</label>
+                                        <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
+                                    </FormGroup>
+                                    <FormGroup className="mb-3">
+                                        <label className="form-control-label" htmlFor="input-nameD">Priimek*</label>
+                                        <Input id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
+                                    </FormGroup>
+                                    <FormGroup className="mb-3">
+                                        <label className="form-control-label" htmlFor="input-phone">Telefon</label>
+                                        <Input id="input-phone" className="form-control-alternative" type="text" onChange={handleChangeTelefon} value={telefon} />
+                                    </FormGroup>
+                                    <FormGroup className="mb-3">
+                                        <FormText color="danger">
+                                            {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}
+                                        </FormText>
+                                    </FormGroup>
+                                </div>
+                                <div className="modal-footer text-center">
+                                    <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
+                                    {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
+                                </div>
+                            </Form>
                         </Modal>
                     </Col>
                 </Row>
@@ -300,6 +293,14 @@ function Delavci() {
                     {seznamDelavcev.map((el) => tableRow(el))}
                 </tbody>
             </Table>
+            {
+                (totalPages > 1) ? (
+                    <CardFooter>
+                        <PaginationStrip onChange={changePage} totalPages={totalPages} />
+                    </CardFooter>
+                ) : <></>
+            }
+            <DeleteModal state={modal} toggle={() => { setModal(false); }} onSubmit={handleRemoveDelavec} text={"Ali res želite odstraniti izbranega delavca" + ((izbranDelavec) ? ` (${izbranDelavec.ime} ${izbranDelavec.priimek})` : "") + "?"} />
         </Card>
     );
 }

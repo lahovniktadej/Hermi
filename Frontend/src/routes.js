@@ -6,9 +6,10 @@ import Login from "views/examples/Login.js";
 */
 
 import Nalogi from "views/Nalogi/Nalogi";
-import Izpis from "views/Izpis";
+import Izpis from "views/Izpis/Izpis";
 import Upravljanje from "views/Upravljanje/Upravljanje";
 import Prijava from "views/Uporabnik/Prijava";
+import Login from "views/Uporabnik/Login";
 
 var routes = [
   {
@@ -43,9 +44,9 @@ var routes = [
     path: "/prijava",
     name: "Prijava",
     icon: "ni ni-key-25 text-info",
-    component: Prijava,
-    layout: "/admin",
-  },
+    component: Login,
+    layout: "/auth",
+  }
   /* Currently unused, potential set-up of login and profile stuff for later
     {
       path: "/user-profile",

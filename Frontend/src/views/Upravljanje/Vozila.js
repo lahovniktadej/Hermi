@@ -9,10 +9,9 @@ import {
     DropdownToggle,
     Media,
     Table,
-    Container,
     Row,
     Col,
-    CardBody,
+    CardFooter,
     FormGroup,
     Form,
     Input,
@@ -22,6 +21,8 @@ import {
 } from "reactstrap";
 
 import axios from 'axios';
+import DeleteModal from 'views/common/DeleteModal';
+import PaginationStrip from 'views/common/PaginationStrip';
 
 function Vozila() {
     const [naziv, setNaziv] = React.useState("");
@@ -37,15 +38,19 @@ function Vozila() {
     const [addModal, setAddModal] = React.useState(false);
     const [isError, setIsError] = React.useState(false);
 
+    const [totalPages, setTotalPages] = React.useState(0);
+    const [perPage, setPerPage] = React.useState(5);
+
     let key = 0;
 
     React.useEffect(() => {
-        axios.get(`/api/vozilo`)
+        axios.get(`/api/vozilo`, { params: { page: 0, perPage: perPage } })
             .then((res) => {
-                const vozila = res.data;
+                const vozila = res.data.content;
+                setTotalPages(res.data.totalPages);
                 setSeznamVozil(vozila);
             });
-    }, []);
+    }, [perPage]);
 
     const handleChangeNaziv = event => {
         setNaziv(event.target.value);
@@ -173,6 +178,15 @@ function Vozila() {
         setAddModal(true);
     }
 
+    const changePage = (page) => {
+        axios.get(`/api/vozilo`, { params: { page: page, perPage: perPage } })
+            .then((res) => {
+                const vozila = res.data.content;
+                setTotalPages(res.data.totalPages);
+                setSeznamVozil(vozila);
+            });
+    }
+
     const tableRow = (el) => {
         return (
             <tr key={key++}>
@@ -192,30 +206,6 @@ function Vozila() {
                         <DropdownMenu className="dropdown-menu-arrow" right>
                             <DropdownItem onClick={(e) => handleEditVehicle(el, e)}> Uredi </DropdownItem>
                             <DropdownItem className="text-red" onClick={(e) => handleRemoveModal(el, e)}> Odstrani </DropdownItem>
-                            <Modal className="modal-dialog-centered modal-danger" contentClassName="bg-gradient-danger" isOpen={modal} toggle={() => { return null; }}>
-                                <div className="modal-header">
-                                    <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={() => { setModal(false); }}>
-                                        <span aria-hidden={true}>×</span>
-                                    </button>
-                                </div>
-                                <div className="modal-body">
-                                    <div className="py-3 text-center">
-                                        <i className="ni ni-bell-55 ni-3x" />
-                                        <h4 className="heading mt-4">Pozor!</h4>
-                                        <p>
-                                            Ali res želite odstraniti izbrano vozilo ({izbranoVozilo ? izbranoVozilo.naziv : null})?
-                                        </p>
-                                    </div>
-                                </div>
-                                <div className="modal-footer">
-                                    <Button className="btn-white" color="default" type="button" onClick={handleRemoveVehicle}>
-                                        Da
-                                    </Button>
-                                    <Button className="text-white ml-auto" color="link" data-dismiss="modal" type="button" onClick={() => { setModal(false); }}>
-                                        Ne
-                                    </Button>
-                                </div>
-                            </Modal>
                         </DropdownMenu>
                     </UncontrolledDropdown>
                 </td>
@@ -230,23 +220,28 @@ function Vozila() {
                     <Col>
                         <h3 className="mb-0">Vozila</h3>
                     </Col>
-                    <Col>
-                        <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
-                        <Modal isOpen={addModal} toggle={() => { return null; }}>
-                            <CardHeader>
-                                <Row>
-                                    <Col>
-                                        <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj vozilo"}</h3>
-                                    </Col>
-                                    <Col>
-                                        <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={handleCancel}>
-                                            <span aria-hidden={true}>×</span>
-                                        </button>
-                                    </Col>
-                                </Row>
-                            </CardHeader>
-                            <CardBody>
-                                <Form role="form" onSubmit={(e) => handleAddVozilo(e)}>
+                    <Col className="text-right">
+                        <UncontrolledDropdown direction="left">
+                            <DropdownToggle size="sm">
+                                <span>Št. na stran: {perPage}</span>
+                                <i class="fas fa-caret-down"></i>
+                            </DropdownToggle>
+                            <DropdownMenu>
+                                <DropdownItem onClick={() => setPerPage(5)}>5</DropdownItem>
+                                <DropdownItem onClick={() => setPerPage(10)}>10</DropdownItem>
+                                <DropdownItem onClick={() => setPerPage(15)}>15</DropdownItem>
+                            </DropdownMenu>
+                        </UncontrolledDropdown>
+                        <Button color="danger" type="button" size="sm" onClick={handleAddModal}>Dodaj</Button>
+                        <Modal className="modal-dialog-centered" isOpen={addModal} toggle={handleCancel}>
+                            <div className="modal-header">
+                                <h6 className="heading">{editing ? "Uredi podatke" : "Dodaj vozilo"}</h6>
+                                <Button className="close" color="" onClick={handleCancel}>
+                                    <i class="fas fa-times"></i>
+                                </Button>
+                            </div>
+                            <Form onSubmit={handleAddVozilo}>
+                                <div className="modal-body bg-secondary">
                                     <FormGroup className="mb-3">
                                         <label className="form-control-label" htmlFor="input-naziv">Naziv vozila*</label>
                                         <Input id="input-naziv" className="form-control-alternative" type="text" onChange={handleChangeNaziv} value={naziv} required />
@@ -260,12 +255,12 @@ function Vozila() {
                                             {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}
                                         </FormText>
                                     </FormGroup>
-                                    <div className="text-center">
-                                        <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
-                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
-                                    </div>
-                                </Form>
-                            </CardBody>
+                                </div>
+                                <div className="modal-footer text-center">
+                                    <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
+                                    {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
+                                </div>
+                            </Form>
                         </Modal>
                     </Col>
                 </Row>
@@ -282,6 +277,14 @@ function Vozila() {
                     {seznamVozil.map((el) => tableRow(el))}
                 </tbody>
             </Table>
+            {
+                (totalPages > 1) ? (
+                    <CardFooter>
+                        <PaginationStrip onChange={changePage} totalPages={totalPages} />
+                    </CardFooter>
+                ) : <></>
+            }
+            <DeleteModal state={modal} toggle={() => { setModal(false); }} onSubmit={handleRemoveVehicle} text={"Ali res želite odstraniti izbrano vozilo" + ((izbranoVozilo) ? ` (${izbranoVozilo.naziv})` : "") + "?"} />
         </Card>
     );
 }

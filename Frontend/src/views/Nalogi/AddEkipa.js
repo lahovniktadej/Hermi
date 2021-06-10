@@ -13,11 +13,10 @@ import {
 } from 'reactstrap';
 
 function AddEkipa(props) {
-    let sofer = (props.ekipa.sofer)
-    const [dropdowns, setDropdowns] = React.useState({
-        sofer: "Izberi šoferja",
-        vozilo: "Izberi vozilo"
-    })
+    const dropdowns = {
+        sofer: (props.ekipa.sofer.ime) ? props.ekipa.sofer.ime + " " + props.ekipa.sofer.priimek : "Izberi šoferja",
+        vozilo: (props.ekipa.vozilo.naziv) ? props.ekipa.vozilo.naziv : "Izberi vozilo"
+    }
 
     const DelavecListItem = (data) => {
         return (
@@ -55,18 +54,12 @@ function AddEkipa(props) {
     }
 
     const changeSofer = (sofer) => {
-        setDropdowns({
-            ...dropdowns,
-            sofer: sofer.ime + " " + sofer.priimek
-        });
+        dropdowns.sofer = sofer.ime + " " + sofer.priimek;
         props.spremeniSoferja(sofer);
     }
 
     const changeVozilo = (vozilo) => {
-        setDropdowns({
-            ...dropdowns,
-            vozilo: vozilo.naziv
-        });
+        dropdowns.vozilo = vozilo.naziv;
         props.spremeniVozilo(vozilo);
     }
 

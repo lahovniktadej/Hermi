@@ -23,7 +23,7 @@ import {
 } from "reactstrap";
 
 import Header from 'components/Headers/Header';
-import Export  from 'views/ExcelExport';
+import Export  from 'views/Izpis/ExcelExport';
 
 function Izpis() {
 
