@@ -7,7 +7,7 @@ import Login from "views/examples/Login.js";
 
 import Nalogi from "views/Nalogi/Nalogi";
 import Izpis from "views/Izpis";
-import Upravljanje from "views/Upravljanje";
+import Upravljanje from "views/Upravljanje/Upravljanje";
 import Prijava from "views/Uporabnik/Prijava";
 
 var routes = [

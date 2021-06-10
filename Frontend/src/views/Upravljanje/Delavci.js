@@ -73,21 +73,21 @@ function Delavci() {
                     telefonskaStevilka: telefon,
                 }
 
-                axios.put(`/api/delavec/${seznam[editIndex].id}`, delavec).then(function() {
+                axios.put(`/api/delavec/${seznam[editIndex].id}`, delavec).then(function () {
                     axios.get(`/api/delavec`)
                         .then((res) => {
                             const delavci = res.data;
                             setSeznamDelavcev(delavci);
                         });
-    
+
                     setAddModal(false);
-    
-                    setTimeout(function() {
+
+                    setTimeout(function () {
                         //  Reset input fields
                         setIme("");
                         setPriimek("");
                         setTelefon("");
-    
+
                         //  Reset editing status
                         setEditIndex(null);
                         setEditing(false);
@@ -104,16 +104,16 @@ function Delavci() {
                     telefonskaStevilka: telefon,
                 }
 
-                axios.post(`/api/delavec`, novDelavec).then(function() {
+                axios.post(`/api/delavec`, novDelavec).then(function () {
                     axios.get(`/api/delavec`)
                         .then((res) => {
                             const delavci = res.data;
                             setSeznamDelavcev(delavci);
                         });
-    
+
                     setAddModal(false);
-    
-                    setTimeout(function() {
+
+                    setTimeout(function () {
                         //  Reset input fields
                         setIme("");
                         setPriimek("");
@@ -145,7 +145,7 @@ function Delavci() {
     const handleCancel = () => {
         setAddModal(false);
 
-        setTimeout(function() {
+        setTimeout(function () {
             //  Reset input fields
             setIme("");
             setPriimek("");
@@ -169,7 +169,7 @@ function Delavci() {
         let seznam = [...seznamDelavcev];
         let index = seznam.indexOf(izbranDelavec);
 
-        axios.delete(`/api/delavec/${seznam[index].id}`).then(function() {
+        axios.delete(`/api/delavec/${seznam[index].id}`).then(function () {
             axios.get(`/api/delavec`)
                 .then((res) => {
                     const delavci = res.data;
@@ -236,79 +236,71 @@ function Delavci() {
     };
 
     return (
-        <>
-            <Container style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+        <Card className="shadow">
+            <CardHeader className="border-0">
                 <Row>
-                    <Col className="mb-5">
-                        <Card className="shadow">
-                            <CardHeader className="border-0">
-                                <Row>
-                                    <Col>
-                                        <h3 className="mb-0">Delavci</h3>
-                                    </Col>
-                                    <Col>
-                                        <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
-                                        <Modal isOpen={addModal} toggle={() => { return null; }}>
-                                            <Card className="shadow bg-secondary">
-                                                <CardHeader>
-                                                    <Row>
-                                                        <Col>
-                                                            <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj delavca"}</h3>    
-                                                        </Col>
-                                                        <Col>
-                                                            <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={handleCancel}>
-                                                                <span aria-hidden={true}>×</span>
-                                                            </button>
-                                                        </Col>
-                                                    </Row>
-                                                </CardHeader>
-                                                <CardBody>
-                                                    <Form role="form" onSubmit={(e) => handleAddDelavec(e)}>
-                                                        <FormGroup className="mb-3">
-                                                            <label className="form-control-label" htmlFor="input-nameD">Ime*</label>
-                                                            <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
-                                                        </FormGroup>
-                                                        <FormGroup className="mb-3">
-                                                            <label className="form-control-label" htmlFor="input-nameD">Priimek*</label>
-                                                            <Input id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
-                                                        </FormGroup>
-                                                        <FormGroup className="mb-3">
-                                                            <label className="form-control-label" htmlFor="input-phone">Telefon</label>
-                                                            <Input id="input-phone" className="form-control-alternative" type="text" onChange={handleChangeTelefon} value={telefon} />
-                                                        </FormGroup>
-                                                        <FormGroup className="mb-3">
-                                                            <FormText color="danger">
-                                                                {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}
-                                                            </FormText>
-                                                        </FormGroup>
-                                                        <div className="text-center">
-                                                            <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
-                                                            {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
-                                                        </div>
-                                                    </Form>
-                                                </CardBody>
-                                            </Card>
-                                        </Modal>
-                                    </Col>
-                                </Row>
-                            </CardHeader>
-                            <Table className="align-items-center table-flush" responsive>
-                                <thead className="thead-light">
-                                    <tr>
-                                        <th scope="col">Ime in priimek</th>
-                                        <th scope="col">Telefon</th>
-                                        <th scope="col" />
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {seznamDelavcev.map((el) => tableRow(el))}
-                                </tbody>
-                            </Table>
-                        </Card>
+                    <Col>
+                        <h3 className="mb-0">Delavci</h3>
+                    </Col>
+                    <Col>
+                        <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
+                        <Modal isOpen={addModal} toggle={() => { return null; }}>
+                            <Card className="shadow bg-secondary">
+                                <CardHeader>
+                                    <Row>
+                                        <Col>
+                                            <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj delavca"}</h3>
+                                        </Col>
+                                        <Col>
+                                            <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={handleCancel}>
+                                                <span aria-hidden={true}>×</span>
+                                            </button>
+                                        </Col>
+                                    </Row>
+                                </CardHeader>
+                                <CardBody>
+                                    <Form role="form" onSubmit={(e) => handleAddDelavec(e)}>
+                                        <FormGroup className="mb-3">
+                                            <label className="form-control-label" htmlFor="input-nameD">Ime*</label>
+                                            <Input id="input-nameD" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
+                                        </FormGroup>
+                                        <FormGroup className="mb-3">
+                                            <label className="form-control-label" htmlFor="input-nameD">Priimek*</label>
+                                            <Input id="input-surnameD" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
+                                        </FormGroup>
+                                        <FormGroup className="mb-3">
+                                            <label className="form-control-label" htmlFor="input-phone">Telefon</label>
+                                            <Input id="input-phone" className="form-control-alternative" type="text" onChange={handleChangeTelefon} value={telefon} />
+                                        </FormGroup>
+                                        <FormGroup className="mb-3">
+                                            <FormText color="danger">
+                                                {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}
+                                            </FormText>
+                                        </FormGroup>
+                                        <div className="text-center">
+                                            <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
+                                            {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
+                                        </div>
+                                    </Form>
+                                </CardBody>
+                            </Card>
+                        </Modal>
                     </Col>
                 </Row>
-            </Container>
-        </>
+            </CardHeader>
+            <Table className="align-items-center table-flush" responsive>
+                <thead className="thead-light">
+                    <tr>
+                        <th scope="col">Ime in priimek</th>
+                        <th scope="col">Telefon</th>
+                        <th scope="col" />
+                    </tr>
+                </thead>
+                <tbody>
+                    {seznamDelavcev.map((el) => tableRow(el))}
+                </tbody>
+            </Table>
+        </Card>
     );
 }
 

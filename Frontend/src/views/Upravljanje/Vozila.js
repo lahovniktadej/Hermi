@@ -60,27 +60,27 @@ function Vozila() {
 
         if (editing) {
             if (naziv) {
-                let seznam = [ ...seznamVozil ];
+                let seznam = [...seznamVozil];
 
                 let vozilo = {
                     naziv: naziv,
                     registrskaStevilka: registrska ? registrska : null,
                 };
 
-                axios.put(`/api/vozilo/${seznam[editIndex].id}`, vozilo).then(function() {
+                axios.put(`/api/vozilo/${seznam[editIndex].id}`, vozilo).then(function () {
                     axios.get(`/api/vozilo`)
                         .then((res) => {
                             const vozila = res.data;
                             setSeznamVozil(vozila);
                         });
-    
+
                     setAddModal(false);
-    
-                    setTimeout(function() {
+
+                    setTimeout(function () {
                         //  Reset input fields
                         setNaziv("");
                         setRegistrska("");
-    
+
                         //  Reset editing status
                         setEditIndex(null);
                         setEditing(false);
@@ -96,16 +96,16 @@ function Vozila() {
                     registrskaStevilka: registrska ? registrska : null,
                 };
 
-                axios.post(`/api/vozilo`, novoVozilo).then(function() {
+                axios.post(`/api/vozilo`, novoVozilo).then(function () {
                     axios.get(`/api/vozilo`)
                         .then((res) => {
                             const vozila = res.data;
                             setSeznamVozil(vozila);
                         });
-    
+
                     setAddModal(false);
-    
-                    setTimeout(function() {
+
+                    setTimeout(function () {
                         //  Reset input fields
                         setNaziv("");
                         setRegistrska("");
@@ -120,7 +120,7 @@ function Vozila() {
     const handleEditVehicle = (el, e) => {
         e.preventDefault();
 
-        let seznam = [ ...seznamVozil ];
+        let seznam = [...seznamVozil];
         let index = seznam.indexOf(el);
 
         setNaziv(el.naziv);
@@ -135,7 +135,7 @@ function Vozila() {
     const handleCancel = () => {
         setAddModal(false);
 
-        setTimeout(function() {
+        setTimeout(function () {
             //  Reset input fields
             setNaziv("");
             setRegistrska("");
@@ -155,10 +155,10 @@ function Vozila() {
     }
 
     const handleRemoveVehicle = () => {
-        let seznam = [ ...seznamVozil ];
+        let seznam = [...seznamVozil];
         let index = seznam.indexOf(izbranoVozilo);
 
-        axios.delete(`/api/vozilo/${seznam[index].id}`).then(function() {
+        axios.delete(`/api/vozilo/${seznam[index].id}`).then(function () {
             axios.get(`/api/vozilo`)
                 .then((res) => {
                     const vozila = res.data;
@@ -224,73 +224,65 @@ function Vozila() {
     };
 
     return (
-        <>
-            <Container style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+        <Card className="shadow">
+            <CardHeader className="border-0">
                 <Row>
-                    <Col className="mb-5">
-                        <Card className="shadow">
-                            <CardHeader className="border-0">
+                    <Col>
+                        <h3 className="mb-0">Vozila</h3>
+                    </Col>
+                    <Col>
+                        <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
+                        <Modal isOpen={addModal} toggle={() => { return null; }}>
+                            <CardHeader>
                                 <Row>
                                     <Col>
-                                        <h3 className="mb-0">Vozila</h3>                                
+                                        <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj vozilo"}</h3>
                                     </Col>
                                     <Col>
-                                        <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
-                                        <Modal isOpen={addModal} toggle={() => { return null; }}>
-                                            <CardHeader>
-                                                <Row>
-                                                    <Col>
-                                                        <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj vozilo"}</h3>    
-                                                    </Col>
-                                                    <Col>
-                                                        <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={handleCancel}>
-                                                            <span aria-hidden={true}>×</span>
-                                                        </button>
-                                                    </Col>
-                                                </Row>
-                                            </CardHeader>
-                                            <CardBody>
-                                                <Form role="form" onSubmit={(e) => handleAddVozilo(e)}>
-                                                    <FormGroup className="mb-3">
-                                                        <label className="form-control-label" htmlFor="input-naziv">Naziv vozila*</label>
-                                                        <Input id="input-naziv" className="form-control-alternative" type="text" onChange={handleChangeNaziv} value={naziv} required />
-                                                    </FormGroup>
-                                                    <FormGroup className="mb-3">
-                                                        <label className="form-control-label" htmlFor="input-regNumber">Registrska številka</label>
-                                                        <Input id="input-regNumber" className="form-control-alternative" type="text" onChange={handleChangeRegistrska} value={registrska} />
-                                                    </FormGroup>
-                                                    <FormGroup className="mb-3">
-                                                        <FormText color="danger">
-                                                            {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}
-                                                        </FormText>
-                                                    </FormGroup>
-                                                    <div className="text-center">
-                                                        <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
-                                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
-                                                    </div>
-                                                </Form>
-                                            </CardBody>
-                                        </Modal>
+                                        <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={handleCancel}>
+                                            <span aria-hidden={true}>×</span>
+                                        </button>
                                     </Col>
                                 </Row>
                             </CardHeader>
-                            <Table className="align-items-center table-flush" responsive>
-                                <thead className="thead-light">
-                                    <tr>
-                                        <th scope="col">Naziv vozila</th>
-                                        <th scope="col">Registrska številka</th>
-                                        <th scope="col"/>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {seznamVozil.map((el) => tableRow(el))}
-                                </tbody>
-                            </Table>
-                        </Card>
+                            <CardBody>
+                                <Form role="form" onSubmit={(e) => handleAddVozilo(e)}>
+                                    <FormGroup className="mb-3">
+                                        <label className="form-control-label" htmlFor="input-naziv">Naziv vozila*</label>
+                                        <Input id="input-naziv" className="form-control-alternative" type="text" onChange={handleChangeNaziv} value={naziv} required />
+                                    </FormGroup>
+                                    <FormGroup className="mb-3">
+                                        <label className="form-control-label" htmlFor="input-regNumber">Registrska številka</label>
+                                        <Input id="input-regNumber" className="form-control-alternative" type="text" onChange={handleChangeRegistrska} value={registrska} />
+                                    </FormGroup>
+                                    <FormGroup className="mb-3">
+                                        <FormText color="danger">
+                                            {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}
+                                        </FormText>
+                                    </FormGroup>
+                                    <div className="text-center">
+                                        <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
+                                        {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
+                                    </div>
+                                </Form>
+                            </CardBody>
+                        </Modal>
                     </Col>
                 </Row>
-            </Container>
-        </>
+            </CardHeader>
+            <Table className="align-items-center table-flush" responsive>
+                <thead className="thead-light">
+                    <tr>
+                        <th scope="col">Naziv vozila</th>
+                        <th scope="col">Registrska številka</th>
+                        <th scope="col" />
+                    </tr>
+                </thead>
+                <tbody>
+                    {seznamVozil.map((el) => tableRow(el))}
+                </tbody>
+            </Table>
+        </Card>
     );
 }
 

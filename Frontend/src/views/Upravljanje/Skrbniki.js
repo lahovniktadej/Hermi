@@ -82,12 +82,12 @@ function Skrbniki() {
     }
 
     const sendPasswordResetEmail = (email) => {
-        setTimeout(function() {
-            firebase.auth().sendPasswordResetEmail(email).then(function() {
+        setTimeout(function () {
+            firebase.auth().sendPasswordResetEmail(email).then(function () {
                 // Email sent.
-            }).catch(function(error) {
+            }).catch(function (error) {
                 console.log(error);
-            // An error happened.
+                // An error happened.
             })
         }, 5000);
     }
@@ -97,29 +97,29 @@ function Skrbniki() {
 
         if (editing) {
             if (ime && priimek && uporabniskoIme) {
-                let seznam = [ ...seznamSkrbnikov ];
-                
+                let seznam = [...seznamSkrbnikov];
+
                 let skrbnik = {
                     ime: ime,
                     priimek: priimek,
                     uporabniskoIme: uporabniskoIme,
                 }
-                
-                axios.put(`/api/skrbnik/${seznam[editIndex].id}`, skrbnik).then(function() {
+
+                axios.put(`/api/skrbnik/${seznam[editIndex].id}`, skrbnik).then(function () {
                     axios.get(`/api/skrbnik`)
                         .then((res) => {
                             const skrbniki = res.data;
                             setSeznamSkrbnikov(skrbniki);
                         });
-    
+
                     setAddModal(false);
-    
-                    setTimeout(function() {
+
+                    setTimeout(function () {
                         //  Reset input fields
                         setIme("");
                         setPriimek("");
                         setUporabniskoIme("");
-            
+
                         //  Reset editing status
                         setEditIndex(null);
                         setEditing(false);
@@ -136,7 +136,7 @@ function Skrbniki() {
                     uporabniskoIme: uporabniskoIme,
                 }
 
-                axios.post(`/api/skrbnik`, novSkrbnik).then(function() {
+                axios.post(`/api/skrbnik`, novSkrbnik).then(function () {
                     //  Ustvarjanje novega uporabnika in pošiljanje e-poštnega sporočila za ponastavitev gesla
                     firebase.auth().createUserWithEmailAndPassword(uporabniskoIme, Math.floor(Math.random(1000000000) * 9999999999).toString()).then((userCredential) => {
                         let user = userCredential.user;
@@ -153,10 +153,10 @@ function Skrbniki() {
                             const skrbniki = res.data;
                             setSeznamSkrbnikov(skrbniki);
                         });
-    
+
                     setAddModal(false);
-    
-                    setTimeout(function() {
+
+                    setTimeout(function () {
                         //  Reset input fields
                         setIme("");
                         setPriimek("");
@@ -171,8 +171,8 @@ function Skrbniki() {
 
     const handleEditSkrbnik = (el, e) => {
         e.preventDefault();
-        
-        let seznam = [ ...seznamSkrbnikov ];
+
+        let seznam = [...seznamSkrbnikov];
         let index = seznam.indexOf(el);
 
         setIme(el.ime);
@@ -188,7 +188,7 @@ function Skrbniki() {
     const handleCancel = () => {
         setAddModal(false);
 
-        setTimeout(function() {
+        setTimeout(function () {
             //  Reset input fields
             setIme("");
             setPriimek("");
@@ -199,7 +199,7 @@ function Skrbniki() {
             setEditing(false);
 
             //  Reset error status
-            setIsError(false);            
+            setIsError(false);
         }, 500);
     }
 
@@ -209,10 +209,10 @@ function Skrbniki() {
     }
 
     const handleRemoveSkrbnik = () => {
-        let seznam = [ ...seznamSkrbnikov ];
+        let seznam = [...seznamSkrbnikov];
         let index = seznam.indexOf(izbranSkrbnik);
 
-        axios.delete(`/api/skrbnik/${seznam[index].id}`).then(function() {
+        axios.delete(`/api/skrbnik/${seznam[index].id}`).then(function () {
             axios.get(`/api/skrbnik`)
                 .then((res) => {
                     const skrbniki = res.data;
@@ -232,9 +232,9 @@ function Skrbniki() {
             <tr key={key++}>
                 <th scope="row">
                     <Media className="align-items-center">
-                            <span className="mb-0 text-sm">
-                                {el.ime + " " + el.priimek}
-                            </span>
+                        <span className="mb-0 text-sm">
+                            {el.ime + " " + el.priimek}
+                        </span>
                     </Media>
                 </th>
                 <td>{el.uporabniskoIme}</td>
@@ -278,79 +278,71 @@ function Skrbniki() {
     };
 
     return (
-        <>
-            <Container style={{ paddingLeft: "0px", paddingRight: "0px" }}>
+        <Card className="shadow">
+            <CardHeader className="border-0">
                 <Row>
-                    <Col className="mb-5">
-                        <Card className="shadow">
-                            <CardHeader className="border-0">
-                                <Row>
-                                    <Col>
-                                        <h3 className="mb-0">Skrbniki</h3>    
-                                    </Col>
-                                    <Col>
-                                        <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
-                                        <Modal isOpen={addModal} toggle={() => { return null; }}>
-                                            <Card className="shadow bg-secondary">
-                                                <CardHeader>
-                                                    <Row>
-                                                        <Col>
-                                                            <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj skrbnika"}</h3>    
-                                                        </Col>
-                                                        <Col>
-                                                            <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={handleCancel}>
-                                                                <span aria-hidden={true}>×</span>
-                                                            </button>
-                                                        </Col>
-                                                    </Row>
-                                                </CardHeader>
-                                                <CardBody>
-                                                    <Form role="form" onSubmit={(e) => handleAddSkrbnik(e)}>
-                                                        <FormGroup className="mb-3">
-                                                            <label className="form-control-label"htmlFor="input-nameS"> Ime* </label>
-                                                            <Input id="input-nameS" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
-                                                        </FormGroup>
-                                                        <FormGroup className="mb-3">
-                                                            <label className="form-control-label"htmlFor="input-surnameS"> Priimek* </label>
-                                                            <Input id="input-surnameS" className="form-control-alternative" type="text"onChange={handleChangePriimek} value={priimek} required />
-                                                        </FormGroup>
-                                                        <FormGroup className="mb-3">
-                                                            <label className="form-control-label" htmlFor="input-uporabniskoIme"> E-poštni naslov* </label>
-                                                            <Input id="input-uporabniskoIme"className="form-control-alternative" type="email"onChange={handleChangeUporabniskoIme} value={uporabniskoIme} required />                                                      
-                                                        </FormGroup>
-                                                        <FormGroup className="mb-3">
-                                                            <FormText color="danger">
-                                                                {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}
-                                                            </FormText>
-                                                        </FormGroup>                                                        
-                                                        <div className="text-center">
-                                                            <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
-                                                            {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
-                                                        </div>
-                                                    </Form>
-                                                </CardBody>
-                                            </Card>
-                                        </Modal>
-                                    </Col>
-                                </Row>
-                            </CardHeader>
-                            <Table className="align-items-center table-flush" responsive>
-                                <thead className="thead-light">
-                                    <tr>
-                                        <th scope="col"> Ime in priimek </th>
-                                        <th scope="col"> E-poštni naslov </th>
-                                        <th scope="col" />
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    {seznamSkrbnikov.map((el) => tableRow(el))}
-                                </tbody>
-                            </Table>
-                        </Card>
+                    <Col>
+                        <h3 className="mb-0">Skrbniki</h3>
+                    </Col>
+                    <Col>
+                        <Button color="danger" type="button" size="sm" onClick={handleAddModal} style={{ float: "right" }}>Dodaj</Button>
+                        <Modal isOpen={addModal} toggle={() => { return null; }}>
+                            <Card className="shadow bg-secondary">
+                                <CardHeader>
+                                    <Row>
+                                        <Col>
+                                            <h3 className="mb-0">{editing ? "Uredi podatke" : "Dodaj skrbnika"}</h3>
+                                        </Col>
+                                        <Col>
+                                            <button aria-label="Close" className="close" data-dismiss="modal" type="button" onClick={handleCancel}>
+                                                <span aria-hidden={true}>×</span>
+                                            </button>
+                                        </Col>
+                                    </Row>
+                                </CardHeader>
+                                <CardBody>
+                                    <Form role="form" onSubmit={(e) => handleAddSkrbnik(e)}>
+                                        <FormGroup className="mb-3">
+                                            <label className="form-control-label" htmlFor="input-nameS"> Ime* </label>
+                                            <Input id="input-nameS" className="form-control-alternative" type="text" onChange={handleChangeIme} value={ime} required />
+                                        </FormGroup>
+                                        <FormGroup className="mb-3">
+                                            <label className="form-control-label" htmlFor="input-surnameS"> Priimek* </label>
+                                            <Input id="input-surnameS" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
+                                        </FormGroup>
+                                        <FormGroup className="mb-3">
+                                            <label className="form-control-label" htmlFor="input-uporabniskoIme"> E-poštni naslov* </label>
+                                            <Input id="input-uporabniskoIme" className="form-control-alternative" type="email" onChange={handleChangeUporabniskoIme} value={uporabniskoIme} required />
+                                        </FormGroup>
+                                        <FormGroup className="mb-3">
+                                            <FormText color="danger">
+                                                {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}
+                                            </FormText>
+                                        </FormGroup>
+                                        <div className="text-center">
+                                            <Button color="danger" type="submit">{editing ? "Uredi" : "Dodaj"}</Button>
+                                            {editing ? <Button color="light" type="button" onClick={handleCancel}>Preklic</Button> : null}
+                                        </div>
+                                    </Form>
+                                </CardBody>
+                            </Card>
+                        </Modal>
                     </Col>
                 </Row>
-            </Container>
-        </>
+            </CardHeader>
+            <Table className="align-items-center table-flush" responsive>
+                <thead className="thead-light">
+                    <tr>
+                        <th scope="col"> Ime in priimek </th>
+                        <th scope="col"> E-poštni naslov </th>
+                        <th scope="col" />
+                    </tr>
+                </thead>
+                <tbody>
+                    {seznamSkrbnikov.map((el) => tableRow(el))}
+                </tbody>
+            </Table>
+        </Card>
     );
 }
 
