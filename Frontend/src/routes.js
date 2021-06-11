@@ -10,6 +10,7 @@ import Izpis from "views/Izpis/Izpis";
 import Upravljanje from "views/Upravljanje/Upravljanje";
 import Prijava from "views/Uporabnik/Prijava";
 import Login from "views/Uporabnik/Login";
+import ZgodovinaUrejanja from "views/Urejanje/ZgodovinaUrejanja";
 
 var routes = [
   {
@@ -38,6 +39,13 @@ var routes = [
     name: "Izpis",
     icon: "fas fa-chart-line text-red",
     component: Izpis,
+    layout: "/admin",
+  },
+  {
+    path: "/zgodovinaUrejanja",
+    name: "Zgodovina urejanja",
+    icon: "fas fa-history text-red",
+    component: ZgodovinaUrejanja,
     layout: "/admin",
   },
   {
