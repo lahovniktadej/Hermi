@@ -63,7 +63,7 @@ function Izpis() {
                 .then((resEkipe) => {
                     if(resEkipe.data != null){
                         let podatki = [];
-                        nalogi.forEach((nalog)=> nalog.ekipe.forEach((ekipa)=>podatki.push({id:ekipa.id, status:ekipa.status, sifraNaloga:nalog.sifra, objekt:nalog.objekt, datum:ekipa.datum, sofer:ekipa.sofer, delavci:ekipa.delavci, start:ekipa.start, konec:ekipa.konec, pricetekDela:ekipa.pricetekDela, konecDela:ekipa.konecDela, netoCas:ekipa.netoDelo, netoMontaza:ekipa.netoMontaza, avto:ekipa.vozilo.naziv})));
+                        nalogi.forEach((nalog)=> nalog.ekipe.forEach((ekipa)=>podatki.push({id:ekipa.id, status:ekipa.status, sifraNaloga:nalog.sifra, objekt:nalog.objekt, datum:ekipa.datum, sofer:ekipa.sofer, delavci:ekipa.delavci, start:ekipa.start, konec:ekipa.prihod, pricetekDela:ekipa.pricetekDela, konecDela:ekipa.konecDela, netoCas:ekipa.netoDelo, odsotnostSoferja:ekipa.odsotnostSoferja, odsotnoDelavca:ekipa.odsotnostDelavca, netoMontaza:ekipa.netoMontaza, avto:ekipa.vozilo.naziv, brutoMontaza:ekipa.brutoMontaza})));
                         let objekti = podatki.map((podatek) => podatek.objekt);
                         let razlicniObjekti = [...new Set(objekti)];
                         let sifre = nalogi.map((nalog)=>nalog.sifra);    
