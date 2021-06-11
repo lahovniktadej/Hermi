@@ -43,7 +43,6 @@ function NalogaModal(props) {
                 </Button>
             </div>
             <Form onSubmit={submit}>
-                {console.log(props.nalog)}
                 <div className="modal-body bg-secondary pl-lg-4">
                     <Row>
                         <Col lg="4">

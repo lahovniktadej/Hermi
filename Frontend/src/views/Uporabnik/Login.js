@@ -19,41 +19,22 @@ import {
 import { useHistory } from "react-router-dom";
 
 import firebase from "firebase/app";
-require('firebase/auth');
+import 'firebase/auth';
+import config from "firebase_config";
 
-//  Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyC_94J4ZIWevlT__Uc8bvnG1UZjnH0nQuc",
-    authDomain: "hermi-dab7b.firebaseapp.com",
-    projectId: "hermi-dab7b",
-    storageBucket: "hermi-dab7b.appspot.com",
-    messagingSenderId: "1063139661285",
-    appId: "1:1063139661285:web:8ec0758dd5fe895e234b0c",
-    measurementId: "G-TDKEQRNNW4"
-};
-
-// Initialize Firebase
 if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-} else {
-    firebase.app();
+    firebase.initializeApp(config);
 }
 
 const Login = () => {
-    let history = useHistory();
-
-    if (sessionStorage.getItem("user_uid")) {
-        history.push({
-            pathname: `/admin/pregled`,
-        });
-    }
-
     const [email, setEmail] = React.useState("");
     const [password, setPassword] = React.useState("");
     const [resetEmail, setResetEmail] = React.useState("");
 
     const [isError, setIsError] = React.useState("");
     const [resetModal, setResetModal] = React.useState(false);
+
+    const history = useHistory();
 
     const handleEmail = (event) => {
         setEmail(event.target.value);
@@ -77,9 +58,7 @@ const Login = () => {
             sessionStorage.setItem("user_uid", user.email);
             sessionStorage.setItem("user_display", display);
 
-            history.push({
-                pathname: `/admin/pregled`,
-            });
+            history.push("/admin/pregled");
         }).catch((error) => {
             let errorCode = error.code;
             let errorMessage = error.message;
@@ -119,7 +98,7 @@ const Login = () => {
                                         <i className="ni ni-email-83" />
                                     </InputGroupText>
                                 </InputGroupAddon>
-                                <Input placeholder="Email" type="email" autoComplete="new-email" onChange={handleEmail} />
+                                <Input placeholder="Email" type="email" autoComplete="email" onChange={handleEmail} />
                             </InputGroup>
                         </FormGroup>
                         <FormGroup>

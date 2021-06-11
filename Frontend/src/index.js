@@ -24,17 +24,11 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
 
 import "assets/css/hermi-dashboard.css";
-
-import AdminLayout from "layouts/Admin.js";
-import AuthLayout from "layouts/Auth.js";
+import Auth from "auth";
 
 ReactDOM.render(
-  <BrowserRouter>
-    <Switch>
-      <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-      <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-      <Redirect from="/" to="/admin/pregled" />
-    </Switch>
-  </BrowserRouter>,
-  document.getElementById("root")
+        <BrowserRouter>
+            <Auth />
+        </BrowserRouter>,
+    document.getElementById("root")
 );
