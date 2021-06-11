@@ -79,6 +79,15 @@ function Vozila() {
                             setSeznamVozil(vozila);
                         });
 
+                    let novLog={
+                        timeStamp:new Date(),
+                        sprememba:"Spremenjeno vozilo",
+                        originalniPodatki:JSON.stringify({naziv: seznam[editIndex].naziv, registrskaStevilka: seznam[editIndex].registrskaStevilka}),
+                        noviPodatki:JSON.stringify(vozilo),
+                        emailSkrbnika:sessionStorage.getItem("user_uid")
+                    }
+                    axios.post(`/api/logger`, novLog).then();
+
                     setAddModal(false);
 
                     setTimeout(function () {
@@ -108,6 +117,16 @@ function Vozila() {
                             setSeznamVozil(vozila);
                         });
 
+                    let novLog={
+                        timeStamp:new Date(),
+                        sprememba:"Dodano vozilo",
+                        originalniPodatki:"/",
+                        noviPodatki:JSON.stringify(novoVozilo),
+                        emailSkrbnika:sessionStorage.getItem("user_uid")
+                    }
+                    console.log(novLog)
+                    axios.post(`/api/logger`, novLog).then();
+    
                     setAddModal(false);
 
                     setTimeout(function () {
@@ -169,6 +188,14 @@ function Vozila() {
                     const vozila = res.data;
                     setSeznamVozil(vozila);
                 });
+            let novLog={
+                timeStamp:new Date(),
+                sprememba:"Izbrisano vozilo",
+                originalniPodatki:JSON.stringify({naziv: izbranoVozilo.naziv, registrskaStevilka: izbranoVozilo.registrskaStevilka}),
+                noviPodatki:"/",
+                emailSkrbnika:sessionStorage.getItem("user_uid")
+            }
+            axios.post(`/api/logger`, novLog).then();
 
             setModal(false);
         });

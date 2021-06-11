@@ -85,6 +85,15 @@ function Delavci() {
                             setSeznamDelavcev(delavci);
                         });
 
+                    let novLog={
+                        timeStamp:new Date(),
+                        sprememba:"Spremenjen delavec",
+                        originalniPodatki:JSON.stringify({ime: seznam[editIndex].ime, priimek: seznam[editIndex].priimek,  telefonskaStevilka: seznam[editIndex].telefonskaStevilka,}),
+                        noviPodatki:JSON.stringify(delavec),
+                        emailSkrbnika:sessionStorage.getItem("user_uid")
+                    }
+                    axios.post(`/api/logger`, novLog).then();
+
                     setAddModal(false);
 
                     setTimeout(function () {
@@ -115,6 +124,14 @@ function Delavci() {
                             const delavci = res.data;
                             setSeznamDelavcev(delavci);
                         });
+                    let novLog={
+                        timeStamp:new Date(),
+                        sprememba:"Dodan delavec",
+                        originalniPodatki:"/",
+                        noviPodatki:JSON.stringify(novDelavec),
+                        emailSkrbnika:sessionStorage.getItem("user_uid")
+                    }
+                    axios.post(`/api/logger`, novLog).then();
 
                     setAddModal(false);
 
@@ -180,6 +197,14 @@ function Delavci() {
                     const delavci = res.data;
                     setSeznamDelavcev(delavci);
                 });
+            let novLog={
+                timeStamp:new Date(),
+                sprememba:"Izbrisan delavec",
+                originalniPodatki:JSON.stringify(izbranDelavec),
+                noviPodatki:"/",
+                emailSkrbnika:sessionStorage.getItem("user_uid")
+            }
+            axios.post(`/api/logger`, novLog).then();
 
             setModal(false);
             setIzbranDelavec(null);

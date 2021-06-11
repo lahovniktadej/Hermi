@@ -30,7 +30,16 @@ function Nalogi() {
         nalog.zacetek = new Date(nalog.zacetek).toISOString();
 
         axios.post(`/api/delovniNalog`, nalog)
-            .then();
+        .then(function () {
+            let novLog={
+                timeStamp:new Date(),
+                sprememba:"Dodan delovni nalog",
+                originalniPodatki:"/",
+                noviPodatki:JSON.stringify(nalog),
+                emailSkrbnika:sessionStorage.getItem("user_uid")
+            }
+            axios.post(`/api/logger`, novLog).then();
+        });
     }
 
     const nalogChange = (el) => {
