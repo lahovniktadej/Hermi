@@ -13,7 +13,8 @@ import {
     InputGroup,
     Row,
     Col,
-    Modal
+    Modal,
+    FormText
 } from "reactstrap";
 
 import { useHistory } from "react-router-dom";
@@ -110,6 +111,9 @@ const Login = () => {
                                 </InputGroupAddon>
                                 <Input placeholder="Geslo" type="password" autoComplete="new-password" onChange={handlePassword} />
                             </InputGroup>
+                            <FormText color="danger">
+                                {isError ? "Pri prijavi je prišlo do napake. Prosimo, poskusite znova." : ""}
+                            </FormText>
                         </FormGroup>
                         <div className="text-center">
                             <Button className="my-4" color="danger" type="submit">Prijava</Button>

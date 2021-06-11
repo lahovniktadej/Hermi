@@ -24,11 +24,11 @@ import "@fortawesome/fontawesome-free/css/all.min.css";
 import "assets/scss/argon-dashboard-react.scss";
 
 import "assets/css/hermi-dashboard.css";
-import Auth from "auth";
+import AuthRouter from "AuthRouter";
 
 ReactDOM.render(
         <BrowserRouter>
-            <Auth />
+            <AuthRouter />
         </BrowserRouter>,
     document.getElementById("root")
 );

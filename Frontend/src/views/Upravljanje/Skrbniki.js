@@ -25,24 +25,12 @@ import DeleteModal from 'views/common/DeleteModal';
 import PaginationStrip from 'views/common/PaginationStrip';
 
 import firebase from "firebase/app";
-require('firebase/auth');
+import 'firebase/auth';
+import { FirebaseAuthConsumer } from "@react-firebase/auth";
+import config from "firebase_config";
 
-//  Firebase configuration
-const firebaseConfig = {
-    apiKey: "AIzaSyC_94J4ZIWevlT__Uc8bvnG1UZjnH0nQuc",
-    authDomain: "hermi-dab7b.firebaseapp.com",
-    projectId: "hermi-dab7b",
-    storageBucket: "hermi-dab7b.appspot.com",
-    messagingSenderId: "1063139661285",
-    appId: "1:1063139661285:web:8ec0758dd5fe895e234b0c",
-    measurementId: "G-TDKEQRNNW4"
-};
-
-// Initialize Firebase
 if (!firebase.apps.length) {
-    firebase.initializeApp(firebaseConfig);
-} else {
-    firebase.app();
+    firebase.initializeApp(config);
 }
 
 function Skrbniki() {

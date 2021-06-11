@@ -16,7 +16,7 @@ if (!firebase.apps.length) {
     firebase.initializeApp(config);
 }
 
-function Auth() {
+function AuthRouter() {
     const history = useHistory();
 
     return (
@@ -24,21 +24,23 @@ function Auth() {
             <FirebaseAuthConsumer>
                 {
                     ({ isSignedIn, firebase }) => {
+                        console.log(isSignedIn)
                         if (isSignedIn) {
                             history.push("/admin/pregled");
                         } else {
+                            console.log("sdad")
                             history.push("/auth/prijava");
                         }
                     }
                 }
-                <Switch>
-                    <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
-                    <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
-                    <Redirect from="/" to="/admin/pregled" />
-                </Switch>
             </FirebaseAuthConsumer>
+            <Switch>
+                <Route path="/admin" render={(props) => <AdminLayout {...props} />} />
+                <Route path="/auth" render={(props) => <AuthLayout {...props} />} />
+                <Redirect from="/" to="/auth/prijava" />
+            </Switch>
         </FirebaseAuthProvider>
     );
 }
 
-export default Auth;
+export default AuthRouter;
