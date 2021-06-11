@@ -23,7 +23,7 @@ public class DelovniNalog {
 
     private Boolean status;
 
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Ekipa> ekipe;
 
     private String objekt;
