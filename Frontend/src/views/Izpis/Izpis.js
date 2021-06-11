@@ -72,11 +72,11 @@ function Izpis() {
                         setFiltriran(podatki);
                         setSifre(sifre);
                         setObjekti(razlicniObjekti);
+                        handleMontaza(podatki);
                     }
                 })  
             }
         });
-        
     },[]);
 
     const handleMontaza = (iskaniPodatki) => {
