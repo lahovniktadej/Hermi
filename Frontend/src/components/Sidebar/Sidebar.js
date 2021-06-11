@@ -64,7 +64,7 @@ const Sidebar = (props) => {
   // creates the links that appear in the left menu / Sidebar
   const createLinks = (routes) => {
     return routes.map((prop, key) => {
-      return (
+      return (!prop.hidden) ? (
         <NavItem key={key}>
           <NavLink
             to={prop.layout + prop.path}
@@ -76,7 +76,7 @@ const Sidebar = (props) => {
             {prop.name}
           </NavLink>
         </NavItem>
-      );
+      ) : <></>
     });
   };
 
@@ -123,8 +123,8 @@ const Sidebar = (props) => {
         <Nav className="align-items-center d-md-none">
           <UncontrolledDropdown nav>
             <DropdownToggle nav>
-                <span className="mb-0 text-sm font-weight-bold text-dark">
-                  Admin 1
+              <span className="mb-0 text-sm font-weight-bold text-dark">
+                Admin 1
                 </span>
             </DropdownToggle>
             <DropdownMenu className="dropdown-menu-arrow" right>
