@@ -85,7 +85,7 @@ function AddEkipa(props) {
             </Col>
             <Col lg="3">
                 <label className="form-control-label">Šofer</label>
-                <UncontrolledDropdown>
+                <UncontrolledDropdown className="d-block">
                     <DropdownToggle color="secondary">
                         <span>{dropdowns.sofer}</span>
                         <i class="fas fa-caret-down"></i>
@@ -97,7 +97,7 @@ function AddEkipa(props) {
             </Col>
             <Col lg="3">
                 <label className="form-control-label">Vozilo</label>
-                <UncontrolledDropdown>
+                <UncontrolledDropdown className="d-block">
                     <DropdownToggle color="secondary">
                         <span>{dropdowns.vozilo}</span>
                         <i class="fas fa-caret-down"></i>

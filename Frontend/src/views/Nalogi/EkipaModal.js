@@ -51,12 +51,14 @@ function EkipaModal(props) {
 
     const dodajEkipo = (e) => {
         e.preventDefault();
-        props.dodajEkipo(ekipa);
-        setEkipa({
-            sofer: {},
-            delavci: [],
-            vozilo: {}
-        });
+        if (ekipa.sofer && ekipa.delavci.length != 0 && ekipa.vozilo) {
+            props.dodajEkipo(ekipa);
+            setEkipa({
+                sofer: {},
+                delavci: [],
+                vozilo: {}
+            });
+        }
     }
 
     const ponovnoUporabi = (ekipa) => {
@@ -74,7 +76,7 @@ function EkipaModal(props) {
                     <i class="fas fa-times"></i>
                 </Button>
             </div>
-            <div className="modal-body bg-secondary pl-lg-4">
+            <div className="modal-body bg-secondary pl-lg-4" style={{ minHeight: "75vh" }}>
                 <Form onSubmit={dodajEkipo}>
                     <Row>
                         <Col>
