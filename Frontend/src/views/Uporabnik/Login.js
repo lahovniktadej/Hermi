@@ -22,6 +22,7 @@ import { useHistory } from "react-router-dom";
 import firebase from "firebase/app";
 import 'firebase/auth';
 import config from "firebase_config";
+import axios from "axios";
 
 if (!firebase.apps.length) {
     firebase.initializeApp(config);
@@ -54,12 +55,15 @@ const Login = () => {
 
         firebase.auth().signInWithEmailAndPassword(email, password).then((userCredential) => {
             let user = userCredential.user;
-            let display = user.email;
+            let email = user.email;
 
             sessionStorage.setItem("user_uid", user.email);
-            sessionStorage.setItem("user_display", display);
-
-            history.push("/admin/pregled");
+            axios.get(`/api/skrbnik/username/${email}`)
+                .then((res) => {
+                    const name = res.data.ime + " " + res.data.priimek;
+                    sessionStorage.setItem("user_display", name);
+                    history.push("/admin/pregled");
+                });
         }).catch((error) => {
             let errorCode = error.code;
             let errorMessage = error.message;

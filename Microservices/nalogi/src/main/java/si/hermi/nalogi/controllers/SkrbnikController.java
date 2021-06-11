@@ -38,6 +38,12 @@ public class SkrbnikController {
         }
         return ResponseEntity.badRequest().build();
     }
+    @GetMapping("/username/{username}")
+    public @ResponseBody ResponseEntity getSkrbnikByUsername(@PathVariable String username) {
+        Skrbnik skrbnik = skrbnikRepository.findByUporabniskoIme(username);
+        SkrbnikDto skrbnikDto = modelMapper.map(skrbnik, SkrbnikDto.class);
+        return ResponseEntity.ok(skrbnikDto);
+    }
 
     @PostMapping()
     public @ResponseBody ResponseEntity addSkrbnik(@RequestBody SkrbnikDto skrbnikDto) {
