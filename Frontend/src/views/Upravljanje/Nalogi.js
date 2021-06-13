@@ -28,18 +28,10 @@ function Nalogi() {
         el.preventDefault();   
 
         nalog.zacetek = new Date(nalog.zacetek).toISOString();
+        nalog.spremenil = sessionStorage.getItem("user_uid");
 
         axios.post(`/api/delovniNalog`, nalog)
-        .then(function () {
-            let novLog={
-                timeStamp:new Date(),
-                sprememba:"Dodan delovni nalog",
-                originalniPodatki:"/",
-                noviPodatki:JSON.stringify(nalog),
-                emailSkrbnika:sessionStorage.getItem("user_uid")
-            }
-            axios.post(`/api/logger`, novLog).then();
-        });
+        .then();
     }
 
     const nalogChange = (el) => {

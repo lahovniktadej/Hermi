@@ -81,13 +81,16 @@ function Nalogi() {
         delete ekipa.id;
         ekipa.datum = new Date().toISOString();
 
+        ekipa.spremenil = sessionStorage.getItem("user_uid");
         nalog.ekipe.push(ekipa);
+        nalog.spremenil = sessionStorage.getItem("user_uid");
         setNalogi(nalogiArr);
 
         axios.put(`/api/delovniNalog/${nalog.id}`, nalog).then();
     }
 
     const posodobiEkipo = (ekipa) => {
+        ekipa.spremenil = sessionStorage.getItem("user_uid");
         axios.put(`/api/ekipa/${ekipa.id}`, ekipa)
             .then((res) => {
                 let nalogiArr = Array.from(nalogi);
@@ -99,6 +102,7 @@ function Nalogi() {
     }
 
     const posodobiDelovniNalog = (nalog) => {
+        nalog.spremenil = sessionStorage.getItem("user_uid");
         axios.put(`/api/delovniNalog/${nalog.id}`, nalog)
             .then((res) => {
                 let nalogiArr = Array.from(nalogi);

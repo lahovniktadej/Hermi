@@ -104,14 +104,6 @@ function Skrbniki() {
                             const skrbniki = res.data;
                             setSeznamSkrbnikov(skrbniki);
                         });
-                    let novLog={
-                        timeStamp:new Date(),
-                        sprememba:"Spremenjen skrbnik",
-                        originalniPodatki:JSON.stringify({ime: seznam[editIndex].ime, priimek: seznam[editIndex].priimek,  uporabniskoIme: seznam[editIndex].uporabniskoIme,}),
-                        noviPodatki:JSON.stringify(skrbnik),
-                        emailSkrbnika:sessionStorage.getItem("user_uid")
-                    }
-                    axios.post(`/api/logger`, novLog).then();
 
                     setAddModal(false);
 
@@ -148,14 +140,6 @@ function Skrbniki() {
                         var errorMessage = error.message;
                         console.log(errorCode, errorMessage);
                     });
-                    let novLog={
-                        timeStamp:new Date(),
-                        sprememba:"Dodan skrbnik",
-                        originalniPodatki:"/",
-                        noviPodatki:JSON.stringify(novSkrbnik),
-                        emailSkrbnika:sessionStorage.getItem("user_uid")
-                    }
-                    axios.post(`/api/logger`, novLog).then();
 
                     axios.get(`/api/skrbnik`)
                         .then((res) => {
@@ -227,14 +211,6 @@ function Skrbniki() {
                     const skrbniki = res.data;
                     setSeznamSkrbnikov(skrbniki);
                 });
-            let novLog={
-                timeStamp:new Date(),
-                sprememba:"Izbrisan skrbnik",
-                originalniPodatki:JSON.stringify({ime: seznam[index].ime, priimek: seznam[index].priimek,  uporabniskoIme: seznam[index].uporabniskoIme,}),
-                noviPodatki:"/",
-                emailSkrbnika:sessionStorage.getItem("user_uid")
-            }
-            axios.post(`/api/logger`, novLog).then();
 
             setModal(false);
         });
