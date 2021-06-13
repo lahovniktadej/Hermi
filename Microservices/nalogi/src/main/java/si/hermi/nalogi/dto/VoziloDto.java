@@ -5,12 +5,15 @@ public class VoziloDto {
 
     private String registrskaStevilka;
 
+    private String spremenil;
+
     public VoziloDto() {
     }
 
-    public VoziloDto(String naziv, String registrskaStevilka) {
+    public VoziloDto(String naziv, String registrskaStevilka, String spremenil) {
         this.naziv = naziv;
         this.registrskaStevilka = registrskaStevilka;
+        this.spremenil = spremenil;
     }
 
     public String getNaziv() {
@@ -27,5 +30,13 @@ public class VoziloDto {
 
     public void setRegistrskaStevilka(String registrskaStevilka) {
         this.registrskaStevilka = registrskaStevilka;
+    }
+    
+    public String getSpremenil() {
+        return spremenil;
+    }
+
+    public void setSpremenil(String spremenil) {
+        this.spremenil = spremenil;
     }
 }

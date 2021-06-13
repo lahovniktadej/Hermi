@@ -35,10 +35,12 @@ public class EkipaDto {
 
     private float brutoMontaza;
 
+    private String spremenil;
+
     public EkipaDto() {
     }
 
-    public EkipaDto(List<Delavec> delavci, Delavec sofer, Vozilo vozilo, boolean status, Date datum, float start, float pricetekDela, float konecDela, float prihod, float netoDelo, float odsotnostSoferja, float odsotnostDelavca, float netoMontaza, float brutoMontaza) {
+    public EkipaDto(List<Delavec> delavci, Delavec sofer, Vozilo vozilo, boolean status, Date datum, float start, float pricetekDela, float konecDela, float prihod, float netoDelo, float odsotnostSoferja, float odsotnostDelavca, float netoMontaza, float brutoMontaza, String spremenil) {
         this.delavci = delavci;
         this.sofer = sofer;
         this.vozilo = vozilo;
@@ -53,6 +55,7 @@ public class EkipaDto {
         this.odsotnostDelavca = odsotnostDelavca;
         this.netoMontaza = netoMontaza;
         this.brutoMontaza = brutoMontaza;
+        this.spremenil = spremenil;
     }
 
     public List<Delavec> getDelavci() {
@@ -165,5 +168,12 @@ public class EkipaDto {
 
     public void setBrutoMontaza(float brutoMontaza) {
         this.brutoMontaza = brutoMontaza;
+    }
+    public String getSpremenil() {
+        return spremenil;
+    }
+
+    public void setSpremenil(String spremenil) {
+        this.spremenil = spremenil;
     }
 }
