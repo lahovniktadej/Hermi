@@ -38,7 +38,7 @@ function Nalogi() {
 
     const [selectedNalog, setSelectedNalog] = React.useState(emptyNalog);
     const [totalPages, setTotalPages] = React.useState(0);
-    const [perPage, setPerPage] = React.useState(5);
+    const [perPage, setPerPage] = React.useState(10);
 
     React.useEffect(() => {
         axios.get(`/api/delovniNalog`, { params: { page: 0, perPage: perPage } })
@@ -215,9 +215,9 @@ function Nalogi() {
                                                 <i class="fas fa-caret-down"></i>
                                             </DropdownToggle>
                                             <DropdownMenu>
-                                                <DropdownItem onClick={() => setPerPage(5)}>5</DropdownItem>
                                                 <DropdownItem onClick={() => setPerPage(10)}>10</DropdownItem>
                                                 <DropdownItem onClick={() => setPerPage(15)}>15</DropdownItem>
+                                                <DropdownItem onClick={() => setPerPage(20)}>20</DropdownItem>
                                             </DropdownMenu>
                                         </UncontrolledDropdown>
                                     </Col>

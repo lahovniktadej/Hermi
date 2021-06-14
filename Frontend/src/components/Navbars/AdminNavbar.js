@@ -58,7 +58,7 @@ const AdminNavbar = (props) => {
                   </Media>
                 </DropdownToggle>
                 <DropdownMenu className="dropdown-menu-arrow" right>
-                  <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <DropdownItem to="/admin/zgodovinaUrejanja" tag={Link}>
                     <i className="ni ni-calendar-grid-58" />
                     <span>Zgodovina urejanja</span>
                   </DropdownItem>

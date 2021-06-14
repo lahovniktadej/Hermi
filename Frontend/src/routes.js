@@ -39,6 +39,7 @@ var routes = [
     path: "/zgodovinaUrejanja",
     name: "Zgodovina urejanja",
     icon: "fas fa-history text-red",
+    hidden: true,
     component: ZgodovinaUrejanja,
     layout: "/admin",
   },
