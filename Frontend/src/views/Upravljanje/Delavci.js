@@ -76,6 +76,7 @@ function Delavci() {
                     ime: ime,
                     priimek: priimek,
                     telefonskaStevilka: telefon,
+                    spremenil: sessionStorage.getItem("user_uid")
                 }
 
                 axios.put(`/api/delavec/${seznam[editIndex].id}`, delavec).then(function () {
@@ -107,6 +108,7 @@ function Delavci() {
                     ime: ime,
                     priimek: priimek,
                     telefonskaStevilka: telefon,
+                    spremenil: sessionStorage.getItem("user_uid")
                 }
 
                 axios.post(`/api/delavec`, novDelavec).then(function () {

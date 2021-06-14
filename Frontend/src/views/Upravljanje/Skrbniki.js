@@ -293,9 +293,9 @@ function Skrbniki() {
                                         <Input id="input-surnameS" className="form-control-alternative" type="text" onChange={handleChangePriimek} value={priimek} required />
                                     </FormGroup>
                                     <FormGroup className="mb-3">
-                                        <label className="form-control-label" htmlFor="input-uporabniskoIme"> E-poštni naslov* </label>
-                                        <Input id="input-uporabniskoIme" className="form-control-alternative" type="email" onChange={handleChangeUporabniskoIme} value={uporabniskoIme} required />
-                                    </FormGroup>
+                                        <label className="form-control-label" htmlFor="input-uporabniskoIme"> E-poštni naslov{editing ? "" : "*" } </label>
+                                        <Input id="input-uporabniskoIme" className="form-control-alternative" type="email" onChange={handleChangeUporabniskoIme} value={uporabniskoIme} disabled={editing} required />
+                                     </FormGroup>
                                     <FormGroup className="mb-3">
                                         <FormText color="danger">
                                             {isError ? "Pri izvedbi je prišlo do nepričakovane napake. Prosimo, poskusite znova." : ""}

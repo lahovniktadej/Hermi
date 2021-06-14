@@ -23,10 +23,12 @@ public class DelovniNalogDto {
 
     private String objekt;
 
+    private String spremenil;
+
     public DelovniNalogDto() {
     }
 
-    public DelovniNalogDto(Skrbnik skrbnik, String sifra, String naziv, Date zacetek, Date konec, Boolean status, List<Ekipa> ekipe, String objekt) {
+    public DelovniNalogDto(Skrbnik skrbnik, String sifra, String naziv, Date zacetek, Date konec, Boolean status, List<Ekipa> ekipe, String objekt, String spremenil) {
         this.skrbnik = skrbnik;
         this.sifra = sifra;
         this.naziv = naziv;
@@ -35,6 +37,7 @@ public class DelovniNalogDto {
         this.status = status;
         this.ekipe = ekipe;
         this.objekt = objekt;
+        this.spremenil = spremenil;
     }
 
     public Skrbnik getSkrbnik() {
@@ -99,5 +102,12 @@ public class DelovniNalogDto {
 
     public void setObjekt(String objekt) {
         this.objekt = objekt;
+    }
+    public String getSpremenil() {
+        return spremenil;
+    }
+
+    public void setSpremenil(String spremenil) {
+        this.spremenil = spremenil;
     }
 }

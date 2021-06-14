@@ -23,15 +23,21 @@ public class DelovniNalog {
 
     private Boolean status;
 
-    @OneToMany(cascade = {CascadeType.REMOVE, CascadeType.PERSIST})
+    @OneToMany(cascade = CascadeType.ALL)
     private List<Ekipa> ekipe;
 
     private String objekt;
 
+    private String operation;
+     
+    private long timestamp;
+     
+    private String spremenil;
+
     public DelovniNalog() {
     }
 
-    public DelovniNalog(int id, Skrbnik skrbnik, String sifra, String naziv, Date zacetek, Date konec, Boolean status, List<Ekipa> ekipe, String objekt) {
+    public DelovniNalog(int id, Skrbnik skrbnik, String sifra, String naziv, Date zacetek, Date konec, Boolean status, List<Ekipa> ekipe, String objekt, String spremenil) {
         this.id = id;
         this.skrbnik = skrbnik;
         this.sifra = sifra;
@@ -41,6 +47,7 @@ public class DelovniNalog {
         this.status = status;
         this.ekipe = ekipe;
         this.objekt = objekt;
+        this.spremenil = spremenil;
     }
 
     public int getId() {
@@ -113,5 +120,48 @@ public class DelovniNalog {
 
     public void setObjekt(String objekt) {
         this.objekt = objekt;
+    }
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getSpremenil() {
+        return spremenil;
+    }
+
+    public void setSpremenil(String spremenil) {
+        this.spremenil = spremenil;
+    }
+
+    @PrePersist
+    public void onPrePersist() {
+        audit("Nov delovni nalog");
+    }
+     
+    @PreUpdate
+    public void onPreUpdate() {
+        audit("Spremenjen delovni nalog");
+    }
+     
+    @PreRemove
+    public void onPreRemove() {
+        audit("Izbrisan delovni nalog");
+    }
+     
+    private void audit(String operation) {
+        setOperation(operation);
+        setTimestamp((new Date()).getTime());
     }
 }

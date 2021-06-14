@@ -7,13 +7,16 @@ public class DelavecDto {
 
     private String telefonskaStevilka;
 
+    private String spremenil;
+
     public DelavecDto() {
     }
 
-    public DelavecDto(String ime, String priimek, String telefonskaStevilka) {
+    public DelavecDto(String ime, String priimek, String telefonskaStevilka, String spremenil) {
         this.ime = ime;
         this.priimek = priimek;
         this.telefonskaStevilka = telefonskaStevilka;
+        this.spremenil = spremenil;
     }
 
     public String getIme() {
@@ -38,5 +41,12 @@ public class DelavecDto {
 
     public void setTelefonskaStevilka(String telefonskaStevilka) {
         this.telefonskaStevilka = telefonskaStevilka;
+    }
+    public String getSpremenil() {
+        return spremenil;
+    }
+
+    public void setSpremenil(String spremenil) {
+        this.spremenil = spremenil;
     }
 }

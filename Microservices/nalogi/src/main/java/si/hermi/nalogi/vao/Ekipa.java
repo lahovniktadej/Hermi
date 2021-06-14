@@ -42,10 +42,16 @@ public class Ekipa {
 
     private float brutoMontaza;
 
+    private String operation;
+     
+    private long timestamp;
+     
+    private String spremenil;
+
     public Ekipa() {
     }
 
-    public Ekipa(int id, List<Delavec> delavci, Delavec sofer, Vozilo vozilo, boolean status, Date datum, float start, float pricetekDela, float konecDela, float prihod, float netoDelo, float odsotnostSoferja, float odsotnostDelavca, float netoMontaza, float brutoMontaza) {
+    public Ekipa(int id, List<Delavec> delavci, Delavec sofer, Vozilo vozilo, boolean status, Date datum, float start, float pricetekDela, float konecDela, float prihod, float netoDelo, float odsotnostSoferja, float odsotnostDelavca, float netoMontaza, float brutoMontaza, String spremenil) {
         this.id = id;
         this.delavci = delavci;
         this.sofer = sofer;
@@ -61,6 +67,7 @@ public class Ekipa {
         this.odsotnostDelavca = odsotnostDelavca;
         this.netoMontaza = netoMontaza;
         this.brutoMontaza = brutoMontaza;
+        this.spremenil = spremenil;
     }
 
     public int getId() {
@@ -181,5 +188,48 @@ public class Ekipa {
 
     public void setBrutoMontaza(float brutoMontaza) {
         this.brutoMontaza = brutoMontaza;
+    }
+    public String getOperation() {
+        return operation;
+    }
+
+    public void setOperation(String operation) {
+        this.operation = operation;
+    }
+
+    public long getTimestamp() {
+        return timestamp;
+    }
+
+    public void setTimestamp(long timestamp) {
+        this.timestamp = timestamp;
+    }
+
+    public String getSpremenil() {
+        return spremenil;
+    }
+
+    public void setSpremenil(String spremenil) {
+        this.spremenil = spremenil;
+    }
+
+    @PrePersist
+    public void onPrePersist() {
+        audit("Nova ekipa");
+    }
+     
+    @PreUpdate
+    public void onPreUpdate() {
+        audit("Spremenjena ekipa");
+    }
+     
+    @PreRemove
+    public void onPreRemove() {
+        audit("Izbrisana ekipa");
+    }
+     
+    private void audit(String operation) {
+        setOperation(operation);
+        setTimestamp((new Date()).getTime());
     }
 }

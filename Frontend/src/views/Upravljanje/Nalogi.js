@@ -28,9 +28,10 @@ function Nalogi() {
         el.preventDefault();   
 
         nalog.zacetek = new Date(nalog.zacetek).toISOString();
+        nalog.spremenil = sessionStorage.getItem("user_uid");
 
         axios.post(`/api/delovniNalog`, nalog)
-            .then();
+        .then();
     }
 
     const nalogChange = (el) => {

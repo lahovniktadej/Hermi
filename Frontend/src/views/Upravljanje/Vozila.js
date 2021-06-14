@@ -70,6 +70,7 @@ function Vozila() {
                 let vozilo = {
                     naziv: naziv,
                     registrskaStevilka: registrska ? registrska : null,
+                    spremenil: sessionStorage.getItem("user_uid")
                 };
 
                 axios.put(`/api/vozilo/${seznam[editIndex].id}`, vozilo).then(function () {
@@ -99,6 +100,7 @@ function Vozila() {
                 let novoVozilo = {
                     naziv: naziv,
                     registrskaStevilka: registrska ? registrska : null,
+                    spremenil: sessionStorage.getItem("user_uid")
                 };
 
                 axios.post(`/api/vozilo`, novoVozilo).then(function () {
@@ -107,7 +109,7 @@ function Vozila() {
                             const vozila = res.data;
                             setSeznamVozil(vozila);
                         });
-
+    
                     setAddModal(false);
 
                     setTimeout(function () {
