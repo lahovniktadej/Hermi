@@ -5,6 +5,7 @@ import PaginationStrip from 'views/common/PaginationStrip';
 import EkipaModal from './EkipaModal';
 import NalogModal from './NalogModal';
 import DeleteModal from 'views/common/DeleteModal';
+import { Link } from "react-router-dom";
 
 import {
     Container,
@@ -171,6 +172,9 @@ function Nalogi() {
                     <td>
                         <Button size="sm" color="success" onClick={() => toggleEkipaModal(props.row)} >Dnevno delo</Button>
                     </td>
+                    <td>
+                        <Link class="btn btn-success btn-sm" to={{ pathname: "/admin/izpis",  sifra: props.row.sifra }}>Vsa dnevna dela </Link>
+                    </td>
                     <td className="text-right">
                         <UncontrolledDropdown>
                             <DropdownToggle className="btn-icon-only text-light" role="button" size="sm" color onClick={(e) => e.preventDefault()}>
@@ -230,7 +234,8 @@ function Nalogi() {
                                     <th scope="col">Naziv</th>
                                     <th scope="col">Objekt</th>
                                     <th scope="col">Zacetek</th>
-                                    <th scope="col">Delo</th>
+                                    <th scope="col">Dodaj dnevno delo</th>
+                                    <th scope="col">Pogled dnevnih del</th>
                                     <th scope="col" />
                                 </thead>
                                 <tbody>

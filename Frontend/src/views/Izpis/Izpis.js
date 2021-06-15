@@ -25,7 +25,7 @@ import {
 import Header from 'components/Headers/Header';
 import Export  from 'views/Izpis/ExcelExport';
 
-function Izpis() {
+function Izpis(props) {
 
     const [vsiPodatki, setPodatki] = useState();
     const [filtrirani, setFiltriran] = useState();
@@ -41,7 +41,7 @@ function Izpis() {
     const [obdobjeDO, setObdobjeDO] = useState("");
     const [iskanObjekt, setObjekt] = useState("X");
     const [delavec, setDelavec] = useState({});
-    const [sifra, setSifra] = useState("X");
+    const [sifra, setSifra] = useState(props.location.sifra);
     const [status, setStatus] = useState("X");
 
 
@@ -73,6 +73,7 @@ function Izpis() {
                         setSifre(sifre);
                         setObjekti(razlicniObjekti);
                         handleMontaza(podatki);
+                        handleFiltriranje(podatki);
                     }
                 })  
             }
@@ -121,7 +122,7 @@ function Izpis() {
 
     React.useEffect(() => {
         handleMontaza(vsiPodatki);
-        handleFiltriranje();
+        handleFiltriranje(vsiPodatki);
     },[iskanObjekt, sifra, delavec, status, obdobjeOD, obdobjeDO]);
 
     const handleDelavec=(iskaniPodatki)=>{
@@ -136,7 +137,7 @@ function Izpis() {
         setBruto(skupenBruto);        
     }
 
-    const handleFiltriranje=()=>{
+    const handleFiltriranje=(vsiPodatki)=>{
         let iskaniPodatki = vsiPodatki;
        
         if(Object.keys(delavec).length > 0){
@@ -150,9 +151,10 @@ function Izpis() {
 
         if(obdobjeDO !== "" && obdobjeOD !== "")
             iskaniPodatki = iskaniPodatki.filter((podatek) => ( new Date(obdobjeOD) <= new Date(podatek.datum) && new Date(obdobjeDO) >= new Date(podatek.datum)) === true); 
-               
-        if(sifra !== "X")
+         
+       if(sifra !== undefined && sifra !== "X" && iskaniPodatki!==undefined){
             iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.sifraNaloga === sifra));
+        }    
 
         if(iskanObjekt !== "X")
             iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.objekt === iskanObjekt));
