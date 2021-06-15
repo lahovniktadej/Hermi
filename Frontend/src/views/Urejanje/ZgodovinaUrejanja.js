@@ -18,18 +18,18 @@ function ZgodovinaUrejanja() {
          <Header />
             <Container className="mt--7" fluid>
                 <Row>
-                    <Col className="mb-5">
-                        <NalogiUrejanje />
-                    </Col>
-                    <Col className="mb-5">
-                        <EkipeUrejanje />
-                    </Col>
-                    
-                    <Col className="mb-5">
+                    <Col>
                         <VozilaUrejanje />
                     </Col>
-                    <Col className="mb-5">
+                    <Col>
                         <DelavciUrejanje />
+                    </Col>
+                </Row>
+                <br/>
+                    <NalogiUrejanje /><br/>
+                <Row>
+                    <Col>
+                        <EkipeUrejanje />
                     </Col>
                 </Row>
             </Container>

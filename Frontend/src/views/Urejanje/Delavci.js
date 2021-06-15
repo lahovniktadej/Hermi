@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 
 import {
-    Container,
     Table,
     Card,
     CardHeader,
@@ -12,7 +11,13 @@ import {
     CardFooter,
     CardBody,
     Row,
-    Col
+    Col,
+    Input,
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter
 } from "reactstrap";
 import Header from 'components/Headers/Header';
 import axios from 'axios';
@@ -22,6 +27,17 @@ function Delavci() {
     const [logging, setLogging] = useState([]);
     const [totalPages, setTotalPages] = React.useState(0);
     const [perPage, setPerPage] = React.useState(5);
+
+    const [modal, setModal] = useState();
+    const [modalBody, setModalBody] = useState();
+
+    const toggle = () => setModal(!modal);
+
+    const handleBody = (el) => {
+        toggle();
+        setModalBody(handleIzpis(el));
+    }
+
 
     React.useEffect(() => {
         axios.get(`/api/delavec`, { params: { page: 0, perPage: perPage } })
@@ -40,30 +56,89 @@ function Delavci() {
                 setLogging(log);
             });
     }
-    const tableRow = (el) => {
+    const handleIzpis = (el) => {
+        let izpis = logging.map((podatek)=>{
+            if(podatek === el){
+                return(
+                    <>
+                    <Card>
+                        <CardBody>
+                            <Row>
+                                <Col>
+                                    <label className="form-control-label">
+                                        Ime:
+                                    </label>
+                                    <Input className="form-control-alternative" value={el.ime} type="text" disabled/>
+                                </Col>
+                                <Col>
+                                    <label className="form-control-label bold">
+                                        Priimek:
+                                    </label>
+                                    <Input className="form-control-alternative" value={el.priimek} type="text" disabled />
+                                </Col>
+                                <Col>
+                                    <label className="form-control-label bold">
+                                        Telefonska številka:
+                                    </label>
+                                    <Input className="form-control-alternative" value={el.telefonskaStevilka} type="text" disabled />
+                                </Col>
+                            </Row>
+                        </CardBody>
+                    </Card>
+                    </>
+                    );
+            }
+            else return null;
+        })
+        return izpis;
+    }
+    const podatki = (el) => {
         return (
-            <tr>         
-               <td>{el.spremenil}</td>
-                <td>{new Date(el.timestamp).toLocaleString("en-GB")}</td>       
-                <td>{el.operation}</td> 
-                <td>
-                    <b>ID:</b> {el.id}<br/>
-                    <b>Ime:</b> {el.ime}<br/>
-                    <b>Priimek:</b> {el.priimek}<br/>
-                    <b>Telefonska številka: </b>{el.telefonskaStevilka}
-                </td>      
-            </tr>
-     
+            <>
+            <Card>
+                <CardBody>
+                    <Row>
+                        <Col>
+                            <label className="form-control-label">
+                                Nazadnje spreminjal:
+                            </label>
+                            <Input className="form-control-alternative" value={el.spremenil} type="text" disabled />
+                        </Col>
+                        <Col>
+                            <label className="form-control-label">
+                                Čas spremembe:
+                            </label>
+                            <Input className="form-control-alternative" value={new Date(el.timestamp).toLocaleString("en-GB")} type="text" disabled/>
+                        </Col>
+                        <Col>
+                            <label className="form-control-label">
+                                Tip spremembe:
+                            </label>
+                            <Input className="form-control-alternative" value={el.operation} type="text" disabled />
+                        </Col>
+                    </Row><br/>
+                    <Button center color="success" onClick={function(){ handleBody(el);}}>Zadnji podatki</Button>
+                    <Modal isOpen={modal} toggle={toggle} size="lg">
+                        <ModalHeader toggle={toggle}><h2>Podrobnosti</h2></ModalHeader>
+                        <ModalBody>
+                            {modalBody}
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="danger" onClick={toggle}>Zapri</Button>
+                        </ModalFooter>
+                    </Modal>   
+                </CardBody>
+            </Card>
+            </>
         );
-    };
-
+    }
     return (
         <>
-            <Card className="shadow">
+            <Card className="shadow" size="sm">
             <CardHeader className="border-0">
                 <Row>
                     <Col>    
-                        <h3 className="mb-0">Delavci</h3>
+                        <h2 className="mb-0">Delavci</h2>
                     </Col>
                     <Col className="text-right">
                         <UncontrolledDropdown>
@@ -82,17 +157,7 @@ function Delavci() {
                     </Col>
                 </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush text-center" responsive size="sm">
-                    <thead className="thead-light">
-                        <th scope="col">Nazadnje spreminjal</th> 
-                        <th scope="col">Čas zadnje spremembe</th>
-                        <th scope="col">Tip spremembe</th>
-                        <th scope="col">Trenutni podatki</th>
-                    </thead>
-                    <tbody>
-                        {(logging!=null)?logging.map((el) => tableRow(el)):<></>}
-                    </tbody>
-                </Table>
+                {(logging!=null)?logging.map((el) => podatki(el)):<></>}
                 {
                     (totalPages > 1) ? (
                         <CardFooter>

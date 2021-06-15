@@ -12,7 +12,13 @@ import {
     CardFooter,
     CardBody,
     Col,
-    Row
+    Row,
+    Input,
+    Button,
+    Modal,
+    ModalHeader,
+    ModalBody,
+    ModalFooter
 } from "reactstrap";
 import Header from 'components/Headers/Header';
 import axios from 'axios';
@@ -22,6 +28,16 @@ function Ekipe() {
     const [logging, setLogging] = useState([]);
     const [totalPages, setTotalPages] = React.useState(0);
     const [perPage, setPerPage] = React.useState(5);
+
+    const [modal, setModal] = useState();
+    const [modalBody, setModalBody] = useState();
+
+    const toggle = () => setModal(!modal);
+
+    const handleBody = (el) => {
+        toggle();
+        setModalBody(handleIzpis(el));
+    }
 
     React.useEffect(() => {
         axios.get(`/api/ekipa`, { params: { page: 0, perPage: perPage } })
@@ -40,22 +56,108 @@ function Ekipe() {
                 setLogging(log);
             });
     }
-    const tableRow = (el) => {
+
+    const pridobiStatus = (status) => {
+        if(status)
+            return "fas fa-circle fa-xs text-green";
+        else
+            return "fas fa-circle fa-xs text-red";
+    }
+    const handleIzpis = (el) => {
+        let izpis = logging.map((podatek)=>{
+            if(podatek === el){
+                return(
+                    <>
+                    <Card>
+                        <CardBody>
+                            <Row>
+                                <Col>
+                                    <i className={pridobiStatus(el.status)}></i>
+                                    <label className="form-control-label">
+                                        &nbsp;&nbsp;Status 
+                                    </label>
+                                </Col>
+                            </Row><br/>
+                            <Row>
+                                <Col>
+                                    <label className="form-control-label">
+                                        Datum:
+                                    </label>
+                                    <Input className="form-control-alternative" value={new Date(el.datum).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })} type="text" disabled/>
+                                </Col>
+                                <Col>
+                                    <label className="form-control-label bold">
+                                        Šofer:
+                                    </label>
+                                    <Input className="form-control-alternative" value={el.sofer.ime + " " + el.sofer.priimek} type="text" disabled />
+                                </Col>
+                                
+                            </Row>
+                            <br/><br/>
+                            <div className="text-center">
+                                <label className="form-control-label">
+                                    DELAVCI:
+                                </label>
+                            </div>
+                            <hr/>
+                            <Row>
+                                <Col>
+                                {(el.delavci!=null)?
+                                el.delavci.map((delavec)=>
+                                    <>
+                                    <Input className="form-control-alternative" value={delavec.ime +" " + delavec.priimek} type="text" disabled/>                                  
+                                    <br/>
+                                    </>)
+                                :<>Ni delavcev</>}
+                                </Col>
+                            </Row>
+                        </CardBody>
+                    </Card>
+                    </>
+                    );
+            }
+            else return null;
+        })
+        return izpis;
+    }
+    const podatki = (el) => {
         return (
-            <tr>     
-                <td>{el.spremenil}</td>
-                <td>{new Date(el.timestamp).toLocaleString("en-GB")}</td>       
-                <td>{el.operation}</td>             
-                <td>
-                    <b>ID:</b> {el.id}<br/>
-                    <b>Šofer:</b> {el.sofer.ime} {el.sofer.priimek}<br/>
-                    <b>Delavci:</b><br/>
-                    {el.delavci.map((delavec)=><>{delavec.ime} {delavec.priimek}<br/></>)}
-                    <b>Datum:</b> {el.datum}<br/>
-                    <br/>
-                </td>      
-            </tr>
-     
+            <>
+            <Card>
+                <CardBody>
+                    <Row>
+                        <Col>
+                            <label className="form-control-label">
+                                Nazadnje spreminjal:
+                            </label>
+                            <Input className="form-control-alternative" value={el.spremenil} type="text" disabled />
+                        </Col>
+                        <Col>
+                            <label className="form-control-label">
+                            Čas spremembe:
+                            </label>
+                            <Input className="form-control-alternative" value={new Date(el.timestamp).toLocaleString("en-GB")} type="text" disabled/>
+                        </Col>
+                        <Col>
+                            <label className="form-control-label">
+                            Tip spremembe:
+                            </label>
+                            <Input className="form-control-alternative" value={el.operation} type="text" disabled />
+                        </Col>
+                    </Row><br/>
+                    <Button center color="success" onClick={function(){ handleBody(el);}}>Zadnji podatki</Button>
+                    <Modal isOpen={modal} toggle={toggle} size="lg">
+                        <ModalHeader toggle={toggle}><h2>Podrobnosti</h2></ModalHeader>
+                        <ModalBody>
+                            {modalBody}
+                        </ModalBody>
+                        <ModalFooter>
+                            <Button color="danger" onClick={toggle}>Zapri</Button>
+                        </ModalFooter>
+                    </Modal>   
+                </CardBody>
+            </Card>
+            </>
         );
     };
 
@@ -65,7 +167,7 @@ function Ekipe() {
             <CardHeader className="border-0">
                 <Row>
                     <Col>    
-                        <h3 className="mb-0">Ekipe</h3>
+                        <h2 className="mb-0">Ekipe</h2>
                     </Col>
                     <Col className="text-right">
                         <UncontrolledDropdown>
@@ -84,17 +186,7 @@ function Ekipe() {
                     </Col>
                 </Row>
                 </CardHeader>
-                <Table className="align-items-center table-flush text-center" responsive size="sm">
-                    <thead className="thead-light">
-                        <th scope="col">Nazadnje spreminjal</th> 
-                        <th scope="col">Čas zadnje spremembe</th>
-                        <th scope="col">Tip spremembe</th>
-                        <th scope="col">Trenutni podatki</th>
-                    </thead>
-                    <tbody>
-                        {(logging!=null)?logging.map((el) => tableRow(el)):<></>}
-                    </tbody>
-                </Table>
+                {(logging!=null)?logging.map((el) => podatki(el)):<></>}
                 {
                     (totalPages > 1) ? (
                         <CardFooter>
