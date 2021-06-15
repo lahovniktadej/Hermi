@@ -53,16 +53,12 @@ function ExcelExport(props) {
         return (
             <tr>
                 <td style={pridobiStatus(el.status)}></td>     
-                <th scope="row">
-                    <Media className="align-items-center">
-                        <span className="mb-0 text-sm">{el.sifraNaloga}</span>
-                    </Media>
-                </th>
+                <td>{el.sifraNaloga}</td>  
                 <td>{el.objekt}</td>  
                 <td>{new Date(el.datum).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>              
                 <td>{el.avto}</td>
                 <td>{el.sofer.ime} {el.sofer.priimek}</td>
-                <td>{el.delavci.map((delavec)=> <>{delavec.ime} {delavec.priimek}<br/></>)}</td>
+                <td>{el.delavci.map((delavec, i, arr)=> {if(i!==arr.length-1) return delavec.ime +" " +delavec.priimek +", "; else return delavec.ime +" " +delavec.priimek;})}</td>
                 <td>{el.start}</td>
                 <td>{el.pricetekDela}</td>
                 <td>{el.konecDela}</td>
@@ -82,7 +78,7 @@ function ExcelExport(props) {
             <Modal isOpen={modal} toggle={toggle} size="lg">
                 <ModalHeader toggle={toggle}><h2>Pregled tabele</h2></ModalHeader>
                 <ModalBody>
-                <Table className="align-items-center table-flush text-center" id="table" responsive >
+                <table class="table table-bordered table-responsive" id="table">
                         <thead className="thead-light">
                                 <th scope="col">Status</th>
                                 <th scope="col">Šifra</th> 
@@ -112,7 +108,7 @@ function ExcelExport(props) {
                                 <td>{props.bruto}</td>
                             </tr>
                         </tbody>
-                    </Table><br/>
+                    </table><br/>
                     <div className="text-center">
                        <Button className="btn btn-danger" onClick={() => {excel("table")}}>Prenesi</Button>
                     </div> 
