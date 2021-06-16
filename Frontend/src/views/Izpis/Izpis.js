@@ -41,10 +41,10 @@ function Izpis(props) {
 
     const [obdobjeOD, setObdobjeOD] = useState("");
     const [obdobjeDO, setObdobjeDO] = useState("");
-    const [iskanObjekt, setObjekt] = useState("X");
+    const [iskanObjekt, setObjekt] = useState("Izberi vse");
     const [delavec, setDelavec] = useState({});
     const [sifra, setSifra] = useState(props.location.sifra);
-    const [status, setStatus] = useState("X");
+    const [status, setStatus] = useState("Izberi vse");
 
 
     const [neto, setNeto] = useState();
@@ -143,7 +143,6 @@ function Izpis(props) {
         let iskaniPodatki = vsiPodatki;
 
         if (Object.keys(delavec).length > 0) {
-            console.log(delavec)
             iskaniPodatki = iskaniPodatki.filter((podatek) => podatek.sofer.id === delavec.id);
             let falseDelavci = vsiPodatki.filter((podatek) => (podatek.delavci.filter((iskanDelavec) => { return (iskanDelavec.id === delavec.id); })) == false);
             let iskaniDelavci = vsiPodatki.filter((podatki) => !falseDelavci.includes(podatki));
@@ -154,11 +153,11 @@ function Izpis(props) {
         if (obdobjeDO !== "" && obdobjeOD !== "")
             iskaniPodatki = iskaniPodatki.filter((podatek) => (new Date(obdobjeOD) <= new Date(podatek.datum) && new Date(obdobjeDO) >= new Date(podatek.datum)) === true);
 
-        if (sifra !== undefined && sifra !== "X" && iskaniPodatki !== undefined) {
+        if (sifra !== undefined && sifra !== "Izberi vse" && iskaniPodatki !== undefined) {
             iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.sifraNaloga === sifra));
         }
 
-        if (iskanObjekt !== "X")
+        if (iskanObjekt !== "Izberi vse")
             iskaniPodatki = iskaniPodatki.filter((podatek) => (podatek.objekt === iskanObjekt));
 
         if (status === "Aktiven")
