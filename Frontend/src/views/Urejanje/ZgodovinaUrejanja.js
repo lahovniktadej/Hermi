@@ -15,20 +15,23 @@ function ZgodovinaUrejanja() {
 
     return (
         <>
-         <Header />
+            <Header />
             <Container className="mt--7" fluid>
                 <Row>
-                    <Col>
+                    <Col className="mb-5">
                         <VozilaUrejanje />
                     </Col>
-                    <Col>
+                    <Col className="mb-5">
                         <DelavciUrejanje />
                     </Col>
                 </Row>
-                <br/>
-                    <NalogiUrejanje /><br/>
                 <Row>
-                    <Col>
+                    <Col className="mb-5">
+                        <NalogiUrejanje />
+                    </Col>
+                </Row>
+                <Row>
+                    <Col className="mb-5">
                         <EkipeUrejanje />
                     </Col>
                 </Row>

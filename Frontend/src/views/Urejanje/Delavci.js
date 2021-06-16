@@ -95,7 +95,7 @@ function Delavci() {
     const podatki = (el) => {
         return (
             <>
-            <Card>
+            <Card className="my-2">
                 <CardBody>
                     <Row>
                         <Col>
@@ -117,21 +117,27 @@ function Delavci() {
                             <Input className="form-control-alternative" value={el.operation} type="text" disabled />
                         </Col>
                     </Row><br/>
-                    <Button center color="success" onClick={function(){ handleBody(el);}}>Zadnji podatki</Button>
-                    <Modal isOpen={modal} toggle={toggle} size="lg">
-                        <ModalHeader toggle={toggle}><h2>Podrobnosti</h2></ModalHeader>
-                        <ModalBody>
-                            {modalBody}
-                        </ModalBody>
-                        <ModalFooter>
-                            <Button color="danger" onClick={toggle}>Zapri</Button>
-                        </ModalFooter>
-                    </Modal>   
+                    <Button center color="success" onClick={function(){ handleBody(el);}}>Zadnji podatki</Button> 
                 </CardBody>
             </Card>
             </>
         );
     }
+
+    const ModalPodrobnosti = () => {
+        return (
+            <Modal className="modal-dialog-centered" isOpen={modal} toggle={toggle} size="lg">
+                <ModalHeader toggle={toggle}><h2>Podrobnosti</h2></ModalHeader>
+                <ModalBody>
+                    {modalBody}
+                </ModalBody>
+                <ModalFooter>
+                    <Button color="danger" onClick={toggle}>Zapri</Button>
+                </ModalFooter>
+            </Modal>
+        );
+    }
+
     return (
         <>
             <Card className="shadow" size="sm">
@@ -157,7 +163,9 @@ function Delavci() {
                     </Col>
                 </Row>
                 </CardHeader>
-                {(logging!=null)?logging.map((el) => podatki(el)):<></>}
+                <CardBody className="bg-secondary">
+                    {(logging!=null)?logging.map((el) => podatki(el)):<></>}
+                </CardBody>
                 {
                     (totalPages > 1) ? (
                         <CardFooter>
@@ -165,6 +173,7 @@ function Delavci() {
                         </CardFooter>
                     ) : <></>
                 }
+                <ModalPodrobnosti />
             </Card>
         </>
     );
