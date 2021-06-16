@@ -142,13 +142,12 @@ function Delavci() {
         <>
             <Card className="shadow" size="sm">
             <CardHeader className="border-0">
-                <Row>
+                <Row className="align-items-center">
                     <Col>    
-                        <h2 className="mb-0">Delavci</h2>
+                        <h3 className="mb-0">Delavci</h3>
                     </Col>
                     <Col className="text-right">
-                        <UncontrolledDropdown>
-                            <CardBody>
+                        <UncontrolledDropdown direction="left">
                                 <DropdownToggle size="sm">
                                     <span>Št. na stran: {perPage}</span>
                                     <i class="fas fa-caret-down"></i>
@@ -158,7 +157,6 @@ function Delavci() {
                                     <DropdownItem onClick={() => setPerPage(10)}>10</DropdownItem>
                                     <DropdownItem onClick={() => setPerPage(15)}>15</DropdownItem>
                                 </DropdownMenu>
-                            </CardBody>
                         </UncontrolledDropdown>
                     </Col>
                 </Row>
