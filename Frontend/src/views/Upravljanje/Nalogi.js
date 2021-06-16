@@ -9,7 +9,10 @@ import {
     Col,
     Button,
     Form,
-    CardFooter
+    CardFooter,
+    Toast,
+    ToastHeader,
+    ToastBody
 } from 'reactstrap';
 
 function Nalogi() {
@@ -23,15 +26,19 @@ function Nalogi() {
     }
 
     const [nalog, setNalog] = React.useState(emptyNalog);
+    const [toast, setToast] = React.useState(true);
 
     const dodajNalog = (el) => {
-        el.preventDefault();   
+        el.preventDefault();
 
         nalog.zacetek = new Date(nalog.zacetek).toISOString();
         nalog.spremenil = sessionStorage.getItem("user_uid");
 
         axios.post(`/api/delovniNalog`, nalog)
-        .then();
+            .then(() => {
+                setToast(false);
+                setTimeout(() => { setToast(true); }, 3000);
+            });
     }
 
     const nalogChange = (el) => {
@@ -43,39 +50,46 @@ function Nalogi() {
     }
 
     return (
-        <Card className="shadow bg-secondary">
-            <CardHeader className="border-0">
-                <h3 className="mb-0">Dodaj delovni nalog</h3>
-            </CardHeader>
-            <Form onSubmit={dodajNalog} >
-                <CardBody>
-                    <h6 className="heading-small text-muted mb-4">Delovni nalog</h6>
-                    <div className="pl-lg-4">
+        <>
+            <Card className="shadow bg-secondary">
+                <CardHeader className="border-0">
+                    <h3 className="mb-0">Dodaj delovni nalog</h3>
+                </CardHeader>
+                <Form onSubmit={dodajNalog} >
+                    <CardBody>
+                        <h6 className="heading-small text-muted mb-4">Delovni nalog</h6>
+                        <div className="pl-lg-4">
+                            <Row>
+                                <Col lg="3">
+                                    <ManagedInput label="Šifra" required name="sifra" value={nalog.sifra} onChange={nalogChange} />
+                                </Col>
+                                <Col lg="3">
+                                    <ManagedInput label="Naziv" required name="naziv" value={nalog.naziv} onChange={nalogChange} />
+                                </Col>
+                                <Col lg="3">
+                                    <ManagedInput label="Objekt" required name="objekt" value={nalog.objekt} onChange={nalogChange} />
+                                </Col>
+                                <Col lg="3">
+                                    <ManagedInput label="Začetek" required name="zacetek" value={nalog.zacetek} onChange={nalogChange} type="date" />
+                                </Col>
+                            </Row>
+                        </div>
+                    </CardBody>
+                    <CardFooter className="border-0">
                         <Row>
-                            <Col lg="3">
-                                <ManagedInput label="Šifra" required name="sifra" value={nalog.sifra} onChange={nalogChange} />
-                            </Col>
-                            <Col lg="3">
-                                <ManagedInput label="Naziv" required name="naziv" value={nalog.naziv} onChange={nalogChange} />
-                            </Col>
-                            <Col lg="3">
-                                <ManagedInput label="Objekt" required name="objekt" value={nalog.objekt} onChange={nalogChange} />
-                            </Col>
-                            <Col lg="3">
-                                <ManagedInput label="Začetek" required name="zacetek" value={nalog.zacetek} onChange={nalogChange} type="date" />
+                            <Col className="text-center">
+                                <Button color="danger">Dodaj</Button>
                             </Col>
                         </Row>
-                    </div>
-                </CardBody>
-                <CardFooter className="border-0">
-                    <Row>
-                        <Col className="text-center">
-                            <Button color="danger">Dodaj</Button>
-                        </Col>
-                    </Row>
-                </CardFooter>
-            </Form>
-        </Card>
+                    </CardFooter>
+                </Form>
+                <div className="p-3 bg-secondary my-2 rounded text-center" hidden={toast}>
+                    <Toast>
+                        <ToastBody><i class="fas fa-check"></i> Delovni nalog dodan</ToastBody>
+                    </Toast>
+                </div>
+            </Card>
+        </>
     );
 }
 
