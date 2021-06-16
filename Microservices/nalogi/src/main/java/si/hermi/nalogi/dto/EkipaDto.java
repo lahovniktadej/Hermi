@@ -3,6 +3,9 @@ package si.hermi.nalogi.dto;
 import si.hermi.nalogi.vao.Delavec;
 import si.hermi.nalogi.vao.Vozilo;
 
+import java.sql.Time;
+import java.time.LocalDate;
+import java.time.LocalTime;
 import java.util.Date;
 import java.util.List;
 
@@ -17,13 +20,13 @@ public class EkipaDto {
 
     private Date datum;
 
-    private float start;
+    private LocalTime start;
 
-    private float pricetekDela;
+    private LocalTime pricetekDela;
 
-    private float konecDela;
+    private LocalTime konecDela;
 
-    private float prihod;
+    private LocalTime prihod;
 
     private float netoDelo;
 
@@ -40,7 +43,7 @@ public class EkipaDto {
     public EkipaDto() {
     }
 
-    public EkipaDto(List<Delavec> delavci, Delavec sofer, Vozilo vozilo, boolean status, Date datum, float start, float pricetekDela, float konecDela, float prihod, float netoDelo, float odsotnostSoferja, float odsotnostDelavca, float netoMontaza, float brutoMontaza, String spremenil) {
+    public EkipaDto(List<Delavec> delavci, Delavec sofer, Vozilo vozilo, boolean status, Date datum, LocalTime start, LocalTime pricetekDela, LocalTime konecDela, LocalTime prihod, float netoDelo, float odsotnostSoferja, float odsotnostDelavca, float netoMontaza, float brutoMontaza, String spremenil) {
         this.delavci = delavci;
         this.sofer = sofer;
         this.vozilo = vozilo;
@@ -98,35 +101,35 @@ public class EkipaDto {
         this.datum = datum;
     }
 
-    public float getStart() {
+    public LocalTime getStart() {
         return start;
     }
 
-    public void setStart(float start) {
+    public void setStart(LocalTime start) {
         this.start = start;
     }
 
-    public float getPricetekDela() {
+    public LocalTime getPricetekDela() {
         return pricetekDela;
     }
 
-    public void setPricetekDela(float pricetekDela) {
+    public void setPricetekDela(LocalTime pricetekDela) {
         this.pricetekDela = pricetekDela;
     }
 
-    public float getKonecDela() {
+    public LocalTime getKonecDela() {
         return konecDela;
     }
 
-    public void setKonecDela(float konecDela) {
+    public void setKonecDela(LocalTime konecDela) {
         this.konecDela = konecDela;
     }
 
-    public float getPrihod() {
+    public LocalTime getPrihod() {
         return prihod;
     }
 
-    public void setPrihod(float prihod) {
+    public void setPrihod(LocalTime prihod) {
         this.prihod = prihod;
     }
 
