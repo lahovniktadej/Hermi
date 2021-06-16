@@ -1,9 +1,6 @@
 package si.hermi.nalogi.vao;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @Entity
 public class Skrbnik {
@@ -15,6 +12,7 @@ public class Skrbnik {
 
     private String priimek;
 
+    @Column(unique = true)
     private String uporabniskoIme;
 
     public Skrbnik() {

@@ -320,7 +320,7 @@ function Izpis(props) {
                                             <FormGroup>
                                                 <div class="alert alert-white">
                                                     <Input id="input-date" value={iskanObjekt} className="form-control-alternative" type="select" onChange={e => setObjekt(e.target.value)}>
-                                                        <option>X</option>
+                                                        <option>Izberi vse</option>
                                                         {objekti.map((objekt) => { return (<option>{objekt}</option>); })}
                                                     </Input>
                                                 </div>
@@ -338,7 +338,7 @@ function Izpis(props) {
                                             <FormGroup>
                                                 <div class="alert alert-white">
                                                     <Input className="form-control-alternative" value={JSON.stringify(delavec)} id="input-date" type="select" onChange={e => setDelavec(JSON.parse(e.target.value))}>
-                                                        <option value={JSON.stringify({})} label="X"></option>
+                                                        <option value={JSON.stringify({})} label="Izberi vse"></option>
                                                         {delavci.map((iskanDelavec) => { return (<option value={JSON.stringify(iskanDelavec)} label={iskanDelavec.ime + " " + iskanDelavec.priimek}></option>); })}
                                                     </Input>
                                                 </div>
@@ -356,7 +356,7 @@ function Izpis(props) {
                                             <FormGroup>
                                                 <div class="alert alert-white">
                                                     <Input className="form-control-alternative" value={sifra} id="input-date" type="select" onChange={e => setSifra(e.target.value)}>
-                                                        <option>X</option>
+                                                        <option>Izberi vse</option>
                                                         {sifre.map((sifra) => { return (<option>{sifra}</option>); })}
                                                     </Input>
                                                 </div>
@@ -373,15 +373,11 @@ function Izpis(props) {
                                         <DropdownMenu>
                                             <FormGroup>
                                                 <div class="alert alert-white">
-                                                    <FormGroup check>
-                                                        <label check>
-                                                            <Input type="select" className="form-control-alternative" name="status" checked={status} onChange={e => setStatus(e.target.value)}>
-                                                                <option>X</option>
-                                                                <option>Aktiven</option>
-                                                                <option>Končan</option>
-                                                            </Input>
-                                                        </label>
-                                                    </FormGroup>
+                                                    <Input type="select" className="form-control-alternative" name="status" checked={status} onChange={e => setStatus(e.target.value)}>
+                                                        <option>Izberi vse</option>
+                                                        <option>Aktiven</option>
+                                                        <option>Končan</option>
+                                                    </Input>
                                                 </div>
                                             </FormGroup>
                                         </DropdownMenu>
