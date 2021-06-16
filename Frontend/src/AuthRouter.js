@@ -24,11 +24,13 @@ function AuthRouter() {
             <FirebaseAuthConsumer>
                 {
                     ({ isSignedIn, firebase }) => {
-                        console.log(isSignedIn)
                         if (isSignedIn) {
-                            history.push("/admin/pregled");
+                            if (history.length > 0) {
+                                history.goBack();
+                            } else {
+                                history.push("/admin/pregled");
+                            }
                         } else {
-                            console.log("sdad")
                             history.push("/auth/prijava");
                         }
                     }

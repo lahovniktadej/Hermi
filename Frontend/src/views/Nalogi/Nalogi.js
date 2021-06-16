@@ -158,7 +158,6 @@ function Nalogi() {
     const Tr = (props) => {
         return (
             <>
-                <UncontrolledTooltip delay={0} placement="top" target="status-nekoncano">Aktiven</UncontrolledTooltip>
                 <tr>
                     <td>
                         {
@@ -242,6 +241,12 @@ function Nalogi() {
                                     {nalogi.map((nalog) => { return <Tr row={nalog} /> })}
                                 </tbody>
                             </Table>
+                            {
+                                (nalogi.some((nalog) => { return nalog.status == false || nalog.status == null })) ? <UncontrolledTooltip delay={0} placement="top" target="status-nekoncano">Aktiven</UncontrolledTooltip> : <></>
+                            }
+                            {
+                                (nalogi.some((nalog) => { return nalog.status == true })) ? <UncontrolledTooltip delay={0} placement="top" target="status-koncano">Zaključen</UncontrolledTooltip> : <></>
+                            }
                             {
                                 (totalPages > 1) ? (
                                     <CardFooter>
