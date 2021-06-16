@@ -91,7 +91,11 @@ function AddEkipa(props) {
                         <i class="fas fa-caret-down"></i>
                     </DropdownToggle>
                     <DropdownMenu>
-                        {props.delavci.map((delavec) => { return <SoferItem sofer={delavec} /> })}
+                        {
+                            props.delavci
+                                .filter((val) => { return !props.ekipa.delavci.includes(val) })
+                                .map((delavec) => { return <SoferItem sofer={delavec} /> })
+                        }
                     </DropdownMenu>
                 </UncontrolledDropdown>
             </Col>

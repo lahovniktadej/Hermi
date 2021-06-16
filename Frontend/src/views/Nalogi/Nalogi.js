@@ -173,7 +173,7 @@ function Nalogi() {
                         <Button size="sm" color="success" onClick={() => toggleEkipaModal(props.row)} >Dnevno delo</Button>
                     </td>
                     <td>
-                        <Link class="btn btn-success btn-sm" to={{ pathname: "/admin/izpis",  sifra: props.row.sifra }}>Vsa dnevna dela </Link>
+                        <Link class="btn btn-secondary btn-sm" to={{ pathname: "/admin/izpis",  sifra: props.row.sifra }}>Vsa dnevna dela </Link>
                     </td>
                     <td className="text-right">
                         <UncontrolledDropdown>

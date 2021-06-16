@@ -1,21 +1,35 @@
 import React from 'react';
 import ManagedInput from '../common/ManagedInput';
-
 import {
     Button,
     Row,
     Col,
     Form
 } from 'reactstrap';
+import dayjs from 'dayjs';
+import customParseFormat from 'dayjs/plugin/customParseFormat';
+dayjs.extend(customParseFormat);
 
 function EditEkipa(props) {
     const [ekipa, setEkipa] = React.useState(props.ekipa);
 
     const ekipaChange = (e) => {
-        setEkipa({
+        let ekipaCopy = {
             ...ekipa,
             [e.target.name]: e.target.value
-        });
+        };
+
+        ekipaCopy.odsotnostSoferja = Number(timeDelta(ekipaCopy.prihod, ekipaCopy.start));
+        ekipaCopy.odsotnostDelavca = Number((timeDelta(ekipaCopy.konecDela, ekipaCopy.pricetekDela) > 8) ? timeDelta(ekipaCopy.konecDela, ekipaCopy.pricetekDela) : 8);
+        ekipaCopy.netoDelo = Number(timeDelta(ekipaCopy.konecDela, ekipaCopy.pricetekDela));
+        ekipaCopy.netoMontaza = Number(ekipaCopy.delavci.length * timeDelta(ekipaCopy.konecDela, ekipaCopy.pricetekDela));
+        ekipaCopy.brutoMontaza = Number(ekipaCopy.odsotnostSoferja + ekipaCopy.delavci.length * ekipaCopy.odsotnostDelavca).toFixed(2);
+
+        setEkipa(ekipaCopy);
+    }
+
+    const timeDelta = (time1, time2) => {
+        return Number.parseFloat(dayjs(time1, ["HH:mm", "HH:mm:ss"]).diff(dayjs(time2, ["HH:mm", "HH:mm:ss"]), "h", true)).toFixed(2);
     }
 
     const ekipaChangeNumber = (e) => {
@@ -95,34 +109,37 @@ function EditEkipa(props) {
                         <ManagedInput label="Datum" required type="date" name="datum" value={formatDate(ekipa.datum)} onChange={ekipaChange} />
                     </Col>
                     <Col lg="4">
-                        <ManagedInput label="Start" required type="number" step="0.01" name="start" value={ekipa.start} onChange={ekipaChangeNumber} />
+                        <ManagedInput label="Start" required type="time" name="start" value={ekipa.start} onChange={ekipaChange} />
                     </Col>
                     <Col lg="4">
-                        <ManagedInput label="Prihod" required type="number" step="0.01" name="prihod" value={ekipa.prihod} onChange={ekipaChangeNumber} />
+                        <ManagedInput label="Prihod" required type="time" name="prihod" value={ekipa.prihod} onChange={ekipaChange} />
                     </Col>
                 </Row>
                 <Row>
                     <Col lg="6">
-                        <ManagedInput label="Pričetek dela" required type="number" step="0.01" name="pricetekDela" value={ekipa.pricetekDela} onChange={ekipaChangeNumber} />
+                        <ManagedInput label="Pričetek dela" required type="time" name="pricetekDela" value={ekipa.pricetekDela} onChange={ekipaChange} />
                     </Col>
                     <Col lg="6">
-                        <ManagedInput label="Konec dela" required type="number" step="0.01" name="konecDela" value={ekipa.konecDela} onChange={ekipaChangeNumber} />
+                        <ManagedInput label="Konec dela" required type="time" name="konecDela" value={ekipa.konecDela} onChange={ekipaChange} />
                     </Col>
                 </Row>
                 <Row>
                     <Col lg="6">
-                        <ManagedInput label="Odsotnost šoferja" required type="number" step="0.01" name="odsotnostSoferja" value={ekipa.odsotnostSoferja} onChange={ekipaChangeNumber} />
+                        <ManagedInput label="Odsotnost šoferja" required type="number" min="0" step="0.01" name="odsotnostSoferja" value={ekipa.odsotnostSoferja} onChange={ekipaChangeNumber} />
                     </Col>
                     <Col lg="6">
-                        <ManagedInput label="Odsotnost delavca" required type="number" step="0.01" name="odsotnostDelavca" value={ekipa.odsotnostDelavca} onChange={ekipaChangeNumber} />
+                        <ManagedInput label="Odsotnost delavca" required type="number" min="0" step="0.01" name="odsotnostDelavca" value={ekipa.odsotnostDelavca} onChange={ekipaChangeNumber} />
                     </Col>
                 </Row>
                 <Row className="justify-content-md-center">
                     <Col lg="3">
-                        <ManagedInput label="Neto montaža" required type="number" step="0.01" name="netoMontaza" value={ekipa.netoMontaza} onChange={ekipaChangeNumber} />
+                        <ManagedInput label="Neto delo" required type="number" min="0" step="0.01" name="netoDelo" value={ekipa.netoDelo} onChange={ekipaChangeNumber} />
                     </Col>
                     <Col lg="3">
-                        <ManagedInput label="Bruto montaža" required type="number" step="0.01" name="brutoMontaza" value={ekipa.brutoMontaza} onChange={ekipaChangeNumber} />
+                        <ManagedInput label="Neto montaža" required type="number" min="0" step="0.01" name="netoMontaza" value={ekipa.netoMontaza} onChange={ekipaChangeNumber} />
+                    </Col>
+                    <Col lg="3">
+                        <ManagedInput label="Bruto montaža" required type="number" min="0" step="0.01" name="brutoMontaza" value={ekipa.brutoMontaza} onChange={ekipaChangeNumber} />
                     </Col>
                 </Row>
                 <Row className="justify-content-between">
