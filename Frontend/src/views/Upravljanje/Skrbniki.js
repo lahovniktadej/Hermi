@@ -320,7 +320,7 @@ function Skrbniki() {
                     </tr>
                 </thead>
                 <tbody>
-                    {seznamSkrbnikov.map((el) => tableRow(el))}
+                    {seznamSkrbnikov ? seznamSkrbnikov.map((el) => tableRow(el)) : null}
                 </tbody>
             </Table>
             {

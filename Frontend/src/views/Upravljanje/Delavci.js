@@ -292,7 +292,7 @@ function Delavci() {
                     </tr>
                 </thead>
                 <tbody>
-                    {seznamDelavcev.map((el) => tableRow(el))}
+                    {seznamDelavcev ? seznamDelavcev.map((el) => tableRow(el)) : null}
                 </tbody>
             </Table>
             {

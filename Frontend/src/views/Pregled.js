@@ -229,7 +229,7 @@ const handleMontazaTeden = (neto) => {
                 <Row className="align-items-center">
                   <div className="col">
                     <h6 className="text-uppercase text-muted ls-1 mb-1">
-                      Analiza po mesecih
+                      Analiza po mescih
                     </h6>
                     <h2 className="mb-0">Število nalogov</h2>
                   </div>

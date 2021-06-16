@@ -232,13 +232,13 @@ function Nalogi() {
                                     <th scope="col">Šifra</th>
                                     <th scope="col">Naziv</th>
                                     <th scope="col">Objekt</th>
-                                    <th scope="col">Zacetek</th>
+                                    <th scope="col">Začetek</th>
                                     <th scope="col">Dodaj dnevno delo</th>
-                                    <th scope="col">Pogled dnevnih del</th>
+                                    <th scope="col">Pregled dnevnih del</th>
                                     <th scope="col" />
                                 </thead>
                                 <tbody>
-                                    {nalogi.map((nalog) => { return <Tr row={nalog} /> })}
+                                    {nalogi ? nalogi.map((nalog) => { return <Tr row={nalog} /> }) : null}
                                 </tbody>
                             </Table>
                             {

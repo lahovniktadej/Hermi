@@ -276,7 +276,7 @@ function Vozila() {
                     </tr>
                 </thead>
                 <tbody>
-                    {seznamVozil.map((el) => tableRow(el))}
+                    {seznamVozil ? seznamVozil.map((el) => tableRow(el)) : null}
                 </tbody>
             </Table>
             {
