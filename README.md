@@ -8,10 +8,10 @@
 ![](https://img.shields.io/badge/-ReactJS-blue) ![](https://img.shields.io/badge/-Reactstrap-blue) ![](https://img.shields.io/badge/-Argon%20Dashboard-blue) ![](https://img.shields.io/badge/-Spring-blue) ![](https://img.shields.io/badge/-Firebase-blue) ![](https://img.shields.io/badge/-Docker-blue) ![](https://img.shields.io/badge/-Nginx-blue)
 
 ## Opis
-Spletna aplikacija omogoča upravljanje z dnevnimi nalogi. Uporabniki lahko dodajajo in urejajo delovne naloge, spreminjajo njihov status in jih po filtriranju izvozijo v .xlsx. Na pregledni plošči je prikazana analiza delovnih nalogov. Uporabniki si lahko ogledajo število nalogov, ki so bili dodani v posameznem mescu, in analizo po montaži.
-Aplikacija temelji na tehnologiji React. Podatkovno celovitost zagotavlja Spring.
+Spletna aplikacija omogoča upravljanje z dnevnimi nalogi. Uporabniki lahko dodajajo in urejajo delovne naloge, spreminjajo njihov status in jih po filtriranju izvozijo v .xlsx. Na pregledni plošči je prikazana analiza delovnih nalogov. Uporabniki si lahko ogledajo število nalogov, ki so bili dodani v posameznem mescu, in analizo po montaži. Aplikacija temelji na tehnologiji React. Podatkovno celovitost zagotavlja Spring.
     
-Upravljanje z uporabniki je implementirano s pomočjo Google Firebase. Za dodajanje skrbnikov morajo poskrbeti že obstoječi uporabniki. Novi uporabniki bodo prejeli e-poštno sporočilo s povezavo do ponastavitve gesla. Nato se bodo lahko prijavili v spletno aplikacijo.
+Upravljanje z uporabniki je implementirano s pomočjo Google Firebase. Za dodajanje skrbnikov morajo poskrbeti že obstoječi uporabniki. Novi uporabniki bodo prejeli e-poštno sporočilo s povezavo do ponastavitve gesla. Nato se bodo lahko prijavili v spletno aplikacijo.  
+
 Spletna aplikacija omogoča spremljanje sprememb – vsak registriran uporabnik lahko pregleda zgodovino sprememb. Ogleda si lahko zgodovino sprememb šifrantov, delovnih nalogov in dnevnih nalogov (dodajanje, urejanje), prav tako pa sta ob vsaki spremembi zabeležena čas in avtor spremembe.
 
 ## Namestitveni postopek
@@ -26,7 +26,7 @@ MYSQL_DATABASE=  # Ime podatkovne baze (npr. hermi)
 MYSQL_USER=      # Ime uporabnika podatkovne baze (npr. admin)
 MYSQL_PASSWORD=  # Geslo uporabnika podatkovne baze (npr. geslo)
 ```
-Vspostavitev storitve
+Vzpostavitev storitve
 ```bash
 # Prevedi docker slike
 $ docker-compose build
@@ -50,7 +50,7 @@ MYSQL_DATABASE=  # Ime podatkovne baze (npr. hermi)
 MYSQL_USER=      # Ime uporabnika podatkovne baze (npr. admin)
 MYSQL_PASSWORD=  # Geslo uporabnika podatkovne baze (npr. geslo)
 ```
-Vspostavitev in zagon storitve za razvoj
+Vzpostavitev in zagon storitve za razvoj
 ```bash
 $ docker-compose -f docker-compose.dev.yml up --build
 ```
