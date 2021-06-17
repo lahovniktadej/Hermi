@@ -372,7 +372,7 @@ function Izpis(props) {
                                         <DropdownMenu>
                                             <FormGroup>
                                                 <div class="alert alert-white">
-                                                    <Input type="select" className="form-control-alternative" name="status" checked={status} onChange={e => setStatus(e.target.value)}>
+                                                    <Input type="select" className="form-control-alternative" name="status" value={status} checked={status} onChange={e => setStatus(e.target.value)}>
                                                         <option>Izberi vse</option>
                                                         <option>Aktiven</option>
                                                         <option>Končan</option>
