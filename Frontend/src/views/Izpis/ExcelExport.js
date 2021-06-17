@@ -1,8 +1,6 @@
 import React, {useState} from 'react';
 
 import {
-    Media,
-    Table,
     Button,
     Modal,
     ModalFooter,
@@ -53,7 +51,7 @@ function ExcelExport(props) {
         return (
             <tr>
                 <td style={pridobiStatus(el.status)}></td>     
-                <td>{el.sifraNaloga}</td>  
+                <td>{el.sifraNaloga} &nbsp;</td>  
                 <td>{el.objekt}</td>  
                 <td>{new Date(el.datum).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>              
                 <td>{el.avto}</td>
@@ -63,7 +61,7 @@ function ExcelExport(props) {
                 <td>{el.pricetekDela}</td>
                 <td>{el.konecDela}</td>
                 <td>{el.prihod}</td>
-                <td>{el.netoCas}</td>
+                <td>{el.netoDelo}</td>
                 <td>{el.odsotnoDelavca}</td>
                 <td>{el.odsotnostSoferja}</td>
                 <td>{el.netoMontaza}</td>
