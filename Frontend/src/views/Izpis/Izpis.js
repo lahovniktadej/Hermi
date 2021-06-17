@@ -341,8 +341,8 @@ function Izpis(props) {
                                     <UncontrolledDropdown className="mb-1">
                                         <DropdownToggle>
                                             <label className="h4" >
-                                                Obdobje
-                                                    </label>
+                                                {(obdobjeDO !== "" && obdobjeOD !== "") ? <>Obdobje: <span className="text-green">{new Date(obdobjeOD).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })} - {new Date(obdobjeDO).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</span></>:<>Obdobje</>}
+                                            </label>
                                             <i className="fas fa-caret-down"></i>
                                         </DropdownToggle>
                                         <DropdownMenu center>
@@ -362,8 +362,8 @@ function Izpis(props) {
                                     <UncontrolledDropdown className="mb-2">
                                         <DropdownToggle>
                                             <label className="h4">
-                                                Objekt
-                                                    </label>
+                                                {(iskanObjekt==="Izberi vse") ? <>Objekt</> : <>Objekt: <span className="text-green">{iskanObjekt}</span></>}
+                                            </label>
                                             <i className="fas fa-caret-down"></i>
                                         </DropdownToggle>
                                         <DropdownMenu>
@@ -380,8 +380,8 @@ function Izpis(props) {
                                     <UncontrolledDropdown className="mb-2">
                                         <DropdownToggle>
                                             <label className="h4">
-                                                Delavec
-                                                    </label>
+                                                {(Object.keys(delavec).length > 0) ? <>Delavec: <span className="text-green">{delavec.ime + " " + delavec.priimek}</span></>:<>Delavec</>}
+                                            </label>
                                             <i className="fas fa-caret-down"></i>
                                         </DropdownToggle>
                                         <DropdownMenu>
@@ -398,8 +398,8 @@ function Izpis(props) {
                                     <UncontrolledDropdown className="mb-2">
                                         <DropdownToggle>
                                             <label className="h4">
-                                                Šifra
-                                                    </label>
+                                                {(sifra==="Izberi vse" || sifra===undefined)? <>Šifra</>: <>Šifra: <span className="text-green">{sifra}</span></>}
+                                            </label>
                                             <i className="fas fa-caret-down"></i>
                                         </DropdownToggle>
                                         <DropdownMenu>
@@ -416,8 +416,8 @@ function Izpis(props) {
                                     <UncontrolledDropdown className="mb-2">
                                         <DropdownToggle>
                                             <label className="h4">
-                                                Status
-                                                    </label>
+                                                {(status==="Izberi vse") ? <>Status</> : <>Status: <span className="text-green">{status}</span></>}
+                                            </label>
                                             <i className="fas fa-caret-down"></i>
                                         </DropdownToggle>
                                         <DropdownMenu>
