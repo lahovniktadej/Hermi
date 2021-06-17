@@ -65,7 +65,7 @@ function Izpis(props) {
                         .then((resEkipe) => {
                             if (resEkipe.data != null) {
                                 let podatki = [];
-                                nalogi.forEach((nalog) => nalog.ekipe.forEach((ekipa) => podatki.push({ id: ekipa.id, status: ekipa.status, sifraNaloga: nalog.sifra, objekt: nalog.objekt, datum: ekipa.datum, sofer: ekipa.sofer, delavci: ekipa.delavci, start: ekipa.start, konec: ekipa.prihod, pricetekDela: ekipa.pricetekDela, konecDela: ekipa.konecDela, netoCas: ekipa.netoDelo, odsotnostSoferja: ekipa.odsotnostSoferja, odsotnoDelavca: ekipa.odsotnostDelavca, netoMontaza: ekipa.netoMontaza, avto: ekipa.vozilo.naziv, brutoMontaza: ekipa.brutoMontaza })));
+                                nalogi.forEach((nalog) => nalog.ekipe.forEach((ekipa) => podatki.push({ id: ekipa.id, status: ekipa.status, sifraNaloga: nalog.sifra, objekt: nalog.objekt, datum: ekipa.datum, sofer: ekipa.sofer, delavci: ekipa.delavci, start: ekipa.start, prihod: ekipa.prihod, pricetekDela: ekipa.pricetekDela, konecDela: ekipa.konecDela, netoDelo: ekipa.netoDelo, odsotnostSoferja: ekipa.odsotnostSoferja, odsotnoDelavca: ekipa.odsotnostDelavca, netoMontaza: ekipa.netoMontaza, avto: ekipa.vozilo.naziv, brutoMontaza: ekipa.brutoMontaza })));
                                 let objekti = podatki.map((podatek) => podatek.objekt);
                                 let razlicniObjekti = [...new Set(objekti)];
                                 let sifre = nalogi.map((nalog) => nalog.sifra);
@@ -95,6 +95,8 @@ function Izpis(props) {
             sestevekNeto = 0;
             sestevekBruto = 0;
         }
+        sestevekBruto = parseFloat(sestevekBruto).toFixed(2);
+        sestevekNeto = parseFloat(sestevekNeto).toFixed(2);
         setNeto(sestevekNeto);
         setBruto(sestevekBruto);
         return (
@@ -129,12 +131,22 @@ function Izpis(props) {
 
     const handleDelavec = (iskaniPodatki) => {
         let odsotnostSofer = iskaniPodatki.map((podatek) => { if (podatek.sofer.id === delavec.id) { return podatek.odsotnostSoferja } else return 0; });
-        let netoDelavec = iskaniPodatki.map((podatek) => { return (podatek.delavci.map((iskanDelavec) => { if (podatek.sofer.id === delavec.id) { return podatek.netoCas; } else if (iskanDelavec.id === delavec.id || podatek.sofer.id === delavec.id) { return podatek.netoCas; } else return 0; })) })
-        let brutoDelavec = iskaniPodatki.map((podatek) => podatek.delavci.map((iskanDelavec) => { if (iskanDelavec === delavec) return podatek.odsotnoDelavca; else return 0; }))
+        
+        let netoDelavec = iskaniPodatki.map((podatek) => { return (podatek.delavci.map((iskanDelavec) => { if (iskanDelavec.id === delavec.id) { return podatek.netoDelo; } else return 0; })) })
+        let brutoDelavec = iskaniPodatki.map((podatek) => podatek.delavci.map((iskanDelavec) => { if (iskanDelavec.id === delavec.id) return podatek.odsotnoDelavca; else return 0; }))
+        
+        let skupnaOdsotnostSoferja = (odsotnostSofer.reduce((a, b) => a + b, 0));
+        
         netoDelavec = netoDelavec.map((neto) => neto.reduce((a, b) => a + b, 0));
         brutoDelavec = brutoDelavec.map((bruto) => bruto.reduce((a, b) => a + b, 0));
-        let skupenNeto = netoDelavec.reduce((a, b) => a + b, 0);
-        let skupenBruto = (brutoDelavec.reduce((a, b) => a + b, 0)) + (odsotnostSofer.reduce((a, b) => a + b, 0));
+
+        let skupenNeto = netoDelavec.reduce((a, b) => a + b, 0) + skupnaOdsotnostSoferja;
+        
+        let skupenBruto = brutoDelavec.reduce((a, b) => a + b, 0) + skupnaOdsotnostSoferja;
+        
+        skupenBruto = parseFloat(skupenBruto).toFixed(2);
+        skupenNeto = parseFloat(skupenNeto).toFixed(2);
+        
         setNeto(skupenNeto);
         setBruto(skupenBruto);
     }
@@ -188,22 +200,39 @@ function Izpis(props) {
             if (podatek === el) {
                 return (
                     <>
-                        <Table className="align-items-center table-flush text-center" responsive>
-                            <thead className="thead-light">
-                                <th scope="col">START</th>
-                                <th scope="col">Pričetek</th>
-                                <th scope="col">Konec</th>
-                                <th scope="col">PRIHOD</th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{podatek.start}</td>
-                                    <td>{podatek.pricetekDela}</td>
-                                    <td>{podatek.konecDela}</td>
-                                    <td>{podatek.konec}</td>
-                                </tr>
-                            </tbody>
-                        </Table>
+                        <Card className="my-2">
+                            <CardBody>
+                                <Row>
+                                    <Col>
+                                        <label className="form-control-label">
+                                            START:
+                                        </label>
+                                        <Input className="form-control-alternative" value={podatek.start} type="text" disabled />
+                                    </Col>
+                                    <Col>
+                                        <label className="form-control-label">
+                                            PRIHOD:
+                                        </label>
+                                        <Input className="form-control-alternative" value={podatek.prihod} type="text" disabled/>
+                                    </Col>
+                                </Row><br/>
+                                <Row>
+                                    <Col>
+                                        <label className="form-control-label">
+                                            Pričetek:
+                                        </label>
+                                        <Input className="form-control-alternative" value={podatek.pricetekDela} type="text" disabled />
+                                    </Col>
+                                    <Col>
+                                        <label className="form-control-label">
+                                            Konec:
+                                        </label>
+                                        <Input className="form-control-alternative" value={podatek.konecDela} type="text" disabled/>
+                                    </Col>
+                                </Row>
+                                    
+                            </CardBody>
+                        </Card>
                     </>
                 );
             }
@@ -214,23 +243,45 @@ function Izpis(props) {
     const izpisiSifrante = (el) => {
         let izpis = vsiPodatki.map((podatek) => {
             if (podatek === el) {
-                return (
-                    <>
-                        <Table className="align-items-center table-flush text-center" responsive>
-                            <thead className="thead-light">
-                                <th scope="col">Avto</th>
-                                <th scope="col">Šofer</th>
-                                <th scope="col">Delavci</th>
-                            </thead>
-                            <tbody>
-                                <tr>
-                                    <td>{podatek.avto}</td>
-                                    <td>{podatek.sofer.ime} {podatek.sofer.priimek}</td>
-                                    <td>{podatek.delavci.map((delavec) => <>{delavec.ime} {delavec.priimek}<br /></>)}</td>
-                                </tr>
-                            </tbody>
-                        </Table>
-                    </>
+                return(
+                <>
+                    <Card className="my-2">
+                        <CardBody>
+                            <Row>
+                                <Col>
+                                    <label className="form-control-label">
+                                        Avto:
+                                    </label>
+                                    <Input className="form-control-alternative" value={podatek.avto} type="text" disabled />
+                                </Col>
+                                <Col>
+                                    <label className="form-control-label">
+                                        Šofer:
+                                    </label>
+                                    <Input className="form-control-alternative" value={podatek.sofer.ime + " " + podatek.sofer.priimek} type="text" disabled/>
+                                </Col>
+                                </Row>
+                                <br/><br/>
+                                <div className="text-center">
+                                    <label className="form-control-label">
+                                        DELAVCI:
+                                    </label>
+                                </div>
+                                <hr/>
+                                <Row>
+                                    <Col>
+                                    {(podatek.delavci!=null)?
+                                    podatek.delavci.map((delavec)=>
+                                        <>
+                                        <Input className="form-control-alternative" value={delavec.ime +" " + delavec.priimek} type="text" disabled/>                                  
+                                        <br/>
+                                        </>)
+                                    :<></>}
+                                    </Col>
+                                </Row>
+                        </CardBody>
+                    </Card>
+                </>
                 );
             }
             else return null;
