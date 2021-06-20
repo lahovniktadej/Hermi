@@ -16,9 +16,9 @@ function ExcelExport(props) {
 
     const pridobiStatus = (status) => {
         if(status)
-            return { backgroundColor: '#2dce89'};
+            return { backgroundColor: '#2dce89',  border: '1px solid black'};
         else 
-            return { backgroundColor: '#f5365c'};   
+            return { backgroundColor: '#f5365c', border: '1px solid black' };   
     }
     
     const handleBody = () => {
@@ -51,21 +51,21 @@ function ExcelExport(props) {
         return (
             <tr>
                 <td style={pridobiStatus(el.status)}></td>     
-                <td>{el.sifraNaloga} &nbsp;</td>  
-                <td>{el.objekt}</td>  
-                <td>{new Date(el.datum).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>              
-                <td>{el.avto}</td>
-                <td>{el.sofer.ime} {el.sofer.priimek}</td>
-                <td>{el.delavci.map((delavec, i, arr)=> {if(i!==arr.length-1) return delavec.ime +" " +delavec.priimek +", "; else return delavec.ime +" " +delavec.priimek;})}</td>
-                <td>{el.start}</td>
-                <td>{el.pricetekDela}</td>
-                <td>{el.konecDela}</td>
-                <td>{el.prihod}</td>
-                <td>{el.netoDelo}</td>
-                <td>{el.odsotnoDelavca}</td>
-                <td>{el.odsotnostSoferja}</td>
-                <td>{el.netoMontaza}</td>
-                <td>{el.brutoMontaza}</td>
+                <td style={{border: '1px solid black' }}>{el.sifraNaloga} &nbsp;</td>  
+                <td style={{border: '1px solid black' }}>{el.objekt}</td>  
+                <td style={{border: '1px solid black' }}>{new Date(el.datum).toLocaleString("en-GB", { year: 'numeric', month: '2-digit', day: '2-digit' })}</td>              
+                <td style={{border: '1px solid black' }}>{el.avto}</td>
+                <td style={{border: '1px solid black' }}>{el.sofer.ime} {el.sofer.priimek}</td>
+                <td style={{border: '1px solid black' }}>{el.delavci.map((delavec, i, arr)=> {if(i!==arr.length-1) return delavec.ime +" " +delavec.priimek +", "; else return delavec.ime +" " +delavec.priimek;})}</td>
+                <td style={{border: '1px solid black' }}>{(el.start).slice(0, 5)}</td>
+                <td style={{border: '1px solid black' }}>{(el.pricetekDela).slice(0, 5)}</td>
+                <td style={{border: '1px solid black' }}>{(el.konecDela).slice(0, 5)}</td>
+                <td style={{border: '1px solid black' }}>{(el.prihod).slice(0, 5)}</td>
+                <td style={{border: '1px solid black' }}>{(el.netoDelo).toString().replace('.', ',')}</td>
+                <td style={{border: '1px solid black' }}>{(el.odsotnoDelavca).toString().replace('.', ',')}</td>
+                <td style={{border: '1px solid black' }}>{(el.odsotnostSoferja).toString().replace('.', ',')}</td>
+                <td style={{border: '1px solid black' }}>{(el.netoMontaza).toString().replace('.', ',')}</td>
+                <td style={{border: '1px solid black' }}>{(el.brutoMontaza).toString().replace('.', ',')}</td>
             </tr>
      
         );
@@ -77,33 +77,33 @@ function ExcelExport(props) {
                 <ModalHeader toggle={toggle}><h2>Pregled tabele</h2></ModalHeader>
                 <ModalBody>
                 <table class="table table-bordered table-responsive" id="table">
-                        <thead className="thead-light">
-                                <th scope="col">Status</th>
-                                <th scope="col">Šifra</th> 
-                                <th scope="col">Objekt</th>
-                                <th scope="col">Datum</th>
-                                <th scope="col">Avto</th>
-                                <th scope="col">Šofer</th>
-                                <th scope="col">Delavci</th>
-                                <th scope="col">START</th>
-                                <th scope="col">Pričetek</th>
-                                <th scope="col">Konec</th>
-                                <th scope="col">PRIHOD</th>
-                                <th scope="col">NETO čas delavca</th>
-                                <th scope="col">Odsotnost šoferja</th>
-                                <th scope="col">Odsotnost delavca</th>
-                                <th scope="col">NETO montaža</th>
-                                <th scope="col">BRUTO montaža</th>                     
+                        <thead className="thead-light" >
+                                <th scope="col" style={{border: '1px solid black' }}>Status</th>
+                                <th scope="col" style={{border: '1px solid black' }}>Šifra</th> 
+                                <th scope="col" style={{border: '1px solid black' }}>Objekt</th>
+                                <th scope="col" style={{border: '1px solid black' }}>Datum</th>
+                                <th scope="col" style={{border: '1px solid black' }}>Avto</th>
+                                <th scope="col" style={{border: '1px solid black' }}>Šofer</th>
+                                <th scope="col" style={{border: '1px solid black' }}>Delavci</th>
+                                <th scope="col" style={{border: '1px solid black' }}>START</th>
+                                <th scope="col" style={{border: '1px solid black' }}>Pričetek</th>
+                                <th scope="col" style={{border: '1px solid black' }}>Konec</th>
+                                <th scope="col" style={{border: '1px solid black' }}>PRIHOD</th>
+                                <th scope="col" style={{border: '1px solid black' }}>NETO čas delavca</th>
+                                <th scope="col" style={{border: '1px solid black' }}>Odsotnost šoferja</th>
+                                <th scope="col" style={{border: '1px solid black' }}>Odsotnost delavca</th>
+                                <th scope="col" style={{border: '1px solid black' }}>NETO montaža</th>
+                                <th scope="col" style={{border: '1px solid black' }}>BRUTO montaža</th>                     
                         </thead>
                         <tbody> 
                             {(props.data!=null)?props.data.map((el) => tableRow(el)):<></>}
                             <tr>
-                               {(props.montaza) ? <td colspan="2"><b>Skupen neto čas montaže:</b></td> : <td colspan="2"><b>Skupen neto čas delavca {props.delavec.ime + " " + props.delavec.priimek}:</b></td>}
-                                <td>{props.neto}</td>
+                               {(props.montaza) ? <td colspan="2" style={{border: '1px solid black' }}><b>Skupen neto čas montaže:</b></td> : <td colspan="2" style={{border: '1px solid black' }}><b>Skupen neto čas delavca {props.delavec.ime + " " + props.delavec.priimek}:</b></td>}
+                                <td style={{border: '1px solid black' }}>{(props.neto===undefined)?props.neto:(props.neto).toString().replace('.', ',')}</td>
                             </tr>
                             <tr>
-                                {(props.montaza) ? <td colspan="2"><b>Skupen bruto čas montaže:</b></td> : <td colspan="2"><b>Skupen bruto čas delavca  {props.delavec.ime + " " + props.delavec.priimek}:</b></td>}
-                                <td>{props.bruto}</td>
+                                {(props.montaza) ? <td style={{border: '1px solid black' }} colspan="2"><b>Skupen bruto čas montaže:</b></td> : <td colspan="2" style={{border: '1px solid black' }}><b>Skupen bruto čas delavca  {props.delavec.ime + " " + props.delavec.priimek}:</b></td>}
+                                <td style={{border: '1px solid black' }}>{(props.bruto===undefined)?props.bruto:(props.bruto).toString().replace('.', ',')}</td>
                             </tr>
                         </tbody>
                     </table><br/>
