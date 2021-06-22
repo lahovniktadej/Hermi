@@ -31,7 +31,7 @@ function NalogaModal(props) {
     }
 
     const formatDate = (date) => {
-        return new Date(date).toISOString().slice(0, 10);
+        return (date != null) ? new Date(date).toISOString().slice(0, 10) : new Date().toISOString().slice(0, 10);
     }
 
     return (

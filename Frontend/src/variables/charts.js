@@ -348,20 +348,6 @@ let chartExample1 = {
 // Example 2 of Chart inside src/views/Index.js (Total orders - Card)
 let chartExample2 = {
   options: {
-    scales: {
-      yAxes: [
-        {
-          ticks: {
-            callback: function (value) {
-              if (!(value % 10)) {
-                //return '$' + value + 'k'
-                return value;
-              }
-            },
-          },
-        },
-      ],
-    },
     tooltips: {
       callbacks: {
         label: function (item, data) {
