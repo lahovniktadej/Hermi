@@ -1,10 +1,18 @@
 package si.hermi.nalogi.vao;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.SQLDelete;
+
 import javax.persistence.*;
 import java.util.Date;
 import java.util.List;
 
 @Entity
+@Table(name = "delovniNalog")
+@SQLDelete(sql = "UPDATE delovniNalog SET deleted = true WHERE id=?")
+@FilterDef(name = "deletedFilter")
+@Filter(name = "deletedFilter", condition = "deleted = false")
 public class DelovniNalog {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -33,6 +41,8 @@ public class DelovniNalog {
     private long timestamp;
      
     private String spremenil;
+
+    private Boolean deleted = Boolean.FALSE;
 
     public DelovniNalog() {
     }

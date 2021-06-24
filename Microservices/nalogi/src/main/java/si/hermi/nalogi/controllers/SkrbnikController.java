@@ -6,7 +6,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import si.hermi.nalogi.dto.SkrbnikDto;
-import si.hermi.nalogi.repositories.SkrbnikRepository;
+import si.hermi.nalogi.services.SkrbnikService;
 import si.hermi.nalogi.vao.Skrbnik;
 
 import java.util.Optional;
@@ -15,23 +15,23 @@ import java.util.Optional;
 @RequestMapping("/skrbnik")
 public class SkrbnikController {
     @Autowired
-    private SkrbnikRepository skrbnikRepository;
+    private SkrbnikService skrbnikService;
 
     @Autowired
     private ModelMapper modelMapper;
 
     @GetMapping()public @ResponseBody Iterable<Skrbnik> all() {
-        return skrbnikRepository.findAll();
+        return skrbnikService.findAll();
     }
 
     @GetMapping(params = {"page", "perPage"})
     public Iterable<Skrbnik> getPage(@RequestParam int page, @RequestParam int perPage) {
-        return skrbnikRepository.findAll(PageRequest.of(page, perPage));
+        return skrbnikService.findAll(PageRequest.of(page, perPage));
     }
 
     @GetMapping("/{id}")
     public @ResponseBody ResponseEntity getSkrbnik(@PathVariable int id) {
-        Optional<Skrbnik> skrbnikOpt = skrbnikRepository.findById(id);
+        Optional<Skrbnik> skrbnikOpt = skrbnikService.findById(id);
         if (skrbnikOpt.isPresent()) {
             SkrbnikDto skrbnikDto = modelMapper.map(skrbnikOpt.get(), SkrbnikDto.class);
             return ResponseEntity.ok(skrbnikDto);
@@ -40,7 +40,7 @@ public class SkrbnikController {
     }
     @GetMapping("/username/{username}")
     public @ResponseBody ResponseEntity getSkrbnikByUsername(@PathVariable String username) {
-        Skrbnik skrbnik = skrbnikRepository.findByUporabniskoIme(username);
+        Skrbnik skrbnik = skrbnikService.findByUporabniskoIme(username);
         SkrbnikDto skrbnikDto = modelMapper.map(skrbnik, SkrbnikDto.class);
         return ResponseEntity.ok(skrbnikDto);
     }
@@ -48,17 +48,17 @@ public class SkrbnikController {
     @PostMapping()
     public @ResponseBody ResponseEntity addSkrbnik(@RequestBody SkrbnikDto skrbnikDto) {
         Skrbnik skrbnik = modelMapper.map(skrbnikDto, Skrbnik.class);
-        skrbnikRepository.save(skrbnik);
+        skrbnikService.save(skrbnik);
         return ResponseEntity.ok().build();
     }
 
     @PutMapping("/{id}")
     public @ResponseBody ResponseEntity updateSkrbnik(@PathVariable int id, @RequestBody SkrbnikDto skrbnikDto) {
-        Optional<Skrbnik> skrbnikOpt = skrbnikRepository.findById(id);
+        Optional<Skrbnik> skrbnikOpt = skrbnikService.findById(id);
         if (skrbnikOpt.isPresent()) {
             Skrbnik skrbnik = skrbnikOpt.get();
             modelMapper.map(skrbnikDto, skrbnik);
-            skrbnikRepository.save(skrbnik);
+            skrbnikService.save(skrbnik);
             return ResponseEntity.ok().build();
         }
         return ResponseEntity.badRequest().build();
@@ -66,7 +66,7 @@ public class SkrbnikController {
 
     @DeleteMapping("/{id}")
     public @ResponseBody ResponseEntity deleteSkrbnik(@PathVariable int id) {
-        skrbnikRepository.deleteById(id);
+        skrbnikService.deleteById(id);
         return ResponseEntity.ok().build();
     }
 }

@@ -1,5 +1,9 @@
 package si.hermi.nalogi.vao;
 
+import org.hibernate.annotations.Filter;
+import org.hibernate.annotations.FilterDef;
+import org.hibernate.annotations.SQLDelete;
+
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
@@ -8,6 +12,10 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
+@Table(name = "vozilo")
+@SQLDelete(sql = "UPDATE vozilo SET deleted = true WHERE id=?")
+@FilterDef(name = "deletedFilter")
+@Filter(name = "deletedFilter", condition = "deleted = false")
 public class Vozilo{
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -22,6 +30,8 @@ public class Vozilo{
     private long timestamp;
      
     private String spremenil;
+
+    private boolean deleted = Boolean.FALSE;
 
     public Vozilo() {
     }
