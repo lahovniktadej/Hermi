@@ -58,6 +58,8 @@ services:
             MYSQL_USER: ${MYSQL_USER}
             MYSQL_PASSWORD: ${MYSQL_PASSWORD}
             MYSQL_ALLOW_EMPTY_PASSWORD: 1
+        volumes:
+            - nalogi-data:/var/lib/mysql
 
 networks:
     traefik-net:
@@ -65,3 +67,4 @@ networks:
 
 volumes:
     maven:
+    nalogi-data:
