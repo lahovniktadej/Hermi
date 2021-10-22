@@ -57,16 +57,21 @@ const Login = () => {
             let user = userCredential.user;
             let email = user.email;
 
-            sessionStorage.setItem("user_uid", user.email);
+            sessionStorage.setItem("user_display", email);
+            history.push("/admin/pregled");
+
+            /*
             axios.get(`/api/skrbnik/username/${email}`)
                 .then((res) => {
                     const name = res.data.ime + " " + res.data.priimek;
                     sessionStorage.setItem("user_display", name);
                     history.push("/admin/pregled");
                 });
+            */
         }).catch((error) => {
             let errorCode = error.code;
             let errorMessage = error.message;
+            console.log(errorCode, errorMessage);
 
             setIsError("Prijava je bila neuspešna. Prosimo, poskusite znova.");
         });
