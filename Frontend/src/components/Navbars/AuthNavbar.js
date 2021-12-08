@@ -1,210 +1,112 @@
+/*!
+
+=========================================================
+* Argon Dashboard React - v1.2.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
 import React from "react";
 import { Link } from "react-router-dom";
-// @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import { useTheme } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-import Divider from "@material-ui/core/Divider";
-import Hidden from "@material-ui/core/Hidden";
-import IconButton from "@material-ui/core/IconButton";
-import List from "@material-ui/core/List";
-import ListItem from "@material-ui/core/ListItem";
-import Menu from "@material-ui/core/Menu";
-import Toolbar from "@material-ui/core/Toolbar";
-// @material-ui/icons components
-import AccountCircle from "@material-ui/icons/AccountCircle";
-import Clear from "@material-ui/icons/Clear";
-import Dashboard from "@material-ui/icons/Dashboard";
-import MenuIcon from "@material-ui/icons/Menu";
-import Person from "@material-ui/icons/Person";
-import VpnKey from "@material-ui/icons/VpnKey";
+// reactstrap components
+import {
+  UncontrolledCollapse,
+  NavbarBrand,
+  Navbar,
+  NavItem,
+  NavLink,
+  Nav,
+  Container,
+  Row,
+  Col,
+} from "reactstrap";
 
-// core components
-import componentStyles from "assets/theme/components/auth-navbar.js";
-
-const useStyles = makeStyles(componentStyles);
-
-export default function AuthNavbar() {
-  const classes = useStyles();
-  const theme = useTheme();
-  const [anchorEl, setAnchorEl] = React.useState(null);
-
-  const isMenuOpen = Boolean(anchorEl);
-
-  const handleMenuOpen = (event) => {
-    setAnchorEl(event.currentTarget);
-  };
-
-  const handleMenuClose = () => {
-    setAnchorEl(null);
-  };
-
-  const menuId = "responsive-menu-id";
-  const ListObject = (
-    <Box
-      display="flex"
-      alignItems="center"
-      width="auto"
-      component={List}
-      className={classes.flexDirectionColumn}
-    >
-      <ListItem
-        component={Link}
-        to="/admin/dashboard"
-        onClick={handleMenuClose}
-        classes={{
-          root: classes.listItemRoot,
-        }}
-      >
-        <Box
-          component={Dashboard}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight=".5rem!important"
-        />
-        Dashboard
-      </ListItem>
-      <ListItem
-        component={Link}
-        to="/auth/register"
-        onClick={handleMenuClose}
-        classes={{
-          root: classes.listItemRoot,
-        }}
-      >
-        <Box
-          component={AccountCircle}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight=".5rem!important"
-        />
-        Register
-      </ListItem>
-      <ListItem
-        component={Link}
-        to="/auth/login"
-        onClick={handleMenuClose}
-        classes={{
-          root: classes.listItemRoot,
-        }}
-      >
-        <Box
-          component={VpnKey}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight=".5rem!important"
-        />
-        Login
-      </ListItem>
-      <ListItem
-        component={Link}
-        to="/admin/user-profile"
-        onClick={handleMenuClose}
-        classes={{
-          root: classes.listItemRoot,
-        }}
-      >
-        <Box
-          component={Person}
-          width="1.25rem!important"
-          height="1.25rem!important"
-          marginRight=".5rem!important"
-        />
-        Profile
-      </ListItem>
-    </Box>
-  );
+const AdminNavbar = () => {
   return (
     <>
-      <AppBar position="absolute" color="transparent" elevation={0}>
-        <Toolbar>
-          <Container
-            display="flex!important"
-            justifyContent="space-between"
-            alignItems="center"
-            marginTop=".75rem"
-            component={Box}
-            maxWidth="xl"
-          >
-            <Box
+      <Navbar className="navbar-top navbar-horizontal navbar-dark" expand="md">
+        <Container className="px-4">
+          <NavbarBrand to="/" tag={Link}>
+            <img
               alt="..."
-              height="30px"
-              component="img"
-              className={classes.headerImg}
-              src={require("assets/img/brand/argon-react-white.png").default}
+              src={
+                require("../../assets/img/brand/argon-react-white.png").default
+              }
             />
-            <Hidden mdUp implementation="css">
-              <IconButton
-                edge="start"
-                color="inherit"
-                onClick={handleMenuOpen}
-                aria-controls={menuId}
-                aria-haspopup="true"
-              >
-                <Box
-                  component={MenuIcon}
-                  color={theme.palette.white.main}
-                  width="2rem!important"
-                  height="2rem!important"
-                />
-              </IconButton>
-              <Menu
-                anchorEl={anchorEl}
-                anchorOrigin={{ vertical: "top", horizontal: "right" }}
-                id={menuId}
-                keepMounted
-                transformOrigin={{ vertical: "top", horizontal: "right" }}
-                open={isMenuOpen}
-                onClose={handleMenuClose}
-                classes={{ paper: classes.menuPaper }}
-              >
-                <Box
-                  display="flex"
-                  justifyContent="space-between"
-                  alignItems="center"
-                  paddingLeft="1.25rem"
-                  paddingRight="1.25rem"
-                  paddingBottom="1rem"
-                  className={classes.outlineNone}
-                >
-                  <Box
-                    alt="..."
-                    height="36px"
-                    component="img"
-                    className={classes.headerImg}
-                    src={require("assets/img/brand/argon-react.png").default}
-                  />
-                  <IconButton
-                    edge="start"
-                    color="inherit"
-                    onClick={handleMenuClose}
-                    aria-controls={menuId}
-                    aria-haspopup="true"
-                  >
-                    <Box
-                      component={Clear}
-                      width="2rem!important"
-                      height="2rem!important"
+          </NavbarBrand>
+          <button className="navbar-toggler" id="navbar-collapse-main">
+            <span className="navbar-toggler-icon" />
+          </button>
+          <UncontrolledCollapse navbar toggler="#navbar-collapse-main">
+            <div className="navbar-collapse-header d-md-none">
+              <Row>
+                <Col className="collapse-brand" xs="6">
+                  <Link to="/">
+                    <img
+                      alt="..."
+                      src={
+                        require("../../assets/img/brand/argon-react.png")
+                          .default
+                      }
                     />
-                  </IconButton>
-                </Box>
-                <Box
-                  component={Divider}
-                  marginBottom="1rem!important"
-                  marginLeft="1.25rem!important"
-                  marginRight="1.25rem!important"
-                />
-                {ListObject}
-              </Menu>
-            </Hidden>
-            <Hidden smDown implementation="css">
-              {ListObject}
-            </Hidden>
-          </Container>
-        </Toolbar>
-      </AppBar>
+                  </Link>
+                </Col>
+                <Col className="collapse-close" xs="6">
+                  <button className="navbar-toggler" id="navbar-collapse-main">
+                    <span />
+                    <span />
+                  </button>
+                </Col>
+              </Row>
+            </div>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink className="nav-link-icon" to="/" tag={Link}>
+                  <i className="ni ni-planet" />
+                  <span className="nav-link-inner--text">Dashboard</span>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  className="nav-link-icon"
+                  to="/auth/register"
+                  tag={Link}
+                >
+                  <i className="ni ni-circle-08" />
+                  <span className="nav-link-inner--text">Register</span>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink className="nav-link-icon" to="/auth/login" tag={Link}>
+                  <i className="ni ni-key-25" />
+                  <span className="nav-link-inner--text">Login</span>
+                </NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink
+                  className="nav-link-icon"
+                  to="/admin/user-profile"
+                  tag={Link}
+                >
+                  <i className="ni ni-single-02" />
+                  <span className="nav-link-inner--text">Profile</span>
+                </NavLink>
+              </NavItem>
+            </Nav>
+          </UncontrolledCollapse>
+        </Container>
+      </Navbar>
     </>
   );
-}
+};
+
+export default AdminNavbar;

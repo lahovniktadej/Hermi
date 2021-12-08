@@ -1,5 +1,21 @@
+/*!
+
+=========================================================
+* Argon Dashboard React - v1.2.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
 const Chart = require("chart.js");
-const themeColors = require("assets/theme/colors.js").default;
 //
 // Chart extension for making the bars rounded
 // Code from: https://codepen.io/jedtrow/full/ygRYgo
@@ -138,19 +154,29 @@ var fonts = {
 
 // Colors
 var colors = {
-  gray: themeColors.gray,
-  theme: {
-    default: themeColors.dark.main,
-    primary: themeColors.primary.main,
-    secondary: "#f4f5f7",
-    info: themeColors.info.main,
-    success: themeColors.success.main,
-    danger: themeColors.error.main,
-    warning: themeColors.warning.main,
+  gray: {
+    100: "#f6f9fc",
+    200: "#e9ecef",
+    300: "#dee2e6",
+    400: "#ced4da",
+    500: "#adb5bd",
+    600: "#8898aa",
+    700: "#525f7f",
+    800: "#32325d",
+    900: "#212529",
   },
-  black: themeColors.black.light,
-  white: themeColors.white.main,
-  transparent: themeColors.transparent.main,
+  theme: {
+    default: "#b2d55c",
+    primary: "#b2d55c",
+    secondary: "#b2d55c",
+    info: "#11cdef",
+    success: "#b2d55c",
+    danger: "#f5365c",
+    warning: "#fb6340",
+  },
+  black: "#12263F",
+  white: "#FFFFFF",
+  transparent: "transparent",
 };
 
 // Methods
@@ -214,9 +240,9 @@ function chartOptions() {
           data.labels.forEach(function (label, index) {
             var bgColor = data.datasets[0].backgroundColor[index];
 
-            content += '<span className="chart-legend-item">';
+            content += '<span class="chart-legend-item">';
             content +=
-              '<i className="chart-legend-indicator" style="background-color: ' +
+              '<i class="chart-legend-indicator" style="background-color: ' +
               bgColor +
               '"></i>';
             content += label;
@@ -293,7 +319,7 @@ let chartExample1 = {
           ticks: {
             callback: function (value) {
               if (!(value % 10)) {
-                return "$" + value + "k";
+                return "" + value + "";
               }
             },
           },
@@ -311,30 +337,30 @@ let chartExample1 = {
             content += label;
           }
 
-          content += "$" + yLabel + "k";
+          content += "" + yLabel + "";
           return content;
         },
       },
     },
   },
-  data1: () => {
+  data1: (canvas) => {
     return {
-      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      labels: ["Jun", "Jul", "Aug", "Sep", "Okt", "Nov", "Dec"],
       datasets: [
         {
           label: "Performance",
-          data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
+          data: [0, 10, 30, 15, 40, 20, 20, 20],
         },
       ],
     };
   },
-  data2: () => {
+  data2: (canvas) => {
     return {
-      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      labels: ["Pon", "Tor", "Sre", "Čet", "Pet", "Sob", "Ned"],
       datasets: [
         {
           label: "Performance",
-          data: [0, 20, 5, 25, 10, 30, 15, 40, 40],
+          data: [1, 2, 3, 1, 1, 4, 1, 2, 1],
         },
       ],
     };
