@@ -1,62 +1,76 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
 
-// reactstrap components
-import { Button, Container, Row, Col } from "reactstrap";
+// @material-ui/core components
+import { makeStyles } from "@material-ui/core/styles";
+import { useTheme } from "@material-ui/core/styles";
+import Box from "@material-ui/core/Box";
+import Button from "@material-ui/core/Button";
+import Container from "@material-ui/core/Container";
+import Grid from "@material-ui/core/Grid";
+import Typography from "@material-ui/core/Typography";
+
+// core components
+import componentStyles from "assets/theme/components/user-header.js";
+
+const useStyles = makeStyles(componentStyles);
 
 const UserHeader = () => {
+  const classes = useStyles();
+  const theme = useTheme();
   return (
     <>
-      <div
-        className="header pb-8 pt-5 pt-lg-8 d-flex align-items-center"
-        style={{
-          minHeight: "600px",
-          backgroundImage:
-            "url(" +
-            require("../../assets/img/theme/profile-cover.jpg").default +
-            ")",
-          backgroundSize: "cover",
-          backgroundPosition: "center top",
-        }}
+      <Box
+        paddingTop="3rem"
+        paddingBottom="8rem"
+        alignItems="center"
+        display="flex"
+        className={classes.wrapperBox}
+        minHeight="600px"
+        position="relative"
       >
-        {/* Mask */}
-        <span className="mask bg-gradient-default opacity-8" />
-        {/* Header container */}
-        <Container className="d-flex align-items-center" fluid>
-          <Row>
-            <Col lg="7" md="10">
-              <h1 className="display-2 text-white">Hello Jesse</h1>
-              <p className="text-white mt-0 mb-5">
+        <Box
+          position="absolute"
+          top="0"
+          left="0"
+          width="100%"
+          height="100%"
+          className={classes.overlayBox}
+        />
+        <Container
+          display="flex"
+          alignItems="center"
+          maxWidth={false}
+          component={Box}
+          classes={{ root: classes.containerRoot }}
+        >
+          <Grid container>
+            <Grid item xs={12} md={10} lg={7}>
+              <Typography
+                variant="h1"
+                classes={{ root: classes.typographyRootH1 }}
+              >
+                Hello Jesse
+              </Typography>
+              <Box
+                component="p"
+                marginBottom="3rem"
+                color={theme.palette.white.main}
+                lineHeight="1.7"
+                fontSize="1rem"
+              >
                 This is your profile page. You can see the progress you've made
                 with your work and manage your projects or assigned tasks
-              </p>
+              </Box>
               <Button
-                color="info"
-                href="#pablo"
-                onClick={(e) => e.preventDefault()}
+                variant="contained"
+                classes={{ root: classes.buttonRoot }}
               >
                 Edit profile
               </Button>
-            </Col>
-          </Row>
+            </Grid>
+          </Grid>
         </Container>
-      </div>
+      </Box>
     </>
   );
 };

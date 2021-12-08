@@ -4,16 +4,16 @@
 
 1. Vzpostavitev GitLab / GitHub in osnovne imeniške strukture
 
-2. Odločitev o načinu dela
+1. Odločitev o načinu dela
 - Kanban (just-in-time opravila)
 
-3. Dogovor o portfoliju orodij in ogrodij
+1. Dogovor o portfoliju orodij in ogrodij
 - Electron
 - Visual Studio Code
 - *Podatkovna baza?*
 - *Server, Docker?*
 
-4. Vprašanja za stranko
+1. Vprašanja za stranko
 - Ali morajo biti dokumenti primerni za tiskanje? Se morajo kam shraniti?
 - Prisotnost delavca je osem ali več, če je neto čas nad 8. Kaj pa če odsotnost šoferja pade pod 8?
 - Brisanje/dodajanje delavcev/avtov?

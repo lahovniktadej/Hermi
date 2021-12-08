@@ -1,21 +1,5 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 const Chart = require("chart.js");
+const themeColors = require("assets/theme/colors.js").default;
 //
 // Chart extension for making the bars rounded
 // Code from: https://codepen.io/jedtrow/full/ygRYgo
@@ -154,29 +138,19 @@ var fonts = {
 
 // Colors
 var colors = {
-  gray: {
-    100: "#f6f9fc",
-    200: "#e9ecef",
-    300: "#dee2e6",
-    400: "#ced4da",
-    500: "#adb5bd",
-    600: "#8898aa",
-    700: "#525f7f",
-    800: "#32325d",
-    900: "#212529",
-  },
+  gray: themeColors.gray,
   theme: {
-    default: "#b2d55c",
-    primary: "#b2d55c",
-    secondary: "#b2d55c",
-    info: "#11cdef",
-    success: "#b2d55c",
-    danger: "#f5365c",
-    warning: "#fb6340",
+    default: themeColors.dark.main,
+    primary: themeColors.primary.main,
+    secondary: "#f4f5f7",
+    info: themeColors.info.main,
+    success: themeColors.success.main,
+    danger: themeColors.error.main,
+    warning: themeColors.warning.main,
   },
-  black: "#12263F",
-  white: "#FFFFFF",
-  transparent: "transparent",
+  black: themeColors.black.light,
+  white: themeColors.white.main,
+  transparent: themeColors.transparent.main,
 };
 
 // Methods
@@ -240,9 +214,9 @@ function chartOptions() {
           data.labels.forEach(function (label, index) {
             var bgColor = data.datasets[0].backgroundColor[index];
 
-            content += '<span class="chart-legend-item">';
+            content += '<span className="chart-legend-item">';
             content +=
-              '<i class="chart-legend-indicator" style="background-color: ' +
+              '<i className="chart-legend-indicator" style="background-color: ' +
               bgColor +
               '"></i>';
             content += label;
@@ -319,7 +293,7 @@ let chartExample1 = {
           ticks: {
             callback: function (value) {
               if (!(value % 10)) {
-                return "" + value + "";
+                return "$" + value + "k";
               }
             },
           },
@@ -337,17 +311,53 @@ let chartExample1 = {
             content += label;
           }
 
-          content += "" + yLabel + "";
+          content += "$" + yLabel + "k";
           return content;
         },
       },
     },
+  },
+  data1: () => {
+    return {
+      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      datasets: [
+        {
+          label: "Performance",
+          data: [0, 20, 10, 30, 15, 40, 20, 60, 60],
+        },
+      ],
+    };
+  },
+  data2: () => {
+    return {
+      labels: ["May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
+      datasets: [
+        {
+          label: "Performance",
+          data: [0, 20, 5, 25, 10, 30, 15, 40, 40],
+        },
+      ],
+    };
   },
 };
 
 // Example 2 of Chart inside src/views/Index.js (Total orders - Card)
 let chartExample2 = {
   options: {
+    scales: {
+      yAxes: [
+        {
+          ticks: {
+            callback: function (value) {
+              if (!(value % 10)) {
+                //return '$' + value + 'k'
+                return value;
+              }
+            },
+          },
+        },
+      ],
+    },
     tooltips: {
       callbacks: {
         label: function (item, data) {
