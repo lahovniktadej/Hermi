@@ -1,78 +1,76 @@
+/*!
+
+=========================================================
+* Argon Dashboard React - v1.2.0
+=========================================================
+
+* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
+* Copyright 2021 Creative Tim (https://www.creative-tim.com)
+* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
+
+* Coded by Creative Tim
+
+=========================================================
+
+* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+
+*/
 import React from "react";
-// @material-ui/core components
-import { makeStyles } from "@material-ui/core/styles";
-import AppBar from "@material-ui/core/AppBar";
-import Box from "@material-ui/core/Box";
-import Container from "@material-ui/core/Container";
-import InputBase from "@material-ui/core/InputBase";
-import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-// @material-ui/icons components
-import SearchIcon from "@material-ui/icons/Search";
+import { Link } from "react-router-dom";
 
-// core components
-import NavbarDropdown from "components/Dropdowns/NavbarDropdown.js";
+import {
+  DropdownMenu,
+  DropdownItem,
+  UncontrolledDropdown,
+  DropdownToggle,
+  Navbar,
+  Nav,
+  Container,
+  Media,
+} from "reactstrap";
 
-import componentStyles from "assets/theme/components/admin-navbar.js";
-
-const useStyles = makeStyles(componentStyles);
-
-export default function AdminNavbar({ brandText }) {
-  const classes = useStyles();
+const AdminNavbar = (props) => {
   return (
     <>
-      <AppBar
-        position="absolute"
-        color="transparent"
-        elevation={0}
-        classes={{ root: classes.appBarRoot }}
-      >
-        <Toolbar disableGutters>
-          <Container
-            maxWidth={false}
-            component={Box}
-            classes={{ root: classes.containerRoot }}
-          >
-            <Box
-              display="flex"
-              justifyContent="space-between"
-              alignItems="center"
-              width="100%"
-              marginTop="0.5rem"
-            >
-              <div>
-                <Typography
-                  className={classes.brandTitle}
-                  variant="h4"
-                  component="a"
-                >
-                  {brandText}
-                </Typography>
-              </div>
-              <Box display="flex" alignItems="center" width="auto">
-                <Box
-                  display="flex"
-                  alignItems="center"
-                  width="auto"
-                  marginRight="1rem"
-                  classes={{
-                    root: classes.searchBox,
-                  }}
-                >
-                  <SearchIcon className={classes.searchIcon} />
-                  <InputBase
-                    placeholder="Search"
-                    classes={{
-                      input: classes.searchInput,
-                    }}
-                  />
-                </Box>
-                <NavbarDropdown />
-              </Box>
-            </Box>
-          </Container>
-        </Toolbar>
-      </AppBar>
+      <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
+        <Container fluid>
+          <Link className="h4 mb-0 text-black text-uppercase d-none d-lg-inline-block" to="/"> {props.brandText} </Link>
+          <Nav className="align-items-center d-none d-md-flex" navbar>
+            <UncontrolledDropdown nav>
+              <DropdownToggle className="pr-0" nav>
+                <Media className="align-items-center">
+                  <Media className="ml-2 d-none d-lg-block">
+                    <span className="mb-0 text-sm font-weight-bold text-dark">
+                      Admin 1
+                    </span>
+                  </Media>
+                </Media>
+              </DropdownToggle>
+              <DropdownMenu className="dropdown-menu-arrow" right>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-single-02" />
+                  <span>Moj profil</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-settings-gear-65" />
+                  <span>Nastavitve</span>
+                </DropdownItem>
+                <DropdownItem to="/admin/user-profile" tag={Link}>
+                  <i className="ni ni-calendar-grid-58" />
+                  <span>Zgodovina urejanja</span>
+                </DropdownItem>
+                <DropdownItem divider />
+                <DropdownItem href="#pablo" onClick={(e) => e.preventDefault()}>
+                  <i className="fas fa-sign-out-alt text-red"/>
+                  <span className="text-red"> Odjava</span>
+                </DropdownItem>
+              </DropdownMenu>
+            </UncontrolledDropdown>
+          </Nav>
+        </Container>
+      </Navbar>
     </>
   );
-}
+};
+
+export default AdminNavbar;

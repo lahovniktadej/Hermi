@@ -1,0 +1,16 @@
+.navbar-vertical.navbar-expand-md .navbar-nav .nav-link.active:before {
+    border-left: 2px solid #e40514;
+}
+
+.footer {
+    padding: .8rem 0;
+    background: none;
+}
+
+.nav-item.active-pro {
+    background: none;
+}
+
+.management-container {
+    margin-top: 50px;
+}

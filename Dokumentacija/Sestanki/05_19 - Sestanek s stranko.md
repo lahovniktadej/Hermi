@@ -5,9 +5,9 @@
 1. Funckionalne zahteve
 - Beleženje ur glede na delovni nalog
 - Izvoz delovnega naloga (.pdf, .xls)
-1. Nefunkcionalne zahteve
+2. Nefunkcionalne zahteve
 - Obvestilo za vpis ur
-1. Vprašanja
+3. Vprašanja
 - Ali morajo biti dokumenti primerni za tiskanje? Se morajo kam shraniti?
   Da, morajo biti primerni za tiskanje – shrani se kot PDF.
 - Prisotnost delavca je osem ali več, če je neto čas nad 8. Kaj pa če odsotnost šoferja pade pod 8?
@@ -38,12 +38,12 @@ Beleženje sprememb, ki jih je opravil posamezni uporabnik
 
 
 
-1. Dodatno
+4. Dodatno
 - Forma za dodajanje novega naloga
 - Za vsak dan se določi, kam gredo posamezne ekipe (sledenje kombijem s pomočjo tracker-jev)
 - Trenutno se beleženje izvaja s pomočjo MS Excel
 
-1. Nasveti
+5. Nasveti
 - Mikrostoritvena arhitektura
   - Java, .Net, Spring
 - Frontend
