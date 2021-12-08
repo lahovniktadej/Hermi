@@ -1,53 +1,109 @@
-import Pregled from "views/Pregled.js";
-
-import Nalogi from "views/Nalogi/Nalogi";
-import Izpis from "views/Izpis/Izpis";
-import Upravljanje from "views/Upravljanje/Upravljanje";
-import Login from "views/Uporabnik/Login";
-import ZgodovinaUrejanja from "views/Urejanje/ZgodovinaUrejanja";
+// core components
+import Dashboard from "views/admin/Dashboard.js";
+import Icons from "views/admin/Icons.js";
+import Login from "views/auth/Login.js";
+import Maps from "views/admin/Maps.js";
+import Profile from "views/admin/Profile.js";
+import Register from "views/auth/Register.js";
+import Tables from "views/admin/Tables.js";
+// @material-ui/icons components
+import AccountCircle from "@material-ui/icons/AccountCircle";
+import Dns from "@material-ui/icons/Dns";
+import FlashOn from "@material-ui/icons/FlashOn";
+import FormatListBulleted from "@material-ui/icons/FormatListBulleted";
+import Grain from "@material-ui/icons/Grain";
+import LocationOn from "@material-ui/icons/LocationOn";
+import Palette from "@material-ui/icons/Palette";
+import Person from "@material-ui/icons/Person";
+import Tv from "@material-ui/icons/Tv";
+import VpnKey from "@material-ui/icons/VpnKey";
 
 var routes = [
   {
-    path: "/pregled",
-    name: "Pregledna plošča",
-    icon: "fas fa-desktop text-red",
-    component: Pregled,
+    href: "#pablo",
+    name: "Upgrade to pro",
+    icon: FlashOn,
+    upgradeToPro: true,
+  },
+  {
+    path: "/index",
+    name: "Dashboard",
+    icon: Tv,
+    iconColor: "Primary",
+    component: Dashboard,
     layout: "/admin",
   },
   {
-    path: "/nalogi",
-    name: "Delovni nalogi",
-    icon: "fas fa-file-export text-red",
-    component: Nalogi,
+    path: "/icons",
+    name: "Icons",
+    icon: Grain,
+    iconColor: "Primary",
+    component: Icons,
     layout: "/admin",
   },
   {
-    path: "/sifranti",
-    name: "Šifranti",
-    icon: "fas fa-user-cog text-red",
-    component: Upravljanje,
+    path: "/maps",
+    name: "Maps",
+    icon: LocationOn,
+    iconColor: "Warning",
+    component: Maps,
     layout: "/admin",
   },
   {
-    path: "/izpis",
-    name: "Izpis",
-    icon: "fas fa-chart-line text-red",
-    component: Izpis,
+    path: "/user-profile",
+    name: "User Profile",
+    icon: Person,
+    iconColor: "WarningLight",
+    component: Profile,
     layout: "/admin",
   },
   {
-    path: "/zgodovinaUrejanja",
-    name: "Zgodovina urejanja",
-    icon: "fas fa-history text-red",
-    hidden: true,
-    component: ZgodovinaUrejanja,
+    path: "/tables",
+    name: "Tables",
+    icon: FormatListBulleted,
+    iconColor: "Error",
+    component: Tables,
     layout: "/admin",
   },
   {
-    path: "/prijava",
-    hidden: true,
+    path: "/login",
+    name: "Login",
+    icon: VpnKey,
+    iconColor: "Info",
     component: Login,
     layout: "/auth",
-  }
+  },
+  {
+    path: "/register",
+    name: "Register",
+    icon: AccountCircle,
+    iconColor: "ErrorLight",
+    component: Register,
+    layout: "/auth",
+  },
+  {
+    divider: true,
+  },
+  {
+    title: "Documentation",
+  },
+  {
+    href:
+      "https://www.creative-tim.com/learning-lab/material-ui/overview/argon-dashboard?ref=admui-admin-sidebar",
+    name: "Getting started",
+    icon: FlashOn,
+  },
+  {
+    href:
+      "https://www.creative-tim.com/learning-lab/material-ui/colors/argon-dashboard?ref=admui-admin-sidebar",
+    name: "Foundation",
+    icon: Palette,
+  },
+  {
+    href:
+      "https://www.creative-tim.com/learning-lab/material-ui/alerts/argon-dashboard?ref=admui-admin-sidebar",
+    name: "Components",
+    icon: Dns,
+  },
 ];
 export default routes;

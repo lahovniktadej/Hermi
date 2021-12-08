@@ -1,95 +1,78 @@
-/*!
-
-=========================================================
-* Argon Dashboard React - v1.2.0
-=========================================================
-
-* Product Page: https://www.creative-tim.com/product/argon-dashboard-react
-* Copyright 2021 Creative Tim (https://www.creative-tim.com)
-* Licensed under MIT (https://github.com/creativetimofficial/argon-dashboard-react/blob/master/LICENSE.md)
-
-* Coded by Creative Tim
-
-=========================================================
-
-* The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-*/
 import React from "react";
-import { Link, useHistory } from "react-router-dom";
+// @material-ui/core components
+import { makeStyles } from "@material-ui/core/styles";
+import AppBar from "@material-ui/core/AppBar";
+import Box from "@material-ui/core/Box";
+import Container from "@material-ui/core/Container";
+import InputBase from "@material-ui/core/InputBase";
+import Toolbar from "@material-ui/core/Toolbar";
+import Typography from "@material-ui/core/Typography";
+// @material-ui/icons components
+import SearchIcon from "@material-ui/icons/Search";
 
-import {
-  DropdownMenu,
-  DropdownItem,
-  UncontrolledDropdown,
-  DropdownToggle,
-  Navbar,
-  Nav,
-  Container,
-  Media,
-} from "reactstrap";
+// core components
+import NavbarDropdown from "components/Dropdowns/NavbarDropdown.js";
 
-import firebase from "firebase/app";
-import 'firebase/auth';
-import { FirebaseAuthConsumer } from "@react-firebase/auth";
-import config from "firebase_config";
+import componentStyles from "assets/theme/components/admin-navbar.js";
 
-if (!firebase.apps.length) {
-  firebase.initializeApp(config);
-}
+const useStyles = makeStyles(componentStyles);
 
-const AdminNavbar = (props) => {
-  let history = useHistory();
-
+export default function AdminNavbar({ brandText }) {
+  const classes = useStyles();
   return (
     <>
-      <Navbar className="navbar-top navbar-dark" expand="md" id="navbar-main">
-        <Container fluid>
-          <span className="h4 mb-0 text-black text-uppercase d-none d-lg-inline-block" to="/"> {props.brandText} </span>
-            <Nav className="align-items-center d-none d-md-flex" navbar>
-              <UncontrolledDropdown nav>
-                <DropdownToggle className="pr-0" nav>
-                  <Media className="align-items-center">
-                    <Media className="ml-2 d-none d-lg-block">
-                      <span className="mb-0 text-sm font-weight-bold text-dark">
-                        {sessionStorage.getItem("user_display") !== "null" ? sessionStorage.getItem("user_display") : "Admin"}
-                      </span>
-                    </Media>
-                  </Media>
-                </DropdownToggle>
-                <DropdownMenu className="dropdown-menu-arrow" right>
-                  <DropdownItem to="/admin/zgodovinaUrejanja" tag={Link}>
-                    <i className="ni ni-calendar-grid-58" />
-                    <span>Zgodovina urejanja</span>
-                  </DropdownItem>
-                  <DropdownItem divider />
-                  <FirebaseAuthConsumer>
-                    {
-                      ({ isSignedIn, firebase }) => {
-                        return (
-                          <DropdownItem onClick={() => {
-                              if (isSignedIn) {
-                                firebase.app().auth().signOut();
-                                sessionStorage.removeItem("user_uid");
-                                sessionStorage.removeItem("user_display");
-                                history.push("/auth/prijava");
-                              }
-                          }
-                          }>
-                            <i className="fas fa-sign-out-alt text-red" />
-                            <span className="text-red">Odjava</span>
-                          </DropdownItem>
-                        );
-                      }
-                    }
-                  </FirebaseAuthConsumer>
-                </DropdownMenu>
-              </UncontrolledDropdown>
-            </Nav>
-        </Container>
-      </Navbar>
+      <AppBar
+        position="absolute"
+        color="transparent"
+        elevation={0}
+        classes={{ root: classes.appBarRoot }}
+      >
+        <Toolbar disableGutters>
+          <Container
+            maxWidth={false}
+            component={Box}
+            classes={{ root: classes.containerRoot }}
+          >
+            <Box
+              display="flex"
+              justifyContent="space-between"
+              alignItems="center"
+              width="100%"
+              marginTop="0.5rem"
+            >
+              <div>
+                <Typography
+                  className={classes.brandTitle}
+                  variant="h4"
+                  component="a"
+                >
+                  {brandText}
+                </Typography>
+              </div>
+              <Box display="flex" alignItems="center" width="auto">
+                <Box
+                  display="flex"
+                  alignItems="center"
+                  width="auto"
+                  marginRight="1rem"
+                  classes={{
+                    root: classes.searchBox,
+                  }}
+                >
+                  <SearchIcon className={classes.searchIcon} />
+                  <InputBase
+                    placeholder="Search"
+                    classes={{
+                      input: classes.searchInput,
+                    }}
+                  />
+                </Box>
+                <NavbarDropdown />
+              </Box>
+            </Box>
+          </Container>
+        </Toolbar>
+      </AppBar>
     </>
   );
-};
-
-export default AdminNavbar;
+}
